@@ -86,54 +86,165 @@ if (isset($_POST["register"])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="bee.png"/>
-    <title>REGISTER</title>
-</head>
+    <title>Register - Sunny Bloom</title>
+    <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(to right, #FFF5E4, #C1D8C3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 460px;
+            text-align: center;
+            border: 2px solid #6A9C89;
+        }
+        .logo {
+            width: 80px;
+            margin-bottom: 10px;
+        }
+        h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #6A9C89;
+        }
+        .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: space-between;
+        }
+        input {
+            width: calc(50% - 4px);
+            padding: 6px;
+            border: 1px solid #6A9C89;
+            border-radius: 5px;
+            background: #FFF5E4;
+            margin-top: 8px;
+        }
+        input.full-width {
+            width: 100%;
+        }
+        input[type="submit"] {
+            background: #FFA725;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s ease;
+            border-radius: 5px;
+            padding: 8px;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background: #d68629;
+        }
+        .checkbox-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .checkbox-container label {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #333;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-container input {
+            width: 16px;
+            height: 16px;
+            accent-color: #FFA725; 
+        }
+
+        .checkbox-container a {
+            color: #FFA725;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .checkbox-container a:hover {
+            text-decoration: underline;
+        }
+
+        .login {
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        .login a {
+            text-decoration: none;
+            color: #FFA725;
+            font-weight: bold;
+        }
+        .login a:hover {
+            color: #b55e44;
+        }
+    </style>
+</head>
 <body>
     <div class="container">
-        <img src="bg4.jpeg" alt="">
-    </div> 
-    <div class="black"></div> 
-    <div class="container-content">  
-        <video autoplay loop muted>
-            <source src="vid2.mp4" type="video/mp4">
-            <source src="vid2.ogg" type="video/ogg">
-        </video>    
-        <div class="gray">
-            <h3>SIGN UP </h3>    
-            <form method="POST" onsubmit="return validateForm();">
-                <input type="text" id="first_name" name="first_name" placeholder="First Name" required /><br>
-                <input type="text" id="middle_name" name="middle_name" placeholder="Middle Name" required /><br>
-                <input type="text" id="last_name" name="last_name" placeholder="Last Name" required /><br>
-                <input type="tel" id="contact_number" name="contact_number" placeholder="Contact Number" required /><br>
-                <input type="text" id="address" name="address" placeholder="Address" required /><br> 
-                <input type="text" name="name" placeholder="Username" required /><br>
-                <input type="email" name="email" placeholder="info@gmail.com" required /><br>
-                <input type="password" name="password" id="password" placeholder="Password" required /><br>
-                <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required /><br>            
-                <input type="submit" name="register" value="REGISTER">
+    <img src="../assets/logo/logo1.png" alt="Sunny Bloom Logo" class="logo">
+        <h3>SIGN UP</h3>
+
+        <form method="POST" onsubmit="return validateForm();">
+
+            <div class="form-group">
+                <input type="text" id="first_name" name="first_name" placeholder="First Name" required />
+                <input type="text" id="middle_name" name="middle_name" placeholder="Middle Name" required />
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="last_name" name="last_name" placeholder="Last Name" required />
+                <input type="tel" id="contact_number" name="contact_number" placeholder="Contact Number" required />
+            </div>
+
+            <input type="text" id="address" name="address" placeholder="Address" required class="full-width" />
+            <input type="text" name="name" placeholder="Username" required class="full-width" />
+            <input type="email" name="email" placeholder="info@gmail.com" required class="full-width" />
+            <input type="password" name="password" id="password" placeholder="Password" required class="full-width" />
+            <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required class="full-width" />
+            <input type="submit" name="register" value="REGISTER">
+
+            <div class="checkbox-container">
                 <input type="checkbox" name="word" id="word" required />
-                <label for="word">By signing up, You agree to ShopBee's 
-                    Terms of Service & Privacy Policy.
-                </label>
-                <p class="login">Have an account? <a href="login.php"> LOGIN </a></p>
-            </form>
-        </div> 
+                <label for="word">By signing up, You agree to ShopBee's Terms of Service & Privacy Policy.</label>
+            </div>
+
+            <p class="login">Have an account? <a href="login.php">LOGIN</a></p>
+        </form>
     </div>
     <script>
-         function validateForm() {
+        function validateForm() {
             var password = document.getElementById('password').value;
             var confirmPassword = document.getElementById('confirm_password').value;
-
-            // Check if password and confirm password are equal
             if (password !== confirmPassword) {
                 alert('Password and Confirm Password do not match.');
-                return false; // Prevent form submission
+                return false;
             }
-
-            return true; // Allow form submission
+            return true;
         }
     </script>
 </body>
 </html>
+
+
+
