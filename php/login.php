@@ -152,33 +152,106 @@ if (isset($_POST["login"])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <title>Login - Sunny Bloom</title>
+    <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif; 
+        }
+
+        body {
+            background: linear-gradient(to right, #FFF5E4, #C1D8C3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 420px;
+            text-align: center;
+            border: 2px solid #6A9C89;
+        }
+
+        .logo {
+            width: 100px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            margin-bottom: 15px;
+            color: #6A9C89;
+            font-weight: 600; 
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #6A9C89; 
+            border-radius: 6px;
+            outline: none;
+            background: #FFF5E4; 
+        }
+
+        input[type="submit"] {
+            background: #FFA725; 
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s ease;
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        input[type="submit"]:hover {
+            background: #d68629;
+        }
+
+        .forget, .signup {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .forget a, .signup a {
+            text-decoration: none;
+            color: #FFA725;
+            font-weight: bold;
+        }
+
+        .forget a:hover, .signup a:hover {
+            color: #b55e44; 
+        }
+    </style>
 </head>
-
 <body>
-    <div class="container">
-        <img src="bg4.jpeg" alt="">
-    </div> 
-    <div class="black"></div> 
-    <div class="container-content">  
-        <video autoplay loop muted>
-            <source src="vid2.mp4" type="video/mp4">
-            <source src="vid2.ogg" type="video/ogg">
-        </video>    
 
-        <div class="gray">
-            <h3>LOGIN </h3>
-            <form method="POST">
-                <input type="email" name="email" placeholder="Email" required /><br>
-                <input type="password" name="password" placeholder="Password" required /><br>
-                <p class="forget"><a href="forgotpassword.php">Forgot Password?</a></p>
-                <input type="submit" name="login" value="Login">
-                <p class="signup">New to Shopbee? <a href="register.php"> SIGN UP </a></p>
-            </form>
-        </div> 
+    <div class="container">
+        <img src="../assets/logo/logo1.png" alt="Sunny Bloom Logo" class="logo">
+        <h3>LOGIN</h3>
+        <form method="POST">
+            <input type="email" name="email" placeholder="Email" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <p class="forget"><a href="forgotpassword.php">Forgot Password?</a></p>
+            <input type="submit" name="login" value="Login">
+            <p class="signup">New to Sunny Bloom? <a href="register.php"> SIGN UP </a></p>
+        </form>
     </div>
+
 </body>
 </html>
+
+
