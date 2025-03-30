@@ -47,19 +47,21 @@ if (isset($_POST["verify_email"])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VERIFY CODE</title>
-    <link rel="icon" type="image/png" href="bee.png"/>
+    <title>Verify Code - Sunny Bloom</title>
+    <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/email-verification.css">
 </head>
 <body>
     <div class="content-container">
+    <img src="../assets/logo/logo1.png" alt="Forgot Password" class="logo">
+        <h3>Verify Your Email</h3>
         <form method="POST">
             <input type="hidden" name="email" value="<?php echo $_GET['email']; ?>" required>
-            <input type="text" name="verification_code" placeholder="Enter verification code" required /> <br> <br>
+            <input type="text" name="verification_code" placeholder="Enter verification code" required />
             <input type="submit" name="verify_email" value="Verify Email">
         </form>
-        <center>
-            <p class="try-again"> Didn't receive an email? <a href=""> Try Again</a></p>
-        </center>
+        <p class="try-again"> Didn't receive an email? <a href="#">Try Again</a></p>
     </div>
 </body>
 </html>
