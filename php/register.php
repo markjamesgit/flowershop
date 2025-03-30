@@ -117,7 +117,7 @@ if (isset($_POST["register"])) {
 
             <div class="checkbox-container">
                 <input type="checkbox" name="word" id="word" required />
-                <label for="word">By signing up, You agree to ShopBee's Terms of Service & Privacy Policy.</label>
+                <label for="word">By signing up, You agree to Sunny Bloom's Terms of Service & Privacy Policy.</label>
             </div>
 
             <p class="login">Have an account? <a href="login.php">LOGIN</a></p>
