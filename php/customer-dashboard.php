@@ -8,7 +8,7 @@ if (isset($_SESSION['user_name'])) {
     $userName = $_SESSION['user_name'];
 } else {
     // Redirect to the login page or handle accordingly
-    header("Location: http://localhost/flowershop/php/customer-landing-page.php");
+    header("Location: http://localhost/flowershop/php/customer-dashboard.php");
     exit;
 }
 
@@ -19,7 +19,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     // Destroy the session
     session_destroy();
     // Redirect to the login page or handle accordingly
-    header("Location: http://localhost/flowershop/customer-landing-page.php");
+    header("Location: http://localhost/flowershop/php/customer-dashboard.php");
     exit;
 }
 
@@ -30,7 +30,7 @@ if ($conn->connect_error) {
 }
 
 //settings for customer-design-settings
-$sqlGetSettings = "SELECT * FROM design_settings WHERE id = 1"; // Id 1 assumes there's only one record for design settings
+$sqlGetSettings = "SELECT * FROM design_settings WHERE id = 1";
 $resultSettings = $conn->query($sqlGetSettings);
 
 if ($resultSettings->num_rows > 0) {
@@ -68,12 +68,12 @@ if ($resultSettings->num_rows > 0) {
         <div class="header"></div>
 
         <!-- Header Content -->
-        <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
+        <!-- <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
             <div class="container-header">
                 <img class="logo" src="img/<?php echo basename($logoPath); ?>" alt="Logo">
                 <label class="shop"><?php echo $shopName; ?></label>
             </div>
-        </a>
+        </a> -->
 
         <!-- Search Bar -->
         <div class="content-search">
