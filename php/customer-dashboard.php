@@ -68,12 +68,12 @@ if ($resultSettings->num_rows > 0) {
         <div class="header"></div>
 
         <!-- Header Content -->
-        <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
+        <!-- <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
             <div class="container-header">
                 <img class="logo" src="img/<?php echo basename($logoPath); ?>" alt="Logo">
                 <label class="shop"><?php echo $shopName; ?></label>
             </div>
-        </a>
+        </a> -->
 
         <!-- Search Bar -->
         <div class="content-search">
