@@ -57,7 +57,7 @@ if (isset($_POST["login"])) {
         $_SESSION['admin_fullname'] = $admin['fullname'];
 
         // You may add further checks or actions for admin login if needed
-        header("Location: http://localhost/flowershop/php/dashboard.php");
+        header("Location: http://localhost/flowershop/php/admin-nav.php");
         exit;
 
     } else if (mysqli_num_rows($result) > 0){
