@@ -19,7 +19,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     // Destroy the session
     session_destroy();
     // Redirect to the login page or handle accordingly
-    header("Location: http://localhost/flowershop/customer-landing-page.php");
+    header("Location: http://localhost/flowershop/php/customer-landing-page.php");
     exit;
 }
 
