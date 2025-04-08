@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 29, 2025 at 03:46 PM
+-- Generation Time: Apr 01, 2025 at 03:15 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -42,7 +42,56 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`email`, `password`, `phone_number`, `address`, `image`, `username`, `fullname`) VALUES
-('admin@gmail.com', '$2y$10$KlxU6qBLZGL9W3c6zc8kVOrw1FzVMam.28SHPHD8QMCjwJ1DBszii', '09225049004', 'Baliwag, Bulacan', 'img/wallpaper.jpeg', 'mikeyswifedjk', 'Maika Ordonez');
+('[value-1]', '[value-2]', '09123456789', 'admin st', '[value-5]', 'sunny', 'TestAdmin');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `product_name` varchar(255) DEFAULT NULL,
+  `product_image` varchar(255) DEFAULT NULL,
+  `variant` varchar(255) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `price` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `total_price` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `design_settings`
+--
+
+CREATE TABLE `design_settings` (
+  `id` int(11) NOT NULL,
+  `background_color` varchar(255) DEFAULT NULL,
+  `font_color` varchar(255) DEFAULT NULL,
+  `shop_name` varchar(255) DEFAULT NULL,
+  `logo_path` varchar(255) DEFAULT NULL,
+  `image_one_path` varchar(255) DEFAULT NULL,
+  `image_two_path` varchar(255) DEFAULT NULL,
+  `image_three_path` varchar(255) DEFAULT NULL,
+  `banner_one_path` varchar(255) DEFAULT NULL,
+  `banner_two_path` varchar(255) DEFAULT NULL,
+  `endorse_one_path` varchar(255) DEFAULT NULL,
+  `endorse_two_path` varchar(255) DEFAULT NULL,
+  `endorse_three_path` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `design_settings`
+--
+
+INSERT INTO `design_settings` (`id`, `background_color`, `font_color`, `shop_name`, `logo_path`, `image_one_path`, `image_two_path`, `image_three_path`, `banner_one_path`, `banner_two_path`, `endorse_one_path`, `endorse_two_path`, `endorse_three_path`) VALUES
+(1, '#f5f5f5', '#000000', 'SunnyBloom', 'img/logo.png', 'img/gadgets3-1.jpeg', 'img/grocery2-1.jpeg', 'img/appliances2-1.jpeg', 'img/gadgets2-2.webp', 'img/gadgets2-3.jpeg', 'img/appliances1-1.jpeg', 'img/toy2-1.jpeg', 'img/gadgets3-4.jpeg');
 
 -- --------------------------------------------------------
 
@@ -75,11 +124,25 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `verification_code`, `email_verified_at`, `reset_token`, `reset_token_expiration`, `last_attempt`, `blocked`, `attempts`, `contact_number`, `address`, `image_path`, `first_name`, `middle_name`, `last_name`) VALUES
-(63, 'itsmy', 'ybiza2018@gmail.com', '$2y$10$.tdOrILMUmZfx7YO/fpASeOiWHZR7tesVR2bU5sD/6HxOLg2BOriO', 274629, '2025-03-28 10:45:41.000000', '', '', '2025-03-28 02:45:17', 0, 0, '09496563656', 'kalye Katorse', '', 'Habib', 'M', 'A AHASAN');
+(64, 'test', 'test@gmail.com', '$2y$10$HXaBIZv7kMOVsquRJhHgtuQ/sPHIYfbQLuJ3B83paAZFyXRbScgq.', 200421, '2025-04-01 20:45:11.000000', NULL, NULL, '2025-04-01 12:44:49', 0, 0, '09123456789', 'test st test', '', 'Test', 'T', 'Test');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `design_settings`
+--
+ALTER TABLE `design_settings`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -92,10 +155,22 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=294;
+
+--
+-- AUTO_INCREMENT for table `design_settings`
+--
+ALTER TABLE `design_settings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

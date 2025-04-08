@@ -19,7 +19,7 @@ if (isset($_SESSION['user_name'])) {
 
 // Check if a form parameter named "login" has been submitted via the HTTP POST method.
 if (isset($_POST["login"])) {
-    $email = $_POST["email"];
+    $identifier = $_POST["identifier"];
     $password = $_POST["password"];
     // Define the default admin credentials
     $default_admin_email = "admin@gmail.com";
@@ -28,15 +28,15 @@ if (isset($_POST["login"])) {
     $conn = mysqli_connect("localhost:3306", "root", "", "flowershop");
 
     //Check if there is an existing email address of admin
-    $stmt_admin = mysqli_prepare($conn, "SELECT * FROM admin WHERE email = ?");
-    mysqli_stmt_bind_param($stmt_admin, "s", $email);
+    $stmt_admin = mysqli_prepare($conn, "SELECT * FROM admin WHERE email = ? OR username = ?");
+    mysqli_stmt_bind_param($stmt_admin, "ss", $identifier, $identifier);
     mysqli_stmt_execute($stmt_admin);
     $result_admin = mysqli_stmt_get_result($stmt_admin);
 
 
     // Check if credentials are okay, and email is verified
-    $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE email = ?");
-    mysqli_stmt_bind_param($stmt, "s", $email);
+    $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE email = ? OR name = ?");
+    mysqli_stmt_bind_param($stmt, "ss", $identifier, $identifier);    
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
@@ -57,7 +57,7 @@ if (isset($_POST["login"])) {
         $_SESSION['admin_fullname'] = $admin['fullname'];
 
         // You may add further checks or actions for admin login if needed
-        header("Location: http://localhost/flowershop/php/admin-nav.php");
+        header("Location: http://localhost/flowershop/php/admin-dashboard.php");
         exit;
 
     } else if (mysqli_num_rows($result) > 0){
@@ -164,7 +164,7 @@ if (isset($_POST["login"])) {
         <img src="../assets/logo/logo1.png" alt="Sunny Bloom Logo" class="logo">
         <h3>LOGIN</h3>
         <form method="POST">
-            <input type="email" name="email" placeholder="Email" required />
+            <input type="text" name="identifier" placeholder="Email or Username" required />
             <input type="password" name="password" placeholder="Password" required />
             <p class="forget"><a href="forgotpassword.php">Forgot Password?</a></p>
             <input type="submit" name="login" value="Login">
@@ -174,5 +174,3 @@ if (isset($_POST["login"])) {
 
 </body>
 </html>
-
-
