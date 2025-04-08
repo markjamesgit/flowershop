@@ -39,8 +39,6 @@ if (isset($_POST['logout'])) {
     header("Location: login.php"); // Redirect to the login page after logout
     exit();
 }
-
-mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -65,15 +63,15 @@ mysqli_close($conn);
                 </button>
             </a>
             <div class="btn">
-                <a href="php/admin-dashboard.php"><button class="dashboard"> <i class="fa-solid fa-house-chimney" style="color: #ffffff;"></i> <span> DASHBOARD </span> </button></a>
-                <a href="php/add-product.php"> <button class="product"> <i class="fa-solid fa-box-open" style="color: #ffffff;"></i> <span> PRODUCT </span> </button> </a>
-                <a href="php/category-management.php"> <button class="category"> <i class="fa-solid fa-list" style="color: #ffffff;"></i> <span> CATEGORY </span> </button> </a>
-                <a href="php/product-inventory.php"> <button class="inventory"> <i class="fa-solid fa-clipboard-list" style="color: #ffffff;"></i> <span> INVENTORY </span></button> </a>
-                <a href="php/orders.php"> <button class="orders"> <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i> <span> ORDERS </span></button> </a>
-                <a href="php/sales.php"> <button class="reports"> <i class="fa-solid fa-chart-simple" style="color: #ffffff;"></i> <span> SALES </span> </button> </a>
-                <a href="php/unlock-user.php"><button> <i class="fa-solid fa-user-group" style="color: #ffffff;"></i> <span> CUSTOMER</span></button></a>
-                <a href="php/customer-design-setting.php"> <button><i class="fa-solid fa-gears" style="color: #ffffff;"></i> <span> DESIGN SETTING </span></button></a>
-                <a href="php/customer-landing-page.php"><button class="logout"><i class="fa-solid fa-right-from-bracket" style="color: #ffffff;"></i> <span> LOG OUT</span></button></a>
+                <a href="admin-dashboard.php"><button class="dashboard"> <i class="fa-solid fa-house-chimney" style="color: #ffffff;"></i> <span> DASHBOARD </span> </button></a>
+                <a href="add-product.php"> <button class="product"> <i class="fa-solid fa-box-open" style="color: #ffffff;"></i> <span> PRODUCT </span> </button> </a>
+                <a href="category-management.php"> <button class="category"> <i class="fa-solid fa-list" style="color: #ffffff;"></i> <span> CATEGORY </span> </button> </a>
+                <a href="product-inventory.php"> <button class="inventory"> <i class="fa-solid fa-clipboard-list" style="color: #ffffff;"></i> <span> INVENTORY </span></button> </a>
+                <a href="orders.php"> <button class="orders"> <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i> <span> ORDERS </span></button> </a>
+                <a href="sales.php"> <button class="reports"> <i class="fa-solid fa-chart-simple" style="color: #ffffff;"></i> <span> SALES </span> </button> </a>
+                <a href="unlock-user.php"><button> <i class="fa-solid fa-user-group" style="color: #ffffff;"></i> <span> CUSTOMER</span></button></a>
+                <a href="customer-design-setting.php"> <button><i class="fa-solid fa-gears" style="color: #ffffff;"></i> <span> DESIGN SETTING </span></button></a>
+                <a href="customer-landing-page.php"><button class="logout"><i class="fa-solid fa-right-from-bracket" style="color: #ffffff;"></i> <span> LOG OUT</span></button></a>
             </div>
         </div>
     </div>
