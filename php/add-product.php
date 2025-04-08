@@ -1,8 +1,7 @@
-<?php include('admin-nav.php');?>
-
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+include('admin-nav.php');
 require 'connection.php';
 
 function getProductVariants($conn, $productId) {
@@ -136,13 +135,13 @@ if (isset($_POST["submit"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-    <title>PRODUCT MANAGEMENT</title>
+    <title>PACKAGE DEAL</title>
 </head>
 <body>
 
 <div class="all">
     <!-- Add Product Section -->
-    <h1 class="text1">PRODUCT MANAGEMENT</h1>
+    <h1 class="text1">PACKAGE DEAL</h1>
     <div class="add">       
             <form class="" action="" method="post" autocomplete="off" enctype="multipart/form-data">
                 <label for="name">Product Name: </label>
@@ -191,7 +190,7 @@ if (isset($_POST["submit"])) {
 
 <!-- Product List Section -->
 <div class="view">
-    <h1 class="text4">PRODUCT LIST</h1>
+    <h1 class="text4">PACKAGE DEAL LIST</h1>
     
     <!-- Search Product -->
     <form action="" method="post">
