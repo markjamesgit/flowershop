@@ -1,8 +1,8 @@
-<?php include('admin-nav.php');?>
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require 'connection.php';
+include('admin-nav.php');
 
 $fileUploadedSuccessfully = false; // Initialize the variable
 
@@ -22,7 +22,7 @@ if (isset($_POST["submit"])) {
     
             if (in_array($imageExtension, $validImageExtension) && $fileSize <= 1000000) {
                 $newImageName = uniqid() . '.' . $imageExtension;
-                $res = move_uploaded_file($tmpName, 'img/' . $newImageName);
+                $res = move_uploaded_file($tmpName, '../img/' . $newImageName);
                 if ($res) {
                     $query = "INSERT INTO category (category, image) VALUES('$name', '$newImageName')";
                     mysqli_query($conn, $query);
@@ -57,7 +57,7 @@ if (isset($_POST["edit"])) {
 
             if (in_array($editImageExtension, $validEditImageExtension) && $editFileSize <= 1000000) {
                 $editNewImageName = uniqid() . '.' . $editImageExtension;
-                $editRes = move_uploaded_file($editTmpName, 'img/' . $editNewImageName);
+                $editRes = move_uploaded_file($editTmpName, '../img/' . $editNewImageName);
                 if ($editRes) {
                     $editQuery = "UPDATE category SET category = '$editCategoryName', image = '$editNewImageName' WHERE id = $editCategoryId";
                     mysqli_query($conn, $editQuery);
@@ -109,245 +109,17 @@ $result = mysqli_query($conn, $searchQuery);
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-    <meta charset="utf-8">
-    <title>CATEGORY</title>
-    <style>
-        body{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #f5f5f5;
-            overflow-x: hidden;
-        }
-
-        .all{
-            position: absolute;
-            left: 290px;
-            display: grid;
-            grid-template-rows: auto auto;
-            gap: 15px;
-            width: 78.7vw;
-        }
-
-        .add{
-            display: grid;
-            grid-template-columns: auto auto;
-            margin-top: 20px;  
-            overflow: auto; 
-            padding: 10px;     
-            background-color: white;
-            border-radius: 5px;
-            width: 45vw;
-            height: vh;
-        }
-
-        .view{
-            background-color: white;
-            height: max-content;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
-
-        .text1{
-            position: relative;
-            top: 15px;
-            left: 290px;
-            margin:0;
-            padding: 0;
-            font-size: 30px;
-            color: black;
-            letter-spacing: 5px;
-            width: max-content;
-        }
-
-        .text2{
-            margin: 0;
-            padding: 0;
-            margin-top: 15px;
-            margin-left: 25px;
-            margin-bottom: 15px;
-            font-family: Arial;
-            letter-spacing: 3px;
-            height: max-content;
-        }
-
-        .text4{
-            margin: 10px 0 10px 20px;
-            letter-spacing: 5px;
-        }
-
-        .text5{
-            margin-left: 20px;
-            letter-spacing: 2px;
-            font-family: arial; 
-            font-size: 20px;
-        }
-
-        .add label{
-            padding: 0;
-            margin: 0;
-            margin-left: 25px;
-            font-family: Arial;
-            font-size: 20px;
-        }
-
-        .add input[type="text"]{
-            width: 25vw;
-            height: 20px;
-            font-size: 14px;
-            padding-left: 7px;
-        }
-
-        .add input[type="file"]{
-            font-size: 16px;
-        }
-
-        .imageProd{
-            position: absolute;
-            left: 60%;
-            bottom: 87.79%;
-            background-color: white;
-            width: 31.5vw;
-            height: 31.9vh;
-            border-radius: 5px;
-        }
-
-        .imageProd img{
-            padding: 20px;
-            object-fit: contain;
-            width: 28.6vw;
-            height: 26.5vh;
-            border-radius: 20px;
-        }
-
-        .btnSearch{
-            margin-left: 5px;
-            margin-top: 3px;
-            padding: 5px 40px 5px 40px;
-            background-color: black;
-            color: white;
-            border: none;
-            border-radius: 3px;
-        }
-
-        .btnSearch:hover{
-            background-color: #ffca00;
-            color: black;
-        }
-
-        .btnSubmit{
-            margin-left: 84.5%; 
-            padding: 7px 50px 7px 50px;
-            background-color: black;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            border:none;
-        }
-
-        .btnSubmit:hover{
-            background-color: #ffca00;
-            color: black;
-        }
-
-        .deletebtn{
-            margin-top: 10px;
-            margin-left: 137vh;
-            margin-bottom: 15px;
-            padding: 7px 45px 7px 45px;
-            background-color: black;
-            color: white;
-            border: none;
-        }
-
-        .deletebtn:hover{
-            background-color: #ffca00;
-            color: black;
-        }
-
-        .searchtxt{
-            width: 35vw;
-            height: 20px;
-            font-size: 14px;
-            padding-left: 7px;
-        }
-
-        .categorytxt{
-            width: 21vw;
-            height: 18px;
-            font-size: 14px;
-            padding-left: 7px;
-        }
-
-        .view input[type="checkbox"]{
-            height: 20px;
-            width: 20px;
-        }
-
-        .viewTable{
-            text-align: center;
-            margin-left: 20px;
-            width: 76vw;
-            font-size: 14px;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .thView{
-            background-color: black;
-            color: white;
-            font-family: arial;
-        }
-
-        .thView th{
-            font-size: 14px;
-            padding: 10px 32px 10px 32px;
-            font-weight: 100;
-        }
-
-        .thView td{
-            font-size: 16px;
-            padding: 10px 32px 10px 32px;
-        }
-
-        table img{
-            height: 140px;
-            width: 140px;
-            object-fit: cover;
-        }
-
-        .editbtn{
-            padding: 5px 10px 5px 10px;
-            background-color: black;
-            border: none;
-            width: max-content;
-            font-size: white;
-            border-radius: 5px;
-            width: max-content;
-            height: 25px;
-        }
-
-        .editbtn span{
-            padding: 0;
-            margin: 0;
-            color: white;
-        }
-
-        .editbtn i{
-            padding: 0;
-            margin: 0;
-        }
-
-        .editbtn:hover{
-            color: black;
-            background-color: #ffca00;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
+    <title>CATEGORY MANAGEMENT</title>
+    <link rel="stylesheet" href="category-management.css">
 </head>
 <body>
     <h1 class="text1" >CATEGORY MANAGEMENT</h1>
     <div class="all">
         <div class="add">
-            <h2 class="text2" >ADD CATEGORY</h2> <br>
             <form class="" action="" method="post" autocomplete="off" enctype="multipart/form-data">
                 <label for="name">Category Name: </label>
                 <input type="text" name="name" id="name" required value="" placeholder="Enter category name"> <br> <br>
@@ -394,7 +166,7 @@ $result = mysqli_query($conn, $searchQuery);
                     <tr>
                         <td><?php echo $row['id']; ?></td>
                         <td><?php echo $row['category']; ?></td>
-                        <td><img src="img/<?php echo $row['image']; ?>" alt="Category Image" height="100"></td>
+                        <td><img src="../img/<?php echo $row['image']; ?>" alt="Category Image" height="100"></td>
                         <td>
                             <!-- Edit Form -->
                         <form action="" method="post" enctype="multipart/form-data">
