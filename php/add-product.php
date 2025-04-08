@@ -136,7 +136,7 @@ if (isset($_POST["submit"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-    <title>Product Management</title>
+    <title>PRODUCT MANAGEMENT</title>
 </head>
 <body>
 
@@ -144,7 +144,6 @@ if (isset($_POST["submit"])) {
     <!-- Add Product Section -->
     <h1 class="text1">PRODUCT MANAGEMENT</h1>
     <div class="add">       
-            <h3 class="text2"> ADD PRODUCTS </h3> <br>
             <form class="" action="" method="post" autocomplete="off" enctype="multipart/form-data">
                 <label for="name">Product Name: </label>
                 <input type="text" name="name" id="name" required autocomplete="name" value=""> <br> <br>
