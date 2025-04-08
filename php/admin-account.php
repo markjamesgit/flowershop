@@ -1,15 +1,12 @@
-<?php include('admin-nav.php');?>
-
 <?php
-// Default values if no data is retrieved from the database
+include('admin-nav.php');
+require 'connection.php';
+
 $existingFullname = "";
 $existingUsername = "";
 $existingAddress = "";
 $existingPhonenumber = "";
 $existingImage = "";
-
-// Fetch existing admin information from the database
-$conn = mysqli_connect("localhost:3306", "root", "", "flowershop");
 
 if ($conn) {
     $selectInfoSql = "SELECT * FROM admin WHERE email = 'admin@gmail.com'";
