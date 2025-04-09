@@ -4,11 +4,13 @@ ini_set('display_errors', 1);
 require 'connection.php';
 include('admin-nav.php');
 
-$fileUploadedSuccessfully = false; // Initialize the variable
+$fileUploadedSuccessfully = false;
 
-// Check if the form is submitted to create a new addons
+// Add addons
 if (isset($_POST["submit"])) {
     $name = $_POST["name"];
+    $stocks = $_POST["stocks"];
+    $price = $_POST["price"];
 
     // Handle image upload for creating a new addons
     if (isset($_FILES["image"])) {
@@ -24,10 +26,11 @@ if (isset($_POST["submit"])) {
                 $newImageName = uniqid() . '.' . $imageExtension;
                 $res = move_uploaded_file($tmpName, '../img/' . $newImageName);
                 if ($res) {
-                    $query = "INSERT INTO addons (addons, image) VALUES('$name', '$newImageName')";
+                    // Add price to the INSERT query
+                    $query = "INSERT INTO addons (addons, image, stocks, price) VALUES('$name', '$newImageName', '$stocks', '$price')";
                     mysqli_query($conn, $query);
                     echo "<script>alert('Successfully Added');</script>";
-                    $fileUploadedSuccessfully = true; // Set to true after successful upload
+                    $fileUploadedSuccessfully = true;
                 } else {
                     echo "Failed to upload";
                 }
@@ -44,38 +47,39 @@ if (isset($_POST["submit"])) {
 if (isset($_POST["edit"])) {
     $editaddonsId = $_POST["edit_id"];
     $editaddonsName = mysqli_real_escape_string($conn, $_POST["edit_name"]);
+    $editaddonsStocks = $_POST["edit_stocks"];
+    $editaddonsPrice = $_POST["edit_price"]; // Get price from form
 
-    // Handle image upload for editing a addons
-    if (isset($_FILES["edit_image"])) {
-        if ($_FILES["edit_image"]["error"] === UPLOAD_ERR_OK) {
-            $editFileName = $_FILES["edit_image"]["name"];
-            $editFileSize = $_FILES["edit_image"]["size"];
-            $editTmpName = $_FILES["edit_image"]["tmp_name"];
+    // Check if a new image is uploaded
+    if (isset($_FILES["edit_image"]) && $_FILES["edit_image"]["error"] === UPLOAD_ERR_OK) {
+        $editFileName = $_FILES["edit_image"]["name"];
+        $editFileSize = $_FILES["edit_image"]["size"];
+        $editTmpName = $_FILES["edit_image"]["tmp_name"];
 
-            $validEditImageExtension = ['jpg', 'jpeg', 'png'];
-            $editImageExtension = strtolower(pathinfo($editFileName, PATHINFO_EXTENSION));
+        $validEditImageExtension = ['jpg', 'jpeg', 'png'];
+        $editImageExtension = strtolower(pathinfo($editFileName, PATHINFO_EXTENSION));
 
-            if (in_array($editImageExtension, $validEditImageExtension) && $editFileSize <= 1000000) {
-                $editNewImageName = uniqid() . '.' . $editImageExtension;
-                $editRes = move_uploaded_file($editTmpName, '../img/' . $editNewImageName);
-                if ($editRes) {
-                    $editQuery = "UPDATE addons SET addons = '$editaddonsName', image = '$editNewImageName' WHERE id = $editaddonsId";
-                    mysqli_query($conn, $editQuery);
-                    echo "<script>alert('addons Updated Successfully');</script>";
-                } else {
-                    echo "Failed to upload edited image";
-                }
+        if (in_array($editImageExtension, $validEditImageExtension) && $editFileSize <= 1000000) {
+            $editNewImageName = uniqid() . '.' . $editImageExtension;
+
+            // Move the uploaded file to the image directory
+            $editRes = move_uploaded_file($editTmpName, '../img/' . $editNewImageName);
+            if ($editRes) {
+                // Update the name, stocks, and price, and image if updated
+                $editQuery = "UPDATE addons SET addons = '$editaddonsName', image = '$editNewImageName', stocks = '$editaddonsStocks', price = '$editaddonsPrice' WHERE id = $editaddonsId";
+                mysqli_query($conn, $editQuery);
+                echo "<script>alert('Add-Ons Updated Successfully');</script>";
             } else {
-                echo "<script>alert('Invalid Edited Image Extension or Image Size Is Too Large');</script>";
+                echo "Failed to upload edited image";
             }
         } else {
-            echo "<script>alert('Edited Image Upload Error');</script>";
+            echo "<script>alert('Invalid Image Extension or Image Size Is Too Large');</script>";
         }
     } else {
-        // No new image uploaded, update addons name only
-        $editQuery = "UPDATE addons SET addons = '$editaddonsName' WHERE id = $editaddonsId";
+        // If no image is uploaded, just update the name, stocks, and price
+        $editQuery = "UPDATE addons SET addons = '$editaddonsName', stocks = '$editaddonsStocks', price = '$editaddonsPrice' WHERE id = $editaddonsId";
         mysqli_query($conn, $editQuery);
-        echo "<script>alert('Add-Ons Name Updated Successfully');</script>";
+        echo "<script>alert('Add-Ons Updated Successfully');</script>";
     }
 }
 
@@ -117,15 +121,23 @@ $result = mysqli_query($conn, $searchQuery);
     <link rel="stylesheet" href="addons-management.css">
 </head>
 <body>
-    <h1 class="text1" >ADD-ONS MANAGEMENT</h1>
+    <h1 class="title">ADD-ONS MANAGEMENT</h1>
     <div class="all">
         <div class="add">
             <form class="" action="" method="post" autocomplete="off" enctype="multipart/form-data">
                 <label for="name">Add-Ons Name: </label>
                 <input type="text" name="name" id="name" required value="" placeholder="Enter add-ons name"> <br> <br>
+                
+                <label for="stocks">Add-Ons Stocks: </label>
+                <input type="text" name="stocks" id="stocks" required value="" placeholder="Enter add-ons stocks"> <br> <br>
+                
+                <label for="price">Add-Ons Price: </label>
+                <input type="text" name="price" id="price" required value="" placeholder="Enter add-ons price"> <br> <br>
+                
                 <label for="image">Add-Ons Image: </label>
                 <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png, .webp, .avif" 
                 autocomplete="file" onchange="previewImage(this);" value=""> <br> <br>
+                
                 <button type="submit" name="submit" class="btnSubmit">Submit</button>
             </form>
         </div> <!-- add -->
@@ -141,7 +153,7 @@ $result = mysqli_query($conn, $searchQuery);
             <!-- Search Form -->
             <form action="" method="get">
                 <label for="search" class="text5">Search add-ons:</label>
-                <input type="text" name="search" class="searchtxt" id="search" placeholder="Enter addons name" required />
+                <input type="text" name="search" class="searchtxt" id="search" placeholder="Enter add-ons name" required />
                 <button type="submit" class="btnSearch">Search</button>
             </form> <br>
 
@@ -166,17 +178,26 @@ $result = mysqli_query($conn, $searchQuery);
                     <tr>
                         <td><?php echo $row['id']; ?></td>
                         <td><?php echo $row['addons']; ?></td>
-                        <td><img src="../img/<?php echo $row['image']; ?>" alt="addons Image" height="100"></td>
+                        <td><img src="../img/<?php echo $row['image']; ?>" alt="Add-ons Image" height="100"></td>
                         <td>
                             <!-- Edit Form -->
-                        <form action="" method="post" enctype="multipart/form-data">
-                            <input type="hidden" name="edit_id" value="<?php echo $row['id']; ?>">
-                            <label for="edit_name">Add-Ons Name:</label>
-                            <input type="text" name="edit_name" class="addonstxt" value="<?php echo $row['addons']; ?>" required><br><br>
-                            <label for="edit_image">Add-Ons Image: </label>
-                            <input type="file" name="edit_image" accept=".jpg, .jpeg, .png">
-                            <button type="submit" name="edit" class="editbtn"> <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i> <span> Edit </span></button>
-                        </form>
+                            <form action="" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="edit_id" value="<?php echo $row['id']; ?>">
+                                
+                                <label for="edit_name">Add-Ons Name:</label>
+                                <input type="text" name="edit_name" class="addons-txt" value="<?php echo $row['addons']; ?>" required><br><br>
+                                
+                                <label for="edit_stocks">Add-Ons Stocks:</label>
+                                <input type="text" name="edit_stocks" class="stocks-txt" value="<?php echo $row['stocks']; ?>" required><br><br>
+                                
+                                <label for="edit_price">Add-Ons Price: </label>
+                                <input type="text" name="edit_price" class="price-txt" value="<?php echo $row['price']; ?>" required><br><br>
+                                
+                                <label for="edit_image">Add-Ons Image: </label>
+                                <input type="file" name="edit_image" accept=".jpg, .jpeg, .png"><br><br>
+                                
+                                <button type="submit" name="edit" class="editbtn"> <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i> <span> Edit </span></button>
+                            </form>
                         </td>
                         <td>
                             <input type="checkbox" name="selected_categories[]" value="<?php echo $row['id']; ?>">

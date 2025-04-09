@@ -4,12 +4,13 @@ ini_set('display_errors', 1);
 require 'connection.php';
 include('admin-nav.php');
 
-$fileUploadedSuccessfully = false; // Initialize the variable
+$fileUploadedSuccessfully = false;
 
-//Add flower
+// Add flower
 if (isset($_POST["submit"])) {
     $name = $_POST["name"];
     $stocks = $_POST["stocks"];
+    $price = $_POST["price"];
 
     // Handle image upload for creating a new flower
     if (isset($_FILES["image"])) {
@@ -25,8 +26,8 @@ if (isset($_POST["submit"])) {
                 $newImageName = uniqid() . '.' . $imageExtension;
                 $res = move_uploaded_file($tmpName, '../img/' . $newImageName);
                 if ($res) {
-                    // Add stocks to the INSERT query
-                    $query = "INSERT INTO flower (flower, image, stocks) VALUES('$name', '$newImageName', '$stocks')";
+                    // Add price to the INSERT query
+                    $query = "INSERT INTO flower (flower, image, stocks, price) VALUES('$name', '$newImageName', '$stocks', '$price')";
                     mysqli_query($conn, $query);
                     echo "<script>alert('Successfully Added');</script>";
                     $fileUploadedSuccessfully = true;
@@ -42,43 +43,43 @@ if (isset($_POST["submit"])) {
     }
 }
 
-
 // Edit flower
 if (isset($_POST["edit"])) {
     $editFlowerId = $_POST["edit_id"];
     $editFlowerName = mysqli_real_escape_string($conn, $_POST["edit_name"]);
-    $editFlowerstocks = $_POST["edit_stocks"];
+    $editFlowerStocks = $_POST["edit_stocks"];
+    $editFlowerPrice = $_POST["edit_price"]; // Get price from form
 
-    // Handle image upload for editing a flower
-    if (isset($_FILES["edit_image"])) {
-        if ($_FILES["edit_image"]["error"] === UPLOAD_ERR_OK) {
-            $editFileName = $_FILES["edit_image"]["name"];
-            $editFileSize = $_FILES["edit_image"]["size"];
-            $editTmpName = $_FILES["edit_image"]["tmp_name"];
+    // Check if a new image is uploaded
+    if (isset($_FILES["edit_image"]) && $_FILES["edit_image"]["error"] === UPLOAD_ERR_OK) {
+        $editFileName = $_FILES["edit_image"]["name"];
+        $editFileSize = $_FILES["edit_image"]["size"];
+        $editTmpName = $_FILES["edit_image"]["tmp_name"];
 
-            $validEditImageExtension = ['jpg', 'jpeg', 'png'];
-            $editImageExtension = strtolower(pathinfo($editFileName, PATHINFO_EXTENSION));
+        $validEditImageExtension = ['jpg', 'jpeg', 'png'];
+        $editImageExtension = strtolower(pathinfo($editFileName, PATHINFO_EXTENSION));
 
-            if (in_array($editImageExtension, $validEditImageExtension) && $editFileSize <= 1000000) {
-                $editNewImageName = uniqid() . '.' . $editImageExtension;
-                $editRes = move_uploaded_file($editTmpName, '../img/' . $editNewImageName);
-                if ($editRes) {
-                    // Include stocks in the UPDATE query
-                    $editQuery = "UPDATE flower SET flower = '$editFlowerName', image = '$editNewImageName', stocks = '$editFlowerstocks' WHERE id = $editFlowerId";
-                    mysqli_query($conn, $editQuery);
-                    echo "<script>alert('Flower Updated Successfully');</script>";
-                } else {
-                    echo "Failed to upload edited image";
-                }
+        if (in_array($editImageExtension, $validEditImageExtension) && $editFileSize <= 1000000) {
+            $editNewImageName = uniqid() . '.' . $editImageExtension;
+
+            // Move the uploaded file to the image directory
+            $editRes = move_uploaded_file($editTmpName, '../img/' . $editNewImageName);
+            if ($editRes) {
+                // Update the name, stocks, and price, and image if updated
+                $editQuery = "UPDATE flower SET flower = '$editFlowerName', image = '$editNewImageName', stocks = '$editFlowerStocks', price = '$editFlowerPrice' WHERE id = $editFlowerId";
+                mysqli_query($conn, $editQuery);
+                echo "<script>alert('Flower Updated Successfully');</script>";
             } else {
-                echo "<script>alert('Invalid Edited Image Extension or Image Size Is Too Large');</script>";
+                echo "Failed to upload edited image";
             }
         } else {
-            // No image update, just update the name and stocks
-            $editQuery = "UPDATE flower SET flower = '$editFlowerName', stocks = '$editFlowerstocks' WHERE id = $editFlowerId";
-            mysqli_query($conn, $editQuery);
-            echo "<script>alert('Flower Updated Successfully');</script>";
+            echo "<script>alert('Invalid Image Extension or Image Size Is Too Large');</script>";
         }
+    } else {
+        // If no image is uploaded, just update the name, stocks, and price
+        $editQuery = "UPDATE flower SET flower = '$editFlowerName', stocks = '$editFlowerStocks', price = '$editFlowerPrice' WHERE id = $editFlowerId";
+        mysqli_query($conn, $editQuery);
+        echo "<script>alert('Flower Updated Successfully');</script>";
     }
 }
 
@@ -120,15 +121,18 @@ $result = mysqli_query($conn, $searchQuery);
     <link rel="stylesheet" href="flower-management.css">
 </head>
 <body>
-    <h1 class="text1" >FLOWER MANAGEMENT</h1>
+    <h1 class="title">FLOWER MANAGEMENT</h1>
     <div class="all">
         <div class="add">
             <form class="" action="" method="post" autocomplete="off" enctype="multipart/form-data">
                 <label for="name">Flower Name: </label>
                 <input type="text" name="name" id="name" required value="" placeholder="Enter flower name"> <br> <br>
                 
-                <label for="name">Flower Stocks: </label>
+                <label for="stocks">Flower Stocks: </label>
                 <input type="text" name="stocks" id="stocks" required value="" placeholder="Enter flower stocks"> <br> <br>
+                
+                <label for="price">Flower Price: </label>
+                <input type="text" name="price" id="price" required value="" placeholder="Enter flower price"> <br> <br>
                 
                 <label for="image">Flower Image: </label>
                 <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png, .webp, .avif" 
@@ -156,8 +160,8 @@ $result = mysqli_query($conn, $searchQuery);
             <form action="" method="POST">
                 <table border="1" cellspacing="0" cellpadding="10" class="viewTable">
                     <tr class="thView">
-                        <th> ID</th>
-                        <th> Name</th>
+                        <th>ID</th>
+                        <th>Name</th>
                         <th>Image</th>
                         <th>Update </th>
                         <th>Delete</th>
@@ -174,22 +178,26 @@ $result = mysqli_query($conn, $searchQuery);
                     <tr>
                         <td><?php echo $row['id']; ?></td>
                         <td><?php echo $row['flower']; ?></td>
-                        <td><img src="../img/<?php echo $row['image']; ?>" alt="flower Image" height="100"></td>
+                        <td><img src="../img/<?php echo $row['image']; ?>" alt="Flower Image" height="100"></td>
                         <td>
                             <!-- Edit Form -->
-                        <form action="" method="post" enctype="multipart/form-data">
-                            <input type="hidden" name="edit_id" value="<?php echo $row['id']; ?>">
-                            <label for="edit_name">Flower Name:</label>
-                            <input type="text" name="edit_name" class="flower-txt" value="<?php echo $row['flower']; ?>" required><br><br>
-                            
-                            <label for="edit_name">Flower Stocks:</label>
-                            <input type="text" name="edit_stocks" class="stocks-txt" value="<?php echo $row['stocks']; ?>" required><br><br>
-                            
-                            <label for="edit_image">Flower Image: </label>
-                            <input type="file" name="edit_image" accept=".jpg, .jpeg, .png">
-                            
-                            <button type="submit" name="edit" class="editbtn"> <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i> <span> Edit </span></button>
-                        </form>
+                            <form action="" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="edit_id" value="<?php echo $row['id']; ?>">
+                                
+                                <label for="edit_name">Flower Name:</label>
+                                <input type="text" name="edit_name" class="flower-txt" value="<?php echo $row['flower']; ?>" required><br><br>
+                                
+                                <label for="edit_stocks">Flower Stocks:</label>
+                                <input type="text" name="edit_stocks" class="stocks-txt" value="<?php echo $row['stocks']; ?>" required><br><br>
+                                
+                                <label for="edit_price">Flower Price: </label>
+                                <input type="text" name="edit_price" class="price-txt" value="<?php echo $row['price']; ?>" required><br><br>
+                                
+                                <label for="edit_image">Flower Image: </label>
+                                <input type="file" name="edit_image" accept=".jpg, .jpeg, .png"><br><br>
+                                
+                                <button type="submit" name="edit" class="editbtn"> <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i> <span> Edit </span></button>
+                            </form>
                         </td>
                         <td>
                             <input type="checkbox" name="selected_categories[]" value="<?php echo $row['id']; ?>">

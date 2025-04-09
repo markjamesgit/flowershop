@@ -46,30 +46,27 @@ if (isset($_POST["edit"])) {
     $editCategoryName = mysqli_real_escape_string($conn, $_POST["edit_name"]);
 
     // Handle image upload for editing a category
-    if (isset($_FILES["edit_image"])) {
-        if ($_FILES["edit_image"]["error"] === UPLOAD_ERR_OK) {
-            $editFileName = $_FILES["edit_image"]["name"];
-            $editFileSize = $_FILES["edit_image"]["size"];
-            $editTmpName = $_FILES["edit_image"]["tmp_name"];
+    if (isset($_FILES["edit_image"]) && $_FILES["edit_image"]["error"] === UPLOAD_ERR_OK) {
+        $editFileName = $_FILES["edit_image"]["name"];
+        $editFileSize = $_FILES["edit_image"]["size"];
+        $editTmpName = $_FILES["edit_image"]["tmp_name"];
 
-            $validEditImageExtension = ['jpg', 'jpeg', 'png'];
-            $editImageExtension = strtolower(pathinfo($editFileName, PATHINFO_EXTENSION));
+        $validEditImageExtension = ['jpg', 'jpeg', 'png'];
+        $editImageExtension = strtolower(pathinfo($editFileName, PATHINFO_EXTENSION));
 
-            if (in_array($editImageExtension, $validEditImageExtension) && $editFileSize <= 1000000) {
-                $editNewImageName = uniqid() . '.' . $editImageExtension;
-                $editRes = move_uploaded_file($editTmpName, '../img/' . $editNewImageName);
-                if ($editRes) {
-                    $editQuery = "UPDATE category SET category = '$editCategoryName', image = '$editNewImageName' WHERE id = $editCategoryId";
-                    mysqli_query($conn, $editQuery);
-                    echo "<script>alert('Category Updated Successfully');</script>";
-                } else {
-                    echo "Failed to upload edited image";
-                }
+        if (in_array($editImageExtension, $validEditImageExtension) && $editFileSize <= 1000000) {
+            $editNewImageName = uniqid() . '.' . $editImageExtension;
+            $editRes = move_uploaded_file($editTmpName, '../img/' . $editNewImageName);
+            if ($editRes) {
+                // Update category name and image if a new image is uploaded
+                $editQuery = "UPDATE category SET category = '$editCategoryName', image = '$editNewImageName' WHERE id = $editCategoryId";
+                mysqli_query($conn, $editQuery);
+                echo "<script>alert('Category Updated Successfully');</script>";
             } else {
-                echo "<script>alert('Invalid Edited Image Extension or Image Size Is Too Large');</script>";
+                echo "Failed to upload edited image";
             }
         } else {
-            echo "<script>alert('Edited Image Upload Error');</script>";
+            echo "<script>alert('Invalid Edited Image Extension or Image Size Is Too Large');</script>";
         }
     } else {
         // No new image uploaded, update category name only
