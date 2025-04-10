@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 01, 2025 at 03:15 PM
+-- Generation Time: Apr 10, 2025 at 06:17 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -20,6 +20,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `flowershop`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `addons`
+--
+
+CREATE TABLE `addons` (
+  `id` int(11) NOT NULL,
+  `addons` varchar(50) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `product_count` int(11) DEFAULT 0,
+  `stocks` int(11) NOT NULL,
+  `sold` int(11) DEFAULT NULL,
+  `price` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `addons`
+--
+
+INSERT INTO `addons` (`id`, `addons`, `image`, `product_count`, `stocks`, `sold`, `price`) VALUES
+(3, 'Pringle', '67f5071057d19.png', 0, 10, NULL, 89);
 
 -- --------------------------------------------------------
 
@@ -42,7 +65,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`email`, `password`, `phone_number`, `address`, `image`, `username`, `fullname`) VALUES
-('[value-1]', '[value-2]', '09123456789', 'admin st', '[value-5]', 'sunny', 'TestAdmin');
+('admin@gmail.com', '$2y$10$eoUMFupkmJMdjWHqfDDuAOa/13rUt9gVI7IiX.vSmplCKuvScnH8C', '09225049004', 'Baliwag, Bulacan', '../img/cherry-blossom.png', 'admin', 'Admin Test');
 
 -- --------------------------------------------------------
 
@@ -67,6 +90,31 @@ CREATE TABLE `cart` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `category`
+--
+
+CREATE TABLE `category` (
+  `id` int(11) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `product_count` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`id`, `category`, `image`, `product_count`) VALUES
+(59, 'Bundle', '67f48ee6e4029.png', 0),
+(61, 'Sweet Treats', '67f48fa234313.png', 0),
+(63, 'Enternal Flowers', '67f48fd14c50d.png', 0),
+(64, 'Luxury Gifts', '67f48fe2372a5.png', 0),
+(65, 'Dried Flowers', '67f4904c7839f.png', 0),
+(66, 'Funeral Flowers', '67f4909a3f03e.png', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `design_settings`
 --
 
@@ -78,20 +126,61 @@ CREATE TABLE `design_settings` (
   `logo_path` varchar(255) DEFAULT NULL,
   `image_one_path` varchar(255) DEFAULT NULL,
   `image_two_path` varchar(255) DEFAULT NULL,
-  `image_three_path` varchar(255) DEFAULT NULL,
-  `banner_one_path` varchar(255) DEFAULT NULL,
-  `banner_two_path` varchar(255) DEFAULT NULL,
-  `endorse_one_path` varchar(255) DEFAULT NULL,
-  `endorse_two_path` varchar(255) DEFAULT NULL,
-  `endorse_three_path` varchar(255) DEFAULT NULL
+  `image_three_path` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `design_settings`
 --
 
-INSERT INTO `design_settings` (`id`, `background_color`, `font_color`, `shop_name`, `logo_path`, `image_one_path`, `image_two_path`, `image_three_path`, `banner_one_path`, `banner_two_path`, `endorse_one_path`, `endorse_two_path`, `endorse_three_path`) VALUES
-(1, '#f5f5f5', '#000000', 'SunnyBloom', 'img/logo.png', 'img/gadgets3-1.jpeg', 'img/grocery2-1.jpeg', 'img/appliances2-1.jpeg', 'img/gadgets2-2.webp', 'img/gadgets2-3.jpeg', 'img/appliances1-1.jpeg', 'img/toy2-1.jpeg', 'img/gadgets3-4.jpeg');
+INSERT INTO `design_settings` (`id`, `background_color`, `font_color`, `shop_name`, `logo_path`, `image_one_path`, `image_two_path`, `image_three_path`) VALUES
+(1, '#f5f5f5', '#000000', 'SunnyBloom', 'img/logo.png', 'img/gadgets3-1.jpeg', 'img/grocery2-1.jpeg', 'img/appliances2-1.jpeg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `flower`
+--
+
+CREATE TABLE `flower` (
+  `id` int(11) NOT NULL,
+  `flower` varchar(50) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `product_count` int(11) DEFAULT 0,
+  `stocks` int(11) NOT NULL,
+  `sold` int(11) DEFAULT NULL,
+  `price` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `flower`
+--
+
+INSERT INTO `flower` (`id`, `flower`, `image`, `product_count`, `stocks`, `sold`, `price`) VALUES
+(4, 'Tulips', '67f50509eb07c.png', 0, 10, NULL, 25);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pots`
+--
+
+CREATE TABLE `pots` (
+  `id` int(11) NOT NULL,
+  `pots` varchar(50) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `product_count` int(11) DEFAULT 0,
+  `stocks` int(11) NOT NULL,
+  `sold` int(11) DEFAULT NULL,
+  `price` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pots`
+--
+
+INSERT INTO `pots` (`id`, `pots`, `image`, `product_count`, `stocks`, `sold`, `price`) VALUES
+(1, 'Blue Pots', '67f5c0f614db1.png', 0, 10, NULL, 25);
 
 -- --------------------------------------------------------
 
@@ -131,6 +220,12 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `verification_code`, `em
 --
 
 --
+-- Indexes for table `addons`
+--
+ALTER TABLE `addons`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `cart`
 --
 ALTER TABLE `cart`
@@ -139,9 +234,27 @@ ALTER TABLE `cart`
   ADD KEY `product_id` (`product_id`);
 
 --
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `design_settings`
 --
 ALTER TABLE `design_settings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `flower`
+--
+ALTER TABLE `flower`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `pots`
+--
+ALTER TABLE `pots`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -155,15 +268,39 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `addons`
+--
+ALTER TABLE `addons`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=294;
 
 --
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+
+--
 -- AUTO_INCREMENT for table `design_settings`
 --
 ALTER TABLE `design_settings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `flower`
+--
+ALTER TABLE `flower`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `pots`
+--
+ALTER TABLE `pots`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
