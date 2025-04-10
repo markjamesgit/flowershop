@@ -140,6 +140,22 @@ if (isset($_POST["submit"])) {
 <body>
 
 <div class="all">
+
+    <div class="tab-container">
+        <div class="product-tab">
+            <a href="add-product.php">Product</a>
+        </div>
+        <div class="flower-tab">
+            <a href="add-flower.php">Flower</a>
+        </div>
+        <div class="add-ons-tab">
+            <a href="add-addons.php">Add-Ons</a>
+        </div>
+        <div class="pots-tab">
+            <a href="add-pots.php">Pots</a>
+        </div>
+    </div>
+
     <!-- Add Product Section -->
     <h1 class="text1">PACKAGE DEAL</h1>
     <div class="add">       

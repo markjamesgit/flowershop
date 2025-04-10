@@ -123,6 +123,20 @@ $result = mysqli_query($conn, $searchQuery);
 <body>
     <h1 class="title">FLOWER MANAGEMENT</h1>
     <div class="all">
+        <div class="tab-container">
+            <div class="product-tab">
+                <a href="add-product.php">Product</a>
+            </div>
+            <div class="flower-tab">
+                <a href="add-flower.php">Flower</a>
+            </div>
+            <div class="add-ons-tab">
+                <a href="add-addons.php">Add-Ons</a>
+            </div>
+            <div class="pots-tab">
+                <a href="add-pots.php">Pots</a>
+            </div>
+        </div>
         <div class="add">
             <form class="" action="" method="post" autocomplete="off" enctype="multipart/form-data">
                 <label for="name">Flower Name: </label>
