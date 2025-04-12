@@ -4,8 +4,6 @@ ini_set('display_errors', 1);
 include('admin-nav.php');
 require 'connection.php';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -15,7 +13,6 @@ $sqlCheck = "SELECT * FROM design_settings WHERE id = 1";
 $resultCheck = $conn->query($sqlCheck);
 
 if ($resultCheck->num_rows == 0) {
-
     $sqlInsert = "INSERT INTO design_settings (background_color, font_color, shop_name, logo_path, image_one_path, image_two_path, image_three_path)
     VALUES ('#ffffff', '#000000', 'My Shop', 'default_logo.png', 'default_image1.png', 'default_image2.png', 'default_image3.png')";
 
@@ -27,7 +24,7 @@ if ($resultCheck->num_rows == 0) {
 }
 
 // Kumuha ng design settings mula sa database
-$sqlGetSettings = "SELECT * FROM design_settings WHERE id = 1"; // Id 1 assumes there's only one record for design settings
+$sqlGetSettings = "SELECT * FROM design_settings WHERE id = 1";
 $resultSettings = $conn->query($sqlGetSettings);
 
 if ($resultSettings->num_rows > 0) {
@@ -58,7 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         WHERE id = 1";
 
         if ($conn->query($sqlUpdateColors) === TRUE) {
-            echo "<script>alert('Updated Successfully');</script>";
+            // Refresh the page after successful update
+            echo "<script>
+                    alert('Updated Successfully');
+                    window.location.href = window.location.href; // Refresh the page
+                  </script>";
         } else {
             echo "Error updating colors: " . $conn->error;
         }
@@ -73,18 +74,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         WHERE id = 1";
 
         if ($conn->query($sqlClearColors) === TRUE) {
-            echo "<script>alert('Updated Successfully');</script>";
+            // Refresh the page after clearing colors
+            echo "<script>
+                    alert('Updated Successfully');
+                    window.location.href = window.location.href; // Refresh the page
+                  </script>";
         } else {
             echo "Error clearing colors: " . $conn->error;
         }
     } elseif (isset($_POST["updateShopDetails"])) {
         // Handle shop details form submission
         $shopName = $_POST["shop_name"];
-        $logoPath = ''; // Define the default value or handle the update logic for the logo path
+        $logoPath = '';
 
         // Check if a new logo file is uploaded
         if ($_FILES["logo_path"]["size"] > 0) {
-            $targetDirectory = "img/";
+            $targetDirectory = "../img/";
             $logoPath = $targetDirectory . basename($_FILES["logo_path"]["name"]);
             move_uploaded_file($_FILES["logo_path"]["tmp_name"], $logoPath);
         }
@@ -136,8 +141,16 @@ function handleFileUpload($file, $column) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Landing Page</title>
+    <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
+    <title>DESIGN SETTINGS</title>
+    <style>
+        body {
+            background-color: <?php echo $bgColor; ?>;
+            color: <?php echo $fontColor; ?>;
+        }
+    </style>
 </head>
 <body>
 <h1 class="text1"> CUSTOMER DESIGN SETTING </h1>
