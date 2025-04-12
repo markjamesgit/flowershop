@@ -42,9 +42,32 @@ if ($resultSettings->num_rows > 0) {
     echo "0 results";
 }
 
+function isValidAdmin($inputPassword) {
+    global $conn;
+
+    $sql = "SELECT password FROM admin WHERE email = 'admin@gmail.com'";
+    $result = $conn->query($sql);
+
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $hashedPassword = $row['password'];
+
+        // Compare input with hashed password
+        return password_verify($inputPassword, $hashedPassword);
+    }
+
+    return false;
+}
+
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["updateColors"])) {
+    $adminPassword = $_POST["admin_password"] ?? '';
+
+    if (!isValidAdmin($adminPassword)) {
+        echo "<script>alert('Invalid admin password. Update blocked.'); window.location.href = window.location.href;</script>";
+        exit();
+    
+    } elseif (isset($_POST["updateColors"])) {
         // Handle color form submission
         $bgColor = $_POST["background_color"];
         $fontColor = $_POST["font_color"];
@@ -83,58 +106,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Error clearing colors: " . $conn->error;
         }
     } elseif (isset($_POST["updateShopDetails"])) {
-        // Handle shop details form submission
         $shopName = $_POST["shop_name"];
-        $logoPath = '';
-
-        // Check if a new logo file is uploaded
+    
+        // Keep current logo path
+        $currentLogoPath = $logoPath;
+    
         if ($_FILES["logo_path"]["size"] > 0) {
             $targetDirectory = "../img/";
             $logoPath = $targetDirectory . basename($_FILES["logo_path"]["name"]);
             move_uploaded_file($_FILES["logo_path"]["tmp_name"], $logoPath);
+    
+            $sqlUpdateShopDetails = "UPDATE design_settings SET
+                shop_name='$shopName',
+                logo_path='$logoPath'
+            WHERE id = 1";
+        } else {
+            $sqlUpdateShopDetails = "UPDATE design_settings SET
+                shop_name='$shopName',
+                logo_path='$currentLogoPath'
+            WHERE id = 1";
         }
-
-        // Update shop details in the database
-        $sqlUpdateShopDetails = "UPDATE design_settings SET
-            shop_name='$shopName',
-            logo_path='$logoPath'
-        WHERE id = 1";
-
+    
         if ($conn->query($sqlUpdateShopDetails) === TRUE) {
-            echo "<script>alert('Updated Successfully');</script>";
+            echo "<script>alert('Updated Successfully'); window.location.href = window.location.href;</script>";
         } else {
             echo "Error updating shop details: " . $conn->error;
-        }
+        }    
     } elseif (isset($_POST["updateImages"])) {
-        // Handle images form submission
-        handleFileUpload($_FILES["image_one_path"], "image_one_path");
-        handleFileUpload($_FILES["image_two_path"], "image_two_path");
-        handleFileUpload($_FILES["image_three_path"], "image_three_path");
-    }
+        // Handle image uploads with fallback
+        handleImageUpload($_FILES["image_one_path"], "image_one_path", $imageOnePath);
+        handleImageUpload($_FILES["image_two_path"], "image_two_path", $imageTwoPath);
+        handleImageUpload($_FILES["image_three_path"], "image_three_path", $imageThreePath);
+    
+        // Refresh after all image updates
+        echo "<script>alert('Images updated successfully'); window.location.href = window.location.href;</script>";
+    }       
 }
 
 $conn->close();
 
-// Function to handle file upload and database update
-function handleFileUpload($file, $column) {
+function handleImageUpload($file, $column, $existingPath) {
     global $conn;
 
     $targetDirectory = "../img/";
-    $filePath = $targetDirectory . basename($file["name"]);
+    $newPath = $existingPath;
 
-    move_uploaded_file($file["tmp_name"], $filePath);
+    if ($file["size"] > 0) {
+        $newPath = $targetDirectory . basename($file["name"]);
+        move_uploaded_file($file["tmp_name"], $newPath);
+    }
 
-    // Update file path in the database
     $sqlUpdateFile = "UPDATE design_settings SET
-        $column='$filePath'
+        $column='$newPath'
     WHERE id = 1";
 
     if ($conn->query($sqlUpdateFile) === TRUE) {
-        echo "<script>alert(ucfirst($column) . 'Updated Successfully');</script>";
+        echo "<script>console.log('$column updated successfully');</script>";
     } else {
         echo "Error updating " . $column . ": " . $conn->error;
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -153,86 +185,123 @@ function handleFileUpload($file, $column) {
     </style>
 </head>
 <body>
-<h1 class="text1"> CUSTOMER DESIGN SETTING </h1>
-<div id="setting-panel">
-    <div class="all">
-        <div class="colors">
-        <h2> COLOR SETTINGS </h2>
-        <!-- Form for updating colors -->
-        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="colorForm" enctype="multipart/form-data">
-            <label for="background_color">Background Color:</label>
-            <input type="color" id="background_color" name="background_color" value="<?php echo $bgColor; ?>" required /> <br> <br>
+    <h1 class="text1"> CUSTOMER DESIGN SETTING </h1>
+    <div id="setting-panel">
+        <div class="all">
+            <div class="colors">
+            <h2> COLOR SETTINGS </h2>
+            <!-- Form for updating colors -->
+            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="colorForm" enctype="multipart/form-data">
+                <label for="background_color">Background Color:</label>
+                <input type="color" id="background_color" name="background_color" value="<?php echo $bgColor; ?>" required /> <br> <br>
 
-            <label for="font_color">Font Color:</label>
-            <input type="color" id="font_color" name="font_color" value="<?php echo $fontColor; ?>" required /> <br>
+                <label for="font_color">Font Color:</label>
+                <input type="color" id="font_color" name="font_color" value="<?php echo $fontColor; ?>" required /> <br>
 
-            <button type="submit" name="updateColors">SAVE</button>
-            <button type="button" onclick="clearColors()">RESET</button>
-        </form>
-    </div>
+                <button type="submit" name="updateColors">SAVE</button>
+                <button type="button" onclick="clearColors()">RESET</button>
+            </form>
+        </div>
 
-    <!-- Form for updating shop details -->
-    <div class="other">  
-    <h2> LOGO & SHOP NAME </h2>  
-        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="shopDetailsForm" enctype="multipart/form-data">
-            <label for="shop_name">Shop Name:</label>
-            <input type="text" id="shop_name" name="shop_name" value="<?php echo $shopName; ?>" required /> <br> <br>
+        <!-- Form for updating shop details -->
+        <div class="other">  
+        <h2> LOGO & SHOP NAME </h2>  
+            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="shopDetailsForm" enctype="multipart/form-data">
+                <label for="shop_name">Shop Name:</label>
+                <input type="text" id="shop_name" name="shop_name" value="<?php echo $shopName; ?>" required /> <br> <br>
 
-            <label for="logo_path">Logo Path:</label>
-            <input type="file" id="logo_path" name="logo_path" required /> <br>
+                <label for="logo_path">Logo Path:</label>
+                <input type="file" id="logo_path" name="logo_path" /> <br>
 
-            <div class="logo-container">
-                <img src="../img/<?php echo basename($logoPath); ?>" alt="Logo"> <br>
-                <span> File Size: Maximum 70kb </span> <br>
-                <span> File Extensions: .jpg, .jpeg, .png </span> 
-            </div>
-            <button type="submit" name="updateShopDetails">Update Details</button>
-        </form>
-    </div> <!-- other -->
-    </div> <!-- all -->
+                <div class="logo-container">
+                    <img src="../img/<?php echo basename($logoPath); ?>" alt="Logo"> <br>
+                    <span> File Size: Maximum 70kb </span> <br>
+                    <span> File Extensions: .jpg, .jpeg, .png </span> 
+                </div>
+                <button type="submit" name="updateShopDetails">Update Details</button>
+            </form>
+        </div> <!-- other -->
+        </div> <!-- all -->
 
-    <!-- Form for updating images -->
-    <div class="slider">
-        <h2> IMAGE SLIDER </h2>
-        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="imagesForm" enctype="multipart/form-data">
-            <label for="image_one">Image One:</label>
-            <input type="file" id="image_one_path" name="image_one_path" required /> <br> <br>
+        <!-- Form for updating images -->
+        <div class="slider">
+            <h2> IMAGE SLIDER </h2>
+            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="imagesForm" enctype="multipart/form-data">
+                <label for="image_one">Image One:</label>
+                <input type="file" id="image_one_path" name="image_one_path" /> <br> <br>
 
-            <div class="image-container1">
-                <img src="../img/<?php echo basename($imageOnePath); ?>" alt="Image One"> <br>
-                <span> File Size: Maximum 70kb </span> <br>
-                <span> File Extensions: .jpg, .jpeg, .png </span>
-            </div> <br>
+                <div class="image-container1">
+                    <img src="../img/<?php echo basename($imageOnePath); ?>" alt="Image One"> <br>
+                    <span> File Size: Maximum 70kb </span> <br>
+                    <span> File Extensions: .jpg, .jpeg, .png </span>
+                </div> <br>
 
-            <label for="image_two">Image Two:</label>
-            <input type="file" id="image_two_path" name="image_two_path" required /> <br> <br>
+                <label for="image_two">Image Two:</label>
+                <input type="file" id="image_two_path" name="image_two_path" /> <br> <br>
 
-            <div class="image-container2">
-                <img src="../img/<?php echo basename($imageTwoPath); ?>" alt="Image Two"> <br>
-                <span> File Size: Maximum 70kb </span> <br>
-                <span> File Extensions: .jpg, .jpeg, .png </span>
-            </div> <br>
+                <div class="image-container2">
+                    <img src="../img/<?php echo basename($imageTwoPath); ?>" alt="Image Two"> <br>
+                    <span> File Size: Maximum 70kb </span> <br>
+                    <span> File Extensions: .jpg, .jpeg, .png </span>
+                </div> <br>
 
-            <label for="image_three">Image Three:</label>
-            <input type="file" id="image_three_path" name="image_three_path" required /> <br> <br>
+                <label for="image_three">Image Three:</label>
+                <input type="file" id="image_three_path" name="image_three_path" /> <br> <br>
 
-            <div class="image-container3">
-                <img src="../img/<?php echo basename($imageThreePath); ?>" alt="Image Three"> <br>
-                <span> File Size: Maximum 70kb </span> <br>
-                <span> File Extensions: .jpg, .jpeg, .png </span> 
-            </div>
-            <button type="submit" name="updateImages">Update Slider</button>
-        </form>
-    </div> 
-</div> <!-- settings panel -->
+                <div class="image-container3">
+                    <img src="../img/<?php echo basename($imageThreePath); ?>" alt="Image Three"> <br>
+                    <span> File Size: Maximum 70kb </span> <br>
+                    <span> File Extensions: .jpg, .jpeg, .png </span> 
+                </div>
+
+                <button type="submit" name="updateImages">Update Slider</button>
+            </form>
+        </div>
+    
+        <!-- naka tab yung design neto -->
+        <div class="admin-auth">
+            <h2> ADMIN AUTHENTICATION </h2>
+            <form id="authForm">
+                <label for="admin_password">Enter Admin Password:</label>
+                <input type="password" id="admin_password" name="admin_password" required />
+                <span> Required for saving or updating any settings. </span>
+            </form>
+            <hr>
+        </div>
+    
+    </div> <!-- settings panel -->
 
     <script>
+
+        // Inject password from auth tab into all forms
+        const adminPasswordInput = document.getElementById('admin_password');
+        const allForms = document.querySelectorAll('form');
+
+        allForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const password = adminPasswordInput.value;
+                if (!password) {
+                    e.preventDefault();
+                    alert("Please enter admin password.");
+                    return;
+                }
+
+                // Add password to form as hidden input
+                if (!form.querySelector('input[name="admin_password"]')) {
+                    const hidden = document.createElement('input');
+                    hidden.type = 'hidden';
+                    hidden.name = 'admin_password';
+                    hidden.value = password;
+                    form.appendChild(hidden);
+                }
+            });
+        });
+
         function clearColors() {
             // Set default values for background and font colors
             document.getElementById('background_color').value = '#f5f5f5';
             document.getElementById('font_color').value = '#000000';
         }
     </script>
-
 </body>
 </html>
