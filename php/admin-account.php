@@ -1,15 +1,12 @@
-<?php include('admin-nav.php');?>
-
 <?php
-// Default values if no data is retrieved from the database
+include('admin-nav.php');
+require 'connection.php';
+
 $existingFullname = "";
 $existingUsername = "";
 $existingAddress = "";
 $existingPhonenumber = "";
-$existingImage = "";  // Initialize the variable
-
-// Fetch existing admin information from the database
-$conn = mysqli_connect("localhost:3306", "root", "", "flowershop");
+$existingImage = "";
 
 if ($conn) {
     $selectInfoSql = "SELECT * FROM admin WHERE email = 'admin@gmail.com'";
@@ -46,7 +43,7 @@ if ($conn) {
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&effect=neon|outline|emboss|shadow-multiple">
-    <title>ACCOUNT SETTINGS</title>
+    <title>ADMIN SETTINGS</title>
 </head>
 <body>
     <?php
@@ -81,7 +78,7 @@ if ($conn) {
         $phone_number = $_POST["newPhonenumber"];
 
         if (isset($_FILES["newImg"]) && $_FILES["newImg"]["error"] == 0) {
-            $uploadDir = "img/";
+            $uploadDir = "../img/";
         
             // Ensure the upload directory exists
             if (!is_dir($uploadDir)) {
