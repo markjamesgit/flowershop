@@ -47,74 +47,80 @@ $searchResult = mysqli_query($conn, "SELECT * FROM flower WHERE flower LIKE '%$s
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../css/add-flower.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <title>FLOWER MANAGEMENT</title>
 </head>
 <body>
-    <div class="tab-container">
-        <div class="product-tab">
-            <a href="add-product.php">Product</a>
+    <div class="all">
+        <!-- Tabs Section -->
+        <div class="tab-container">
+            <div class="product-tab"><a href="add-product.php">Product</a></div>
+            <div class="flower-tab"><a href="add-flower.php">Flower</a></div>
+            <div class="add-ons-tab"><a href="add-addons.php">Add-Ons</a></div>
+            <div class="pots-tab"><a href="add-pots.php">Pots</a></div>
         </div>
-        <div class="flower-tab">
-            <a href="add-flower.php">Flower</a>
+
+        <!-- Flower Management Header -->
+        <h1 class="text1">FLOWER MANAGEMENT</h1>
+
+        <!-- Add Flower Form -->
+        <div class="add-flower">
+            <form action="" method="post" enctype="multipart/form-data">
+                <label for="name">Flower Name:</label>
+                <input type="text" name="name" placeholder="Flower name" required><br><br>
+
+                <label for="stocks">Stocks:</label>
+                <input type="text" name="stocks" placeholder="Stocks" required><br><br>
+
+                <label for="price">Price:</label>
+                <input type="text" name="price" placeholder="Price" required><br><br>
+
+                <label for="image">Image:</label>
+                <input type="file" name="image" accept=".jpg,.jpeg,.png" required><br><br>
+
+                <button type="submit" name="submit">Add Flower</button>
+            </form>
         </div>
-        <div class="add-ons-tab">
-            <a href="add-addons.php">Add-Ons</a>
-        </div>
-        <div class="pots-tab">
-            <a href="add-pots.php">Pots</a>
+
+        <!-- Flower List and Search Section -->
+        <div class="view">
+            <h1 class="text4">FLOWER LIST</h1>
+            <div class="search-section">
+                <form method="get">
+                    <input type="text" name="search" placeholder="Search flower..." value="<?= $searchTerm ?>">
+                    <button type="submit" class="btnSearch">Search</button>
+                </form>
+            </div>
+
+            <!-- Flower List Table -->
+            <form method="post">
+                <table border="1" cellpadding="10">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Stocks</th>
+                        <th>Price</th>
+                        <th>Image</th>
+                        <th>Action</th>
+                        <th>Select</th>
+                    </tr>
+                    <?php while ($row = mysqli_fetch_assoc($searchResult)): ?>
+                    <tr>
+                        <td><?= $row['id'] ?></td>
+                        <td><?= $row['flower'] ?></td>
+                        <td><?= $row['stocks'] ?></td>
+                        <td><?= $row['price'] ?></td>
+                        <td><img src="../img/<?= $row['image'] ?>" height="80"></td>
+                        <td><a href="edit-flower.php?id=<?= $row['id'] ?>" class="editbtn">Edit</a></td>
+                        <td><input type="checkbox" name="selected_categories[]" value="<?= $row['id'] ?>"></td>
+                    </tr>
+                    <?php endwhile; ?>
+                </table>
+                <button type="submit" name="delete_selected" class="deletebtn">Delete</button>
+            </form>
         </div>
     </div>
-
-    <h1> FLOWER MANAGEMENT</h1>
-    
-    <form action="" method="post" enctype="multipart/form-data">
-        <label for="name">Flower Name:</label>
-        <input type="text" name="name" placeholder="Flower name" required><br><br>
-        
-        <label for="stocks">Stocks:</label>
-        <input type="text" name="stocks" placeholder="Stocks" required><br><br>
-        
-        <label for="price">Price:</label>
-        <input type="text" name="price" placeholder="Price" required><br><br>
-        
-        <label for="image">Image:</label>
-        <input type="file" name="image" accept=".jpg,.jpeg,.png" required><br><br>
-        
-        <button type="submit" name="submit">Add Flower</button>
-    </form>
-
-    <h1>FLOWER LIST</h1>
-    <form method="get">
-        <input type="text" name="search" placeholder="Search flower..." value="<?= $searchTerm ?>">
-        <button type="submit">Search</button>
-    </form>
-
-    <form method="post">
-        <table border="1" cellpadding="10">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Stocks</th>
-                <th>Price</th>
-                <th>Image</th>
-                <th>Action</th>
-                <th>Select</th>
-            </tr>
-            <?php while ($row = mysqli_fetch_assoc($searchResult)): ?>
-            <tr>
-                <td><?= $row['id'] ?></td>
-                <td><?= $row['flower'] ?></td>
-                <td><?= $row['stocks'] ?></td>
-                <td><?= $row['price'] ?></td>
-                <td><img src="../img/<?= $row['image'] ?>" height="80"></td>
-                <td><a href="edit-flower.php?id=<?= $row['id'] ?>">Edit</a></td>
-                <td><input type="checkbox" name="selected_categories[]" value="<?= $row['id'] ?>"></td>
-            </tr>
-            <?php endwhile; ?>
-        </table>
-        <button type="submit" name="delete_selected">Delete</button>
-    </form>
 </body>
 </html>

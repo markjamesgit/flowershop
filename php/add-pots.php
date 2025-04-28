@@ -59,72 +59,78 @@ if (isset($_POST["delete_selected"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
+    <link rel="stylesheet" href="../css/add-pots.css">
     <title>POTS MANAGEMENT</title>
 </head>
 <body>
-    <div class="tab-container">
-        <div class="product-tab">
-            <a href="add-product.php">Product</a>
+    <div class="all">
+        <!-- Tabs Section -->
+        <div class="tab-container">
+            <div class="product-tab"><a href="add-product.php">Product</a></div>
+            <div class="flower-tab"><a href="add-flower.php">Flower</a></div>
+            <div class="add-ons-tab"><a href="add-addons.php">Add-Ons</a></div>
+            <div class="pots-tab"><a href="add-pots.php">Pots</a></div>
         </div>
-        <div class="flower-tab">
-            <a href="add-flower.php">Flower</a>
+
+        <!-- Pots Management Header -->
+        <h1 class="text1">POTS MANAGEMENT</h1>
+
+        <!-- Add Pots Form -->
+        <div class="add-flower">
+            <form action="" method="post" enctype="multipart/form-data">
+                <label for="name">Pots Name:</label>
+                <input type="text" name="name" placeholder="Pots name" required><br><br>
+
+                <label for="stocks">Stocks:</label>
+                <input type="text" name="stocks" placeholder="Stocks" required><br><br>
+
+                <label for="price">Price:</label>
+                <input type="text" name="price" placeholder="Price" required><br><br>
+
+                <label for="image">Image:</label>
+                <input type="file" name="image" accept=".jpg,.jpeg,.png" required><br><br>
+
+                <button type="submit" name="submit">Add Pots</button>
+            </form>
         </div>
-        <div class="add-ons-tab">
-            <a href="add-addons.php">Add-Ons</a>
-        </div>
-        <div class="pots-tab">
-            <a href="add-pots.php">Pots</a>
+
+        <!-- Pots List and Search Section -->
+        <div class="view">
+            <h1 class="text4">POTS LIST</h1>
+            <div class="search-section">
+                <form method="get">
+                    <input type="text" name="search" placeholder="Search pots..." value="<?= $searchTerm ?>">
+                    <button type="submit" class="btnSearch">Search</button>
+                </form>
+            </div>
+
+            <!-- Pots List Table -->
+            <form method="post">
+                <table border="1" cellpadding="10">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Stocks</th>
+                        <th>Price</th>
+                        <th>Image</th>
+                        <th>Action</th>
+                        <th>Select</th>
+                    </tr>
+                    <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                    <tr>
+                        <td><?= $row['id'] ?></td>
+                        <td><?= $row['pots'] ?></td>
+                        <td><?= $row['stocks'] ?></td>
+                        <td><?= $row['price'] ?></td>
+                        <td><img src="../img/<?= $row['image'] ?>" height="80"></td>
+                        <td><a href="edit-pots.php?id=<?= $row['id'] ?>" class="editbtn">Edit</a></td>
+                        <td><input type="checkbox" name="selected_categories[]" value="<?= $row['id'] ?>"></td>
+                    </tr>
+                    <?php endwhile; ?>
+                </table>
+                <button type="submit" name="delete_selected" class="deletebtn">Delete</button>
+            </form>
         </div>
     </div>
-    
-    <h1>POTS MANAGEMENT</h1>
-    
-    <form action="" method="post" enctype="multipart/form-data" autocomplete="off">
-        <label for="name">Pots Name:</label>
-        <input type="text" name="name" required><br><br>
-
-        <label for="stocks">Stocks:</label>
-        <input type="text" name="stocks" required><br><br>
-
-        <label for="price">Price:</label>
-        <input type="text" name="price" required><br><br>
-
-        <label for="image">Image:</label>
-        <input type="file" name="image" accept=".jpg, .jpeg, .png" required><br><br>
-
-        <button type="submit" name="submit">Add Pots</button>
-    </form>
-
-    <h1>POTS LIST</h1>
-    <form method="get">
-        <input type="text" name="search" placeholder="Search pots" value="<?php echo $searchTerm; ?>">
-        <button type="submit">Search</button>
-    </form>
-
-    <form action="" method="post">
-        <table border="1" cellpadding="10">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Stocks</th>
-                <th>Price</th>
-                <th>Image</th>
-                <th>Actions</th>
-                <th>Select</th>
-            </tr>
-            <?php while ($row = mysqli_fetch_assoc($result)): ?>
-            <tr>
-                <td><?= $row['id'] ?></td>
-                <td><?= $row['pots'] ?></td>
-                <td><?= $row['stocks'] ?></td>
-                <td><?= $row['price'] ?></td>
-                <td><img src="../img/<?= $row['image'] ?>" height="100"></td>
-                <td><a href="edit-pots.php?id=<?= $row['id'] ?>">Edit</a></td>
-                <td><input type="checkbox" name="selected_categories[]" value="<?= $row['id'] ?>"></td>
-            </tr>
-            <?php endwhile; ?>
-        </table>
-        <button type="submit" name="delete_selected">Delete</button>
-    </form>
 </body>
 </html>

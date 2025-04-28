@@ -1,0 +1,180 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Flex Layout for Body */
+body {
+    height: 100vh;
+    background: linear-gradient(to right, #FFF5E4, #C1D8C3);
+    font-family: Arial, sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #FFF5E4;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px 10px;
+}
+
+.sidebar .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.admin-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.admin-btn img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.admin-btn label {
+    display: block;
+    margin-top: 10px;
+    color: #6A9C89;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    margin-left: 250px; /* Ensure the main content doesn't go under the sidebar */
+    padding: 20px;
+    border-radius: 8px;
+    overflow-y: auto;
+}
+
+/* Sidebar Button */
+.btn {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.btn a {
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #FFF;
+    border: 2px solid #6A9C89;
+    color: #6A9C89;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+button i {
+    font-size: 18px;
+}
+
+button:hover {
+    background-color: #d68629;
+    color: #FFF;
+    border-color: #d68629;
+}
+
+button span {
+    flex-grow: 1;
+}
+
+/* Dashboard and Other Sections */
+.dashboard,
+.product,
+.category,
+.inventory,
+.orders,
+.reports,
+.logout,
+.customer-design-setting {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.dashboard:hover, .product:hover, .category:hover, .inventory:hover, .orders:hover, .reports:hover, .logout:hover, .customer-design-setting:hover {
+    background-color: #d68629;
+    color: #FFF;
+}
+
+.logout {
+    background-color: #FFA725;
+    color: #FFF;
+}
+
+.logout:hover {
+    background-color: #d68629;
+}
+
+/* Link Styling */
+a {
+    color: #FFA725;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #b55e44;
+}
+
+/* Container Box Shadow */
+.container {
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Forms and Inputs */
+input[type="text"], input[type="password"], select {
+    background-color: #FFF5E4;
+    border: 2px solid #6A9C89;
+    padding: 10px;
+    width: 100%;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, select:focus {
+    outline: none;
+    border-color: #FFA725;
+}
+
+/* Button Styling for Forms */
+input[type="submit"], button[type="submit"] {
+    background-color: #FFA725;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+input[type="submit"]:hover, button[type="submit"]:hover {
+    background-color: #d68629;
+}
