@@ -1,0 +1,178 @@
+/* Admin Dashboard General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #FFF5E4, #C1D8C3);
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Main Container */
+.all-containers {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.dashboard-item {
+    background-color: #FFFFFF;
+    border: 1px solid #6A9C89;
+    border-radius: 10px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-item h2 {
+    color: #6A9C89;
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.dashboard-item p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFA725;
+}
+
+/* Hover Badge or Tooltip */
+.dashboard-item .badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #FFA725;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+    display: none;
+}
+
+.dashboard-item:hover .badge {
+    display: block;
+}
+
+/* Best Selling & Slow Selling Items Section */
+.container-items {
+    background: #FFFFFF;
+    border: 1px solid #6A9C89;
+    border-radius: 10px;
+    padding: 30px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+}
+
+/* Section Header */
+.selling-item h1 {
+    color: #6A9C89;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Grid Layout for Items */
+.rows {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Flexible grid */
+    gap: 20px;
+}
+
+/* Individual Item Cards */
+.items {
+    background-color: #FFF5E4;
+    border: 1px solid #6A9C89;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+}
+
+.items:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.items img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    transition: transform 0.3s;
+}
+
+.items:hover img {
+    transform: scale(1.1);
+}
+
+.items div {
+    margin-top: 5px;
+    font-size: 16px;
+    color: #6A9C89;
+}
+
+/* Link Styling (Hover Effects) */
+.items div a {
+    text-decoration: none;
+    color: #FFA725;
+    font-weight: bold;
+}
+
+.items div a:hover {
+    color: #d68629;
+}
+
+/* Button Styles */
+.button {
+    background-color: #FFA725;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.button:hover {
+    background-color: #d68629;
+}
+
+/* Card Shadows and Borders */
+.card-shadow {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    .dashboard-container {
+        grid-template-columns: 1fr; /* Stack on mobile */
+        gap: 10px;
+    }
+
+    .dashboard-item h2 {
+        font-size: 18px;
+    }
+
+    .selling-item h1 {
+        font-size: 24px;
+    }
+
+    .items {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
