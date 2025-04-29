@@ -60,6 +60,7 @@ if (isset($_POST["submit"])) {
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../css/add-product.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <title>PACKAGE DEAL</title>
@@ -92,7 +93,6 @@ if (isset($_POST["submit"])) {
                 <label for="image">Package Image: </label>
                 <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png, .webp, .avif" 
                 autocomplete="file" onchange="previewImage(this);" value="" required /> <br> <br>
-
 
             <label for="category">Category: </label>
             <select name="category" required>

@@ -1,0 +1,183 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Layout */
+body {
+    min-height: 100vh;
+    background-color: #F4F6F9;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Main Container */
+.all {
+    margin-left: 200px;
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* Label Texts (above the container) */
+.label-header {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Section Layout */
+.all-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+/* Add Category Section */
+.add {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form Label */
+label {
+    font-size: 15px;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Text Inputs */
+input[type="text"], .searchtxt {
+    background: #FAFAFA;
+    border: 1px solid #E0E0E0;
+    padding: 14px;
+    font-size: 15px;
+    border-radius: 8px;
+    width: 100%;
+    margin-bottom: 20px;
+    transition: border 0.3s ease;
+}
+
+input[type="text"]:focus, .searchtxt:focus {
+    border-color: #FFA725;
+    outline: none;
+}
+
+/* Buttons */
+button, .btnSubmit, .btnSearch, .editbtn, .deletebtn {
+    cursor: pointer;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+/* Submit Button */
+.btnSubmit {
+    background-color: #FFA725;
+    color: white;
+}
+
+.btnSubmit:hover {
+    background-color: #d68629;
+}
+
+/* Search Button */
+.btnSearch {
+    background-color: #FFA725;
+    color: white;
+}
+
+.btnSearch:hover {
+    background-color: #d68629;
+}
+
+/* Category List Container */
+.view {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Search Bar Form */
+form.search-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Table */
+table.viewTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table.viewTable th, table.viewTable td {
+    padding: 14px;
+    text-align: left;
+    font-size: 14px;
+}
+
+table.viewTable th {
+    background-color: #FFA725;
+    color: white;
+}
+
+table.viewTable tr:nth-child(even) {
+    background-color: #FAFAFA;
+}
+
+/* Edit Button */
+.editbtn {
+    background-color: #6A9C89;
+    color: white;
+}
+
+.editbtn:hover {
+    background-color: #5C7F6E;
+}
+
+/* Delete Button */
+.deletebtn {
+    background-color: #D32F2F;
+    color: white;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.deletebtn:hover {
+    background-color: #B71C1C;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+    transform: scale(1.3);
+}
+
+/* Inline Edit Form */
+form.inline-edit-form {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+form.inline-edit-form input[type="text"] {
+    margin-bottom: 0;
+    padding: 8px;
+    font-size: 13px;
+}
+
