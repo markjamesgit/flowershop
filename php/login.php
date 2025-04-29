@@ -1,4 +1,5 @@
 <?php
+session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -9,8 +10,6 @@ require './PHPMailer/src/PHPMailer.php';
 require './PHPMailer/src/SMTP.php';
 
 //include('admin-account.php');
-
-session_start();
 
 // Check if the user is logged in
 if (isset($_SESSION['user_name'])) {
@@ -72,6 +71,7 @@ if (isset($_POST["login"])) {
 
     // Check if the password is incorrect
     if (!password_verify($password, $user->password)) {
+        $email = $user->email;
         // Increment login attempts for regular user
         recordLoginAttempt($conn, $email);
 
