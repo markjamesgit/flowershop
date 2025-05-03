@@ -14,16 +14,19 @@ if (isset($_SESSION['user_name'])) {
     $userName = $_SESSION['user_name'];
 } else {
     // Redirect to the login page or handle accordingly
-    
+    header("Location: http://localhost/flowershop/php/login.php");
     exit;
 }
 
 // Process checkout for selected items
 if (isset($_POST['checkout_items'])) {
     if (!empty($_POST['selected_items'])) {
-        $_SESSION['selected_items'] =  $_POST['selected_items'];
-        // Redirect to checkout page
-        header("Location: checkout.php?user=$userName");
+        // selected_items should be an array from checkboxes, so encode it properly
+        $_SESSION['selected_items'] = $_POST['selected_items'];
+        header("Location: checkout.php?user=" . urlencode($userName));
+        exit;
+    } else {
+        echo "<script>alert('Please select items to checkout first.'); window.location.href='cart.php?user=" . urlencode($userName) . "';</script>";
         exit;
     }
 }
@@ -68,7 +71,7 @@ $cartCount = isset($cartCountRow['count']) ? $cartCountRow['count'] : 0;
 
 if (isset($_POST['delete_items'])) {
     if (!empty($_POST['selected_items'])) {
-        $selectedItems = explode("-", $_POST['selected_items']);
+        $selectedItems = array_filter(explode(",", $_POST['selected_items']), 'is_numeric');
         foreach ($selectedItems as $selectedItem) {
             // Process each selected item individually
             $selectedItem = intval($selectedItem);
@@ -89,7 +92,7 @@ if (isset($_POST['delete_items'])) {
 }
 
 //settings for customer-design-settings
-$sqlGetSettings = "SELECT * FROM design_settings WHERE id = 1"; // Id 1 assumes there's only one record for design settings
+$sqlGetSettings = "SELECT * FROM design_settings WHERE id = 1";
 $resultSettings = $conn->query($sqlGetSettings);
 
 if ($resultSettings->num_rows > 0) {
@@ -99,9 +102,6 @@ if ($resultSettings->num_rows > 0) {
         $fontColor = $row["font_color"];
         $shopName = $row["shop_name"];
         $logoPath = $row["logo_path"];
-        $imageOnePath = $row["image_one_path"];
-        $imageTwoPath = $row["image_two_path"];
-        $imageThreePath = $row["image_three_path"];
     }
 } else {
     echo "0 results";
@@ -117,13 +117,13 @@ if ($resultSettings->num_rows > 0) {
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="customer-dashboard.css" />
-    <title> CART</title>
+    <title> CART </title>
 </head>
 <body>
     <!-- Header Content -->
     <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
         <div class="container-header">
-            <img class="logo" src="img/<?php echo basename($logoPath); ?>" alt="Logo">
+            <img class="logo" src="../img/<?php echo basename($logoPath); ?>" alt="Logo">
             <label class="shop"><?php echo $shopName; ?></label>
         </div>
     </a>
@@ -163,7 +163,6 @@ if ($resultSettings->num_rows > 0) {
     echo '<div class="row-fields">';
     echo '<p></p>';
     echo '<p>Product</p>';
-    echo '<p>Variant</p>';
     echo '<p>Quantity</p>';
     echo '<p>Unit Price</p>';
     echo '<p>Total Price</p>';
@@ -173,11 +172,10 @@ if ($resultSettings->num_rows > 0) {
     $totalPrice = 0;
 
     // Display cart items
-    $cartItemsQuery = "SELECT c.id, c.product_name, c.variant, c.quantity, pv.price, p.image, pv.variant as product_variant, pv.product_id, pv.qty as variant_qty
-                       FROM cart c
-                       JOIN product_variant pv ON c.variant = pv.variant AND c.product_id = pv.product_id
-                       JOIN product p ON c.product_id = p.id
-                       WHERE c.user_id = ?";
+    $cartItemsQuery = "SELECT c.id, c.product_name, c.quantity, p.price, p.image, p.id AS product_id
+                        FROM cart c
+                        JOIN product p ON c.product_id = p.id
+                        WHERE c.user_id = ?";
     $cartItemsStatement = mysqli_prepare($conn, $cartItemsQuery);
     mysqli_stmt_bind_param($cartItemsStatement, "i", $user_id);
     mysqli_stmt_execute($cartItemsStatement);
@@ -201,38 +199,15 @@ if ($resultSettings->num_rows > 0) {
         <div class="items">
             <input type="checkbox" name="selected_items[]" value="<?php echo $cartItem['id']; ?>" class="box">
             <p class="prod-name"><?php echo $cartItem['product_name']; ?></p>
-            <p style="visibility: hidden;">Current Variant: <?php echo $cartItem['product_variant']; ?></p>
             <p style="display:none;">Quantity: <?php echo $quantity; ?></p>
             <p class="tPrice">₱ <?php echo $price; ?></p>
             <p style="position:relative; left:15%">₱ <?php echo $quantity * $price; ?></p>
-            <img src="img/<?php echo $cartItem['image']; ?>" alt="<?php echo $cartItem['product_name']; ?>" class="img-prod" height="90" width="90" />
+            <img src="../img/<?php echo $cartItem['image']; ?>" alt="<?php echo $cartItem['product_name']; ?>" class="img-prod" height="90" width="90" />
 
-            <!-- Variant Dropdown and Update Button -->
             <form method="post" class="forms" action="update-cart.php" id="update_form_<?php echo $cartItem['id']; ?>">
                 <input type="hidden" name="user" value="<?php echo $userName; ?>">
                 <input type="hidden" name="cart_id" value="<?php echo $cartItem['id']; ?>">
-
-                <select name="new_variant" id="new_variant_<?php echo $cartItem['id']; ?>" class="select_variant">
-                    <!-- Fetch and display all variants for the product -->
-                    <?php
-                    $allVariantsQuery = "SELECT DISTINCT variant FROM product_variant WHERE product_id = ?";
-                    $allVariantsStatement = mysqli_prepare($conn, $allVariantsQuery);
-                    mysqli_stmt_bind_param($allVariantsStatement, "i", $cartItem['product_id']);
-                    mysqli_stmt_execute($allVariantsStatement);
-                    $allVariantsResult = mysqli_stmt_get_result($allVariantsStatement);
-
-                    if (!$allVariantsResult) {
-                        die("Error in SQL query: " . mysqli_error($conn));
-                    }
-
-                    while ($availableVariant = mysqli_fetch_assoc($allVariantsResult)):
-                        ?>
-                        <option value="<?php echo $availableVariant['variant']; ?>" <?php echo ($availableVariant['variant'] == $cartItem['product_variant']) ? 'selected' : ''; ?>><?php echo $availableVariant['variant']; ?></option>
-                    <?php endwhile; ?>
-                </select>
-
-                <!-- Quantity buttons -->
-                <input type="number" class="quantity-txt" name="new_quantity" id="new_quantity_<?php echo $cartItem['id']; ?>" value="<?php echo $quantity; ?>" min="1" max="<?php echo $cartItem['variant_qty']; ?>">
+                <input type="number" class="quantity-txt" name="new_quantity" id="new_quantity_<?php echo $cartItem['id']; ?>" value="<?php echo $quantity; ?>" min="1">
 
                 <button type="submit"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i></button>
             </form>
@@ -268,7 +243,7 @@ if ($resultSettings->num_rows > 0) {
                     if (index == 0){
                         itemIds += itemBox.value;
                     }else {
-                        itemIds += "-" + itemBox.value;
+                        itemIds += "," + itemBox.value;
                     }
                 }
                 index++;
