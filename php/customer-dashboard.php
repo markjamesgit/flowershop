@@ -23,14 +23,12 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     exit;
 }
 
-$conn = mysqli_connect("localhost:3306", "root", "", "flowershop");
-
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 //settings for customer-design-settings
-$sqlGetSettings = "SELECT * FROM design_settings WHERE id = 1"; // Id 1 assumes there's only one record for design settings
+$sqlGetSettings = "SELECT * FROM design_settings WHERE id = 1";
 $resultSettings = $conn->query($sqlGetSettings);
 
 if ($resultSettings->num_rows > 0) {
@@ -43,11 +41,6 @@ if ($resultSettings->num_rows > 0) {
         $imageOnePath = $row["image_one_path"];
         $imageTwoPath = $row["image_two_path"];
         $imageThreePath = $row["image_three_path"];
-        $bannerOnePath = $row["banner_one_path"];
-        $bannerTwoPath = $row["banner_two_path"];
-        $endorseOnePath = $row["endorse_one_path"];
-        $endorseTwoPath = $row["endorse_two_path"];
-        $endorseThreePath = $row["endorse_three_path"];
     }
 } else {
     echo "0 results";
@@ -62,6 +55,8 @@ if ($resultSettings->num_rows > 0) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../css/customer-dashboard.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+        <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
+        <title>Sunny Blooms</title>
     </head>
 
     <body>
@@ -69,12 +64,12 @@ if ($resultSettings->num_rows > 0) {
         <div class="header"></div>
 
         <!-- Header Content -->
-        <!-- <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
+        <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
             <div class="container-header">
-                <img class="logo" src="img/<?php echo basename($logoPath); ?>" alt="Logo">
+                <img class="logo" src="../img/<?php echo basename($logoPath); ?>" alt="Logo">
                 <label class="shop"><?php echo $shopName; ?></label>
             </div>
-        </a> -->
+        </a>
 
         <!-- Search Bar -->
         <div class="content-search">
@@ -120,7 +115,7 @@ if ($resultSettings->num_rows > 0) {
                         echo "<span class='cart-number'>$cartCount</span>";
                     }
 
-                    mysqli_stmt_close($cartCountStatement);  // Close the prepared statement
+                    mysqli_stmt_close($cartCountStatement);
                 }
                 ?>
             </button>
@@ -142,15 +137,15 @@ if ($resultSettings->num_rows > 0) {
         <!-- Image Slider -->
         <div class="container-imageSlider">
             <div class="mySlides fade">
-                <img class="imageOne" src="img/<?php echo basename($imageOnePath); ?>" alt="Image One">
+                <img class="imageOne" src="../img/<?php echo basename($imageOnePath); ?>" alt="Image One">
             </div>
 
             <div class="mySlides fade">
-                <img class="imageTwo" src="img/<?php echo basename($imageTwoPath); ?>" alt="Image Two">
+                <img class="imageTwo" src="../img/<?php echo basename($imageTwoPath); ?>" alt="Image Two">
             </div>
 
             <div class="mySlides fade">
-                <img class="imageThree" src="img/<?php echo basename($imageThreePath); ?>" alt="Image Three">
+                <img class="imageThree" src="../img/<?php echo basename($imageThreePath); ?>" alt="Image Three">
             </div>
         </div>
 
@@ -158,15 +153,6 @@ if ($resultSettings->num_rows > 0) {
             <span class="dot"></span>
             <span class="dot"></span>
             <span class="dot"></span>
-        </div>
-
-        <!-- Banner -->
-        <div class="firstBanner">
-            <img class="bannerOne" src="img/<?php echo basename($bannerOnePath); ?>" alt="Banner One">
-        </div>
-
-        <div class="twoBanner">
-            <img class="bannerTwo" src="img/<?php echo basename($bannerTwoPath); ?>" alt="Banner Two">
         </div>
 
         <!-- Categories -->
@@ -179,21 +165,20 @@ if ($resultSettings->num_rows > 0) {
 
                 <div class="containers-category">
                     <?php
-                    // Database connection
-                    $dbConnection = mysqli_connect("localhost:3306", "root", "", "flowershop");
+                    require 'connection.php';
 
                     // Check connection
-                    if (!$dbConnection) {
+                    if (!$conn) {
                         die("Connection failed: " . mysqli_connect_error());
                     }
 
                     // Fetch categories from the database
                     $query = "SELECT * FROM category";
-                    $result = mysqli_query($dbConnection, $query);
+                    $result = mysqli_query($conn, $query);
 
                     // Check if the query was successful
                     if (!$result) {
-                        die("Error in SQL query: " . mysqli_error($dbConnection));
+                        die("Error in SQL query: " . mysqli_error($conn));
                     }
 
                     // Loop through the categories and display them
@@ -202,15 +187,6 @@ if ($resultSettings->num_rows > 0) {
                         $categoryLink = "product-category.php?category=" . urlencode($row['category']) . "&user=" . urlencode($userName);
                         echo "<a href='$categoryLink'>";
                         echo "<div class='categories'>";
-                        echo "<div class='category-img'>";
-                        $imagePath = "img/" . $row['image'];
-                    
-                        if (file_exists($imagePath)) {
-                            echo "<img src='$imagePath' alt='{$row['category']}' />";
-                        } else {
-                            echo "<span style='color: red;'>Image not found</span>";
-                        }
-                        echo "</div>";
                         echo "<div class='category-title'>";
                         echo "<span>{$row['category']}</span>";
                         echo "</div>";
@@ -222,90 +198,11 @@ if ($resultSettings->num_rows > 0) {
             </div>
         </div>
 
-        <!-- TOP PRODUCT, NEW ARRIVAL -->
-        <div class="content-topProduct">
-            <div>
-                <div id="topproductstxt">
-                    <p>TOP PRODUCTS</p>
-                </div>
-
-                <div class="containers-topProduct">
-                    <?php
-                    // Fetch top sales products
-                    $topSalesQuery = "SELECT p.* 
-                                    FROM product p
-                                    JOIN (
-                                        SELECT product_id, SUM(quantity) AS total_sales
-                                        FROM orders
-                                        GROUP BY product_id
-                                        ORDER BY total_sales DESC
-                                        LIMIT 4
-                                    ) o ON p.id = o.product_id";
-
-                    $topSalesResult = mysqli_query($dbConnection, $topSalesQuery);
-
-                    if ($topSalesResult) {
-                        while ($product = mysqli_fetch_assoc($topSalesResult)) {
-                            echo "<a href='product-details.php?id={$product['id']}'>";
-                            echo "<div class='topProduct'>";
-                            echo "<div class='prod-img'>";
-                            echo "<img src='img/{$product['image']}' alt='{$product['name']}' />";
-                            echo "</div>";
-                            echo "<div class='prod-title'>";
-                            echo "<span>{$product['name']}</span>";
-                            echo "</div>";
-                            echo "</div>";
-                            echo "</a>";
-                        }
-                    } else {
-                        echo "Error fetching top sales products: " . mysqli_error($dbConnection);
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
-
-        <!-- NEW ARRIVAL -->
-        <div class="content-newArrival">
-            <div >
-                <div id="newarrivalstxt">
-                    <p>NEW ARRIVALS</p>
-                </div>
-
-                <div class="containers-newArrival">
-                    <?php
-                    // Fetch new arrival products
-                    $newArrivalQuery = "SELECT * FROM product ORDER BY id DESC LIMIT 3";
-
-                    $newArrivalResult = mysqli_query($dbConnection, $newArrivalQuery);
-
-                    if ($newArrivalResult) {
-                        while ($product = mysqli_fetch_assoc($newArrivalResult)) {
-                            echo "<a href='product-details.php?id={$product['id']}'>";
-                            echo "<div class='newArrivalProduct'>";
-                            echo "<div class='prod-img'>";
-                            echo "<img src='img/{$product['image']}' alt='{$product['name']}' />";
-                            echo "</div>";
-                            echo "<div class='newArrival-description'>";
-                            echo "<p> SHOP NOW </p>";
-                            echo "<span>{$product['name']}</span>";
-                            echo "</div>";
-                            echo "</div>";
-                            echo "</a>";
-                        }
-                    } else {
-                        echo "Error fetching new arrival products: " . mysqli_error($dbConnection);
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
-
         <!-- Daily discover content -->
         <div class="daily-discover-content" id="product">
             <!-- Title -->
             <div class="daily-discover-title">
-                <h3> DAILY DISCOVERY </h3>
+                <h3> PACKAGE BUNDLE </h3>
             </div>
 
             <!-- Items container -->
@@ -314,10 +211,10 @@ if ($resultSettings->num_rows > 0) {
                 <div class="grid-items">
                     <?php
                     // Database connection
-                    $dbConnection = mysqli_connect("localhost:3306", "root", "", "flowershop");
+                    $conn = mysqli_connect("localhost:3306", "root", "", "flowershop");
 
                     // Check connection
-                    if (!$dbConnection) {
+                    if (!$conn) {
                         die("Connection failed: " . mysqli_connect_error());
                     }
 
@@ -328,17 +225,17 @@ if ($resultSettings->num_rows > 0) {
 
                     // Fetch products with pagination
                     $query = "SELECT * FROM product ORDER BY RAND() LIMIT $offset, $itemsPerPage";
-                    $result = mysqli_query($dbConnection, $query);
+                    $result = mysqli_query($conn, $query);
 
                     if (!$result) {
-                        die("Error in SQL query: " . mysqli_error($dbConnection));
+                        die("Error in SQL query: " . mysqli_error($conn));
                     }
 
                     // Display products
                     while ($product = mysqli_fetch_assoc($result)) {
                         echo "<a href='product-details.php?id={$product['id']}'>";
                         echo "<div class='items'>";
-                        echo "<img src='img/{$product['image']}' alt='{$product['name']}' height='195' width='200' />";
+                        echo "<img src='../img/{$product['image']}' alt='{$product['name']}' height='195' width='200' />";
                         echo "<div class='discover-description'>";
                         echo "<span>{$product['name']}</span>";
                         echo "</div>";
@@ -361,10 +258,10 @@ if ($resultSettings->num_rows > 0) {
                 // Pagination links
                 echo "<br> <div class='page'>";
                 $totalProductsQuery = "SELECT COUNT(*) AS total FROM product";
-                $totalResult = mysqli_query($dbConnection, $totalProductsQuery);
+                $totalResult = mysqli_query($conn, $totalProductsQuery);
 
                 if (!$totalResult) {
-                    die("Error in SQL query: " . mysqli_error($dbConnection));
+                    die("Error in SQL query: " . mysqli_error($conn));
                 }
 
                 $totalProducts = mysqli_fetch_assoc($totalResult)['total'];
@@ -377,66 +274,9 @@ if ($resultSettings->num_rows > 0) {
                 echo "</div>";
 
                 // Close the database connection
-                mysqli_close($dbConnection);
+                mysqli_close($conn);
             ?>
         </div>
-
-        <!-- Footer -->
-        <footer class="footer" id="paa">
-        <div class="footer-container">
-            <!--Row Container-->
-            <div class="row-container">
-            <!--About-->
-            <div class="footer-about">
-                <h3>About Us</h3>
-                <p>
-                    We're buzzing with excitement to bring you a world of e-commerce wonders. 
-                    With a commitment to convenience, quality, and customer satisfaction, 
-                    we aim to be your go-to destination for all your online shopping needs.
-                </p>
-                <div class="footer-social">
-                <a href=""><i class="fab fa-twitter"></i></a>
-                <a href=""><i class="fab fa-facebook-f"></i></a>
-                <a href=""><i class="fab fa-youtube"></i></a>
-                <a href=""><i class="fab fa-instagram"></i></a>
-                <a href=""><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-
-            <!--Contact-->
-            <div class="footer-contact">
-                <h3>Get In Touch</h3>
-                <p><i class="fa fa-phone-alt"></i>+012 345 67890</p>
-                <p><i class="fa fa-envelope"></i>shopbee800@gmail.com</p>
-                <p><i class="fa-solid fa-warehouse"></i> Bustos, Bulacan Philippines</p>
-            </div>
-
-            <!--Project-->
-            <div class="footer-project">
-                <h3>ShopBee Logo</h3>
-                <a href=""><img src="bee.png" alt="" /></a>
-                <a href=""><img src="swarm.png" alt="" /></a>
-            </div>
-            </div>
-        </div>
-
-        <!--Copyright-->
-        <div class="copyright">
-            <div class="copyright-container">
-            <div class="row-items">
-                <div class="copy-text">
-                <p>&copy; <a href="file:///Users/maikaordonez/Documents/HTML/FINAL%20PROJECT%20(3A)/index.html">
-                2023 ShopBee</a>. All Rights Reserved</p>
-                </div>
-                <div class="copy-menu">
-                <a href="">Terms & Conditions</a>
-                <a href="">Privacy Policy</a>
-                <a href="https://www.facebook.com/maika.ordonez.3">Designer</a>
-                </div>
-            </div>
-            </div>
-        </div>
-        </footer>
 
         <script>
             // Image Slider
@@ -464,7 +304,7 @@ if ($resultSettings->num_rows > 0) {
 
             slides[slideIndex - 1].style.display = "block";
             dots[slideIndex - 1].className += " active";
-            setTimeout(showSlides, 2000); // Change slide every 2000 milliseconds (2 seconds)
+            setTimeout(showSlides, 2000);
             }
 
         </script>

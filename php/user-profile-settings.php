@@ -57,9 +57,6 @@ if ($resultSettings->num_rows > 0) {
         $fontColor = $row["font_color"];
         $shopName = $row["shop_name"];
         $logoPath = $row["logo_path"];
-        $imageOnePath = $row["image_one_path"];
-        $imageTwoPath = $row["image_two_path"];
-        $imageThreePath = $row["image_three_path"];
     }
 } else {
     echo "0 results";
@@ -99,7 +96,7 @@ if ($resultSettings->num_rows > 0) {
             <button class="cart-button">
                 <i class="fas fa-shopping-cart"></i>
                 <?php
-                $conn = mysqli_connect("localhost:3306", "root", "", "finalProject");
+                require 'connection.php';
 
                 $userQuery = "SELECT id FROM users WHERE name = ?";
                 $userStatement = mysqli_prepare($conn, $userQuery);
@@ -161,7 +158,7 @@ if ($resultSettings->num_rows > 0) {
 <div class="settings">
         <h1>ACCOUNT SETTINGS</h1>
         <p>Manage and protect your account</p> <br>
-    <form action="update-profile.php" class="forms" method="post" enctype="multipart/form-data">
+        <form action="update-profile.php" class="forms" method="post" enctype="multipart/form-data">
         <div class="profile-con">
             <!-- New Profile Picture -->
             <div id="profilePicturePreviewContainer"></div>
