@@ -160,192 +160,95 @@
   .dropdown:hover .dropdown-content {
     display: block;
   }
-  
 
-/* Image Slider */
-.image-slider {
-    width: 100%;
-    height: 100vh; 
-    overflow: hidden;
+  /* Account Settings Wrapper */
+.settings {
+    margin: 50px 20px;
+    background-color: #fff0f6;
+    border-radius: 15px;
+    padding: 40px;
   }
   
-  .mySlides {
-    display: none;
-    animation: fade 1s ease-in-out;
-  }
-  
-  .slider-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  /* Fade animation */
-  @keyframes fade {
-    from {
-      opacity: 0.4;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  /* Dots */
-  .DOT {
-    text-align: center;
-    margin-top: 15px;
-  }
-  
-  .dot {
-    height: 12px;
-    width: 12px;
-    margin: 0 6px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.4s ease;
-    cursor: pointer;
-  }
-  
-  .dot.active {
-    background-color: #ff85a1;
-  }  
-  
-  /* Categories */
-  .content-categories {
-    padding: 30px 10%;
-    background-color: #fff0f5;
-  }
-
-  .category-link {
-    text-decoration: none;
-    color: inherit;
-  }  
-  
-  .categories-title p {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
+  .settings h1 {
     color: #d14d72;
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-align: center;
   }
   
-  .containers-category {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+  .settings p {
+    text-align: center;
+    font-size: 1rem;
+    color: #666;
   }
   
-  .categories {
-    width: 150px;
-    height: 100px;
-    background-color: #ffe6f0;
-    border-radius: 10px;
+  /* Profile Picture Section */
+  .profile-con {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    transition: transform 0.2s ease;
-    cursor: pointer;
+    margin-bottom: 30px;
   }
   
-  .categories:hover {
-    transform: scale(1.05);
-  }
-  
-  .category-title span {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #c2185b;
-  }
-  
-  /* Product Section */
-  .daily-discover-content {
-    padding: 30px 10%;
-    background-color: #fff8f0;
-  }
-  
-  .daily-discover-title h3 {
-    font-size: 1.6rem;
-    color: #d14d72;
-    text-align: center;
-    margin-bottom: 25px;
-  }
-
-  .product-link{
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  .grid-items {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-  }
-  
-  .items {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    overflow: hidden;
-    text-align: center;
-    transition: transform 0.2s ease;
-  }
-  
-  .items:hover {
-    transform: translateY(-5px);
-  }
-  
-  .items img {
-    width: 100%;
-    height: 180px;
+  .profile-image {
+    width: 120px;
+    height: 120px;
     object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #ffd5ec;
+    margin-bottom: 10px;
   }
   
-  .discover-description {
-    font-size: 1rem;
+  .profile-txt {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #d14d72;
+  }
+  
+  #profile_picture {
+    margin-top: 5px;
+  }
+  
+  /* Form Content */
+  .forms-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .forms-content label {
     font-weight: bold;
     color: #d14d72;
-    margin: 10px 0;
+    margin-bottom: 5px;
   }
   
-  .discover-price {
+  .forms-content input[type="text"] {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
     font-size: 1rem;
-    color: #4caf50;
+    outline: none;
+    transition: border-color 0.3s ease;
   }
   
-  .shopnow-button {
-    background-color: #ffc9d1;
-    color: #000;
-    padding: 10px;
-    font-weight: 600;
+  .forms-content input[type="text"]:focus {
+    border-color: #ff85a1;
+  }
+  
+  /* Save Button */
+  .save-btn {
+    background-color: #d14d72;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    margin-top: 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
   
-  .shopnow-button:hover {
-    background-color: #f99fb5;
-  }
-  
-  /* Pagination */
-  .page {
-    margin: 30px 0;
-    text-align: center;
-  }
-  
-  .pagination-link {
-    display: inline-block;
-    margin: 0 5px;
-    padding: 8px 14px;
-    border-radius: 6px;
-    background-color: #ffd5ec;
-    color: #444;
-    text-decoration: none;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
-  }
-  
-  .pagination-link:hover {
-    background-color: #ff85a1;
-    color: #fff;
+  .save-btn:hover {
+    background-color: #c1426a;
   }
   

@@ -2,7 +2,6 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include ('footer.php');
 require 'connection.php';
 
 // Check connection
@@ -71,144 +70,179 @@ if ($resultSettings->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-    <title>Sunny Blooms</title>
+    <link rel="stylesheet" href="../css/user-profile-settings.css">
+    <title>Account Settings - Sunny Bloom</title>
 </head>
 
 <body>
+<header class="header">
+  <a href="customer-dashboard.php?user=<?= htmlspecialchars($userName) ?>" class="container-header">
+    <img class="logo" src="../img/<?= htmlspecialchars(basename($logoPath)) ?>" alt="Sunny Blooms Logo" />
+    <label class="shop"><?= htmlspecialchars($shopName) ?></label>
+  </a>
 
-    <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
-        <div class="container-header">
-            <img class="logo" src="img/<?php echo basename($logoPath); ?>" alt="Logo">
-            <label class="shop"><?php echo $shopName; ?></label>
-        </div>
+  <!-- Search Bar -->
+  <div class="content-search">
+    <input type="text" class="search-bar" placeholder="Search products..." />
+    <button class="search-button">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </div>
+
+  <!-- Right Side: Cart and Profile Settings -->
+  <div class="header-right">
+    <!-- Cart Button -->
+    <a href="cart.php?user=<?= urlencode($userName) ?>" class="cart-link">
+      <button class="cart-button">
+        <i class="fas fa-shopping-cart"></i>
+        <?php
+          $userQuery = "SELECT id FROM users WHERE name = ?";
+          $stmt = mysqli_prepare($conn, $userQuery);
+          mysqli_stmt_bind_param($stmt, "s", $userName);
+          mysqli_stmt_execute($stmt);
+          $userResult = mysqli_stmt_get_result($stmt);
+          $userRow = mysqli_fetch_assoc($userResult);
+          $user_id = $userRow['id'] ?? 0;
+
+          $cartQuery = "SELECT COUNT(*) AS count FROM cart WHERE user_id = ?";
+          $cartStmt = mysqli_prepare($conn, $cartQuery);
+          mysqli_stmt_bind_param($cartStmt, "i", $user_id);
+          mysqli_stmt_execute($cartStmt);
+          $cartResult = mysqli_stmt_get_result($cartStmt);
+          $cartCount = mysqli_fetch_assoc($cartResult)['count'] ?? 0;
+          echo "<span class='cart-number'>$cartCount</span>";
+          mysqli_stmt_close($cartStmt);
+        ?>
+      </button>
     </a>
 
-    <!-- Search Bar -->
-    <div class="content-search">
-        <input type="text" class="search-bar" />
-        <button class="search-button">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-    </div>   
-
-        <!-- Cart Buttons -->
-        <a href="cart.php?user=<?php echo $userName; ?>">
-            <button class="cart-button">
-                <i class="fas fa-shopping-cart"></i>
-                <?php
-                require 'connection.php';
-
-                $userQuery = "SELECT id FROM users WHERE name = ?";
-                $userStatement = mysqli_prepare($conn, $userQuery);
-                mysqli_stmt_bind_param($userStatement, "s", $userName);
-                mysqli_stmt_execute($userStatement);
-                $userResult = mysqli_stmt_get_result($userStatement);
-                        
-                if (!$userResult) {
-                    die("Error in SQL query: " . mysqli_error($conn));
-                }
-                
-                $userRow = mysqli_fetch_assoc($userResult);
-                $user_id = isset($userRow['id']) ? $userRow['id'] : 0;
-
-                // Fetch the cart count for the current user
-                $cartCountQuery = "SELECT COUNT(*) AS count FROM cart WHERE user_id = ?";
-                $cartCountStatement = mysqli_prepare($conn, $cartCountQuery);
-
-                if ($cartCountStatement) {
-                    mysqli_stmt_bind_param($cartCountStatement, "i", $user_id);
-                    mysqli_stmt_execute($cartCountStatement);
-                    $cartCountResult = mysqli_stmt_get_result($cartCountStatement);
-
-                    if ($cartCountResult) {
-                        $cartCountRow = mysqli_fetch_assoc($cartCountResult);
-                        $cartCount = isset($cartCountRow['count']) ? $cartCountRow['count'] : "0";
-
-                        // Display the cart number
-                        echo "<span class='cart-number'>$cartCount</span>";
-                    }
-
-                    mysqli_stmt_close($cartCountStatement);  // Close the prepared statement
-                }
-                ?>
-            </button>
-        </a>
-
-            <!-- Navigation Links with Dropdown -->
+    <!-- User Dropdown -->
     <nav class="nav-right">
-        <div class="dropdown">
-            <button class="dropbtn">Welcome, <?php echo $userName; ?> &#9662;</button>
-            <div class="dropdown-content">
-                <a href="user-profile-settings.php">Profile Settings</a>
-                <a href="users-change-password.php">Password</a>
-                <a href="purchases.php">My Purchases</a>
-                <a href="?logout=1">Logout</a>
-            </div>
+      <div class="dropdown">
+        <button class="dropbtn">Welcome, <?= htmlspecialchars($userName) ?> &#9662;</button>
+        <div class="dropdown-content">
+          <a href="user-profile-settings.php">Profile Settings</a>
+          <a href="users-change-password.php">Password</a>
+          <a href="purchases.php">My Purchases</a>
+          <a href="?logout=1">Logout</a>
         </div>
+      </div>
     </nav>
+  </div>
+</header>
 
-        <script>
-            // Add the function definition for updateProfileImage
-            function updateProfileImage(newImagePath) {
-            document.getElementById('profileImage').src = newImagePath;
-            }
-        </script>
-    
-            <!-- Profile Settings Form -->
+<!-- Profile Settings Form -->
 <div class="settings">
-        <h1>ACCOUNT SETTINGS</h1>
-        <p>Manage and protect your account</p> <br>
-        <form action="update-profile.php" class="forms" method="post" enctype="multipart/form-data">
+    <h1>ACCOUNT SETTINGS</h1>
+    <p>Manage and protect your account</p>
+    <br>
+
+    <form action="update-profile.php" class="forms" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
         <div class="profile-con">
-            <!-- New Profile Picture -->
+            <!-- Profile Picture Preview and Upload -->
             <div id="profilePicturePreviewContainer"></div>
-            <img id="profileImage" class="profile-image" src="<?php echo isset($_SESSION['image_path']) ? $_SESSION['image_path'] . '?' . time() : ''; ?>" alt="Profile Picture">
+
+            <img
+                id="profileImage"
+                class="profile-image"
+                src="<?php echo isset($_SESSION['image_path']) ? $_SESSION['image_path'] . '?' . time() : ''; ?>"
+                alt="Profile Picture"
+            >
+
             <label for="profile_picture" class="profile-txt">Profile Picture</label>
             <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
         </div>
 
         <div class="forms-content">
-        <!-- Display username -->
-        <label for="new_username">Username:</label> <br>
-        <input type="text" id="new_username" name="new_username" value="<?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>" required /> <br> <br>
+            <!-- Username -->
+            <label for="new_username">Username:</label><br>
+            <input
+                type="text"
+                id="new_username"
+                name="new_username"
+                value="<?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>"
+                required
+            ><br><br>
 
-        <!-- First Name -->
-        <label for="first_name">First Name:</label> <br>
-        <input type="text" id="first_name" name="first_name" placeholder="Enter your first name" value="<?php echo isset($_SESSION['first_name']) ? htmlspecialchars($_SESSION['first_name']) : ''; ?>" required /> <br> <br>
+            <!-- First Name -->
+            <label for="first_name">First Name:</label><br>
+            <input
+                type="text"
+                id="first_name"
+                name="first_name"
+                placeholder="Enter your first name"
+                value="<?php echo isset($_SESSION['first_name']) ? htmlspecialchars($_SESSION['first_name']) : ''; ?>"
+                required
+            ><br><br>
 
-        <!-- Middle Name -->
-        <label for="middle_name">Middle Name:</label> <br>
-        <input type="text" id="middle_name" name="middle_name" placeholder="Enter your middle name" value="<?php echo isset($_SESSION['middle_name']) ? htmlspecialchars($_SESSION['middle_name']) : ''; ?>" required /> <br> <br>
+            <!-- Middle Name -->
+            <label for="middle_name">Middle Name:</label><br>
+            <input
+                type="text"
+                id="middle_name"
+                name="middle_name"
+                placeholder="Enter your middle name"
+                value="<?php echo isset($_SESSION['middle_name']) ? htmlspecialchars($_SESSION['middle_name']) : ''; ?>"
+                required
+            ><br><br>
 
-        <!-- Last Name -->
-        <label for="last_name">Last Name:</label> <br>
-        <input type="text" id="last_name" name="last_name" placeholder="Enter your last name" value="<?php echo isset($_SESSION['last_name']) ? htmlspecialchars($_SESSION['last_name']) : ''; ?>" required /> <br> <br>
+            <!-- Last Name -->
+            <label for="last_name">Last Name:</label><br>
+            <input
+                type="text"
+                id="last_name"
+                name="last_name"
+                placeholder="Enter your last name"
+                value="<?php echo isset($_SESSION['last_name']) ? htmlspecialchars($_SESSION['last_name']) : ''; ?>"
+                required
+            ><br><br>
 
-        <!-- Address --> 
-        <label for="address">Address:</label> <br>
-        <input type="text" id="address" name="address" placeholder="Enter your address" value="<?php echo isset($_SESSION['address']) ? htmlspecialchars($_SESSION['address']) : ''; ?>" required /> <br> <br>
+            <!-- Address -->
+            <label for="address">Address:</label><br>
+            <input
+                type="text"
+                id="address"
+                name="address"
+                placeholder="Enter your address"
+                value="<?php echo isset($_SESSION['address']) ? htmlspecialchars($_SESSION['address']) : ''; ?>"
+                required
+            ><br><br>
 
-        <!-- Contact Number -->
-        <label for="contact_number">Contact Number:</label><br>
-        <input type="text" id="contact_number" name="contact_number" pattern="[0-9]{11}" value="<?php echo $_SESSION['contact_number']; ?>"><br>
+            <!-- Contact Number -->
+            <label for="contact_number">Contact Number:</label><br>
+            <input
+                type="text"
+                id="contact_number"
+                name="contact_number"
+                pattern="[0-9]{11}"
+                value="<?php echo $_SESSION['contact_number']; ?>"
+            ><br><br>
 
-        <!-- Submit Button -->
-        <button type="submit" class="save-btn">Save Changes</button>
+            <!-- Submit Button -->
+            <button type="submit" class="save-btn">Save Changes</button>
         </div>
     </form>
-    </div>
+</div>
 
-    <script>
-        function validateForm() {
-            var contactNumber = document.getElementById("contact_number").value;
-            var pattern = /^[0-9]{11}$/;
-            if (!pattern.test(contactNumber)) {
-                alert("Please enter a valid 11-digit contact number.");
-                return false;
-            }
-            return true;
+<script>
+    // Updates the profile image preview
+    function updateProfileImage(newImagePath) {
+        document.getElementById('profileImage').src = newImagePath;
+    }
+
+    // Validates the contact number format
+    function validateForm() {
+        var contactNumber = document.getElementById("contact_number").value;
+        var pattern = /^[0-9]{11}$/;
+        if (!pattern.test(contactNumber)) {
+            alert("Please enter a valid 11-digit contact number.");
+            return false;
         }
-    </script>
-
+        return true;
+    }
+</script>
 </body>
 </html>
+<?php
+include ('footer.php');
+?>
