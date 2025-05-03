@@ -53,9 +53,6 @@ if ($resultSettings->num_rows > 0) {
         $fontColor = $row["font_color"];
         $shopName = $row["shop_name"];
         $logoPath = $row["logo_path"];
-        $imageOnePath = $row["image_one_path"];
-        $imageTwoPath = $row["image_two_path"];
-        $imageThreePath = $row["image_three_path"];
     }
 } else {
     echo "0 results";
@@ -80,7 +77,7 @@ mysqli_close($conn);
     <!-- Header Content -->
     <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
         <div class="container-header">
-            <img class="logo" src="img/<?php echo basename($logoPath); ?>" alt="Logo">
+            <img class="logo" src="../img/<?php echo basename($logoPath); ?>" alt="Logo">
             <label class="shop"><?php echo $shopName; ?></label>
         </div>
     </a>

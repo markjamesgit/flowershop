@@ -40,9 +40,6 @@ if ($resultSettings->num_rows > 0) {
         $fontColor = $row["font_color"];
         $shopName = $row["shop_name"];
         $logoPath = $row["logo_path"];
-        $imageOnePath = $row["image_one_path"];
-        $imageTwoPath = $row["image_two_path"];
-        $imageThreePath = $row["image_three_path"];
     }
 } else {
     echo "0 results";
