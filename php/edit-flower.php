@@ -83,10 +83,11 @@ if (isset($_POST['update'])) {
         </div>
 
         <div class="form-group">
-        <label for="image">Image:</label>
+        <label for="image">Current Image:</label>
         <img src="../img/<?= $row['image'] ?>" class="preview-image">
         </div>
-        <input type="hidden" name="existing_image" value="<?= $row['image'] ?>">
+        
+        <label>Change Image (optional):</label>
         <input type="file" name="image" accept=".jpg,.jpeg,.png">
 
         <div class="form-group">

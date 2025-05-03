@@ -91,7 +91,7 @@ if (isset($_GET['id'])) {
             </div>
 
             <div class="form-group">
-                <label for="image">Package Image</label>
+                <label>Change Image (optional):</label>
                 <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png">
                 <?php if (!empty($product['image'])): ?>
                     <img class="preview-image" src="../img/<?= $product['image']; ?>" alt="Current Image">
