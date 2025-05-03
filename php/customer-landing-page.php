@@ -2,7 +2,6 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include ('footer.php');
 require 'connection.php';
 
 //settings for customer-design-settings
@@ -32,6 +31,7 @@ if ($resultSettings->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
+    <link rel="stylesheet" href="../css/customer-landing-page.css">
     <title>Sunny Blooms</title>
 </head>
 <body>
@@ -39,5 +39,10 @@ if ($resultSettings->num_rows > 0) {
     <p>Welcome to the customer landing page!</p>
     <p>Here you can find all the information you need about our services.</p>
     <p>Contact us for more details.</p>
+
 </body>
+
 </html>
+<?php
+        include ('footer.php');
+    ?>

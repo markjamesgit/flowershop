@@ -1,65 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-    <title>Sunny Blooms</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <link rel="icon" type="image/png" href="../assets/logo/logo2.png" />
+  <title>Sunny Blooms</title>
 </head>
-<body>
-    <footer class="footer" id="paa">
-        <div class="footer-container">
-            <!--Row Container-->
-            <div class="row-container">
-            <!--About-->
-            <div class="footer-about">
-                <h3>About Us</h3>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam placeat velit amet similique possimus fugiat cupiditate. Perferendis reiciendis beatae laboriosam distinctio quis nam ut. Exercitationem quos animi quo. Quidem, cumque?
-                </p>
-                <div class="footer-social">
-                <a href=""><i class="fab fa-twitter"></i></a>
-                <a href=""><i class="fab fa-facebook-f"></i></a>
-                <a href=""><i class="fab fa-youtube"></i></a>
-                <a href=""><i class="fab fa-instagram"></i></a>
-                <a href=""><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-
-            <!--Contact-->
-            <div class="footer-contact">
-                <h3>Get In Touch</h3>
-                <p><i class="fa fa-phone-alt"></i> +012 345 67890</p>
-                <p><i class="fa fa-envelope"></i> sunnyblooms@gmail.com</p>
-                <p><i class="fa-solid fa-warehouse"></i> Bustos, Bulacan Philippines</p>
-            </div>
-
-            <!--Project-->
-            <div class="footer-project">
-                <a href=""><img src="../assets/logo/logo2.png" alt="" /></a>
-                <a href=""><img src="../assets/logo/logo1.png" alt="" /></a>
-            </div>
-            </div>
+<footer class="footer" id="paa">
+  <div class="footer-container">
+    <div class="footer-row">
+      
+      <!-- About Us -->
+      <div class="footer-column footer-about">
+        <h3>About Us</h3>
+        <p>
+          Sunny Blooms is an online flower shop that offers a wide range of fresh flowers, bouquets, and arrangements for all occasions. We also offer a variety of gift items and plants for you to choose from. Our goal is to make it easy for you to send flowers and gifts to your loved ones no matter where they are in the Philippines.
+        </p>
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
         </div>
+      </div>
 
-        <!--Copyright-->
-        <div class="copyright">
-            <div class="copyright-container">
-            <div class="row-items">
-                <div class="copy-text">
-                <p>&copy; <a href="fb acc">
-                2023 Sunny Blooms</a>. All Rights Reserved</p>
-                </div>
-                <div class="copy-menu">
-                <a href="">Terms & Conditions</a>
-                <a href="">Privacy Policy</a>
-                <a href="fb acc">Designer</a>
-                </div>
-            </div>
-            </div>
-        </div>
-    </footer>
-</body>
-</html>
+      <!-- Contact -->
+      <div class="footer-column footer-contact">
+        <h3>Get In Touch</h3>
+        <p><i class="fa fa-phone-alt"></i> +012 345 67890</p>
+        <p><i class="fa fa-envelope"></i> sunnyblooms@gmail.com</p>
+        <p><i class="fa-solid fa-warehouse"></i> Bustos, Bulacan, Philippines</p>
+      </div>
+
+      <!-- Project / Logos -->
+      <div class="footer-column footer-project">
+        <a href="#"><img src="../assets/logo/logo2.png" alt="Sunny Blooms Logo" /></a>
+        <a href="#"><img src="../assets/logo/logo1.png" alt="Sunny Blooms Alternate Logo" /></a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-bottom">
+    <div class="footer-bottom-container">
+      <p>&copy; <a href="#">2025 Sunny Blooms</a>. All Rights Reserved.</p>
+      <div class="footer-links">
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Designer</a>
+      </div>
+    </div>
+  </div>
+</footer>
