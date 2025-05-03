@@ -166,10 +166,6 @@ if (isset($_POST["submit"])) {
                         <button class="editbtn" onclick="editProduct(<?= $row['id']; ?>)">Edit</button>
                     </td>
                     <td>
-                        <form action="delete-product.php" method="post" onsubmit="return confirm('Are you sure you want to delete this product?')">
-                            <input type="hidden" name="id" value="<?= $row["id"]; ?>">
-                            <button type="submit" name="delete" class="deletebtn">Delete</button>
-                        </form>
                         <input type="checkbox" name="delete[]" value="<?= $row["id"]; ?>">
                     </td>
                 </tr>

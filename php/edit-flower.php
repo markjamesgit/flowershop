@@ -3,7 +3,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require 'connection.php';
 include('admin-nav.php');
-
 if (!isset($_GET['id'])) {
     echo "<script>alert('Invalid request'); window.location.href='add-flower.php';</script>";
     exit;
@@ -58,18 +57,44 @@ if (isset($_POST['update'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-    <title>UPDATE FLOWER</title>
+    <link rel="stylesheet" href="../css/edit-flower.css">
+    <title>Update Flower Details - Sunny Bloom</title>
 </head>
 <body>
-    <h2>Edit Flower</h2>
-    <form method="post" enctype="multipart/form-data">
-        <input type="text" name="name" value="<?= $row['flower'] ?>" required><br><br>
-        <input type="text" name="stocks" value="<?= $row['stocks'] ?>" required><br><br>
-        <input type="text" name="price" value="<?= $row['price'] ?>" required><br><br>
-        <img src="../img/<?= $row['image'] ?>" height="100"><br><br>
+    <div class="main-container">
+    <div class="content-wrapper">
+    <div class="all">
+    <h1 class="title">Update Flower Details</h1>
+    <form method="post" autocomplete="off" enctype="multipart/form-data" class="form">
+
+        <div class="form-group">
+        <label for="name">Flower Name:</label>
+        <input type="text" name="name" value="<?= $row['flower'] ?>" required>
+        </div>
+
+        <div class="form-group">
+        <label for="stocks">Stocks:</label>
+        <input type="text" name="stocks" value="<?= $row['stocks'] ?>" required>
+        </div>
+
+        <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="text" name="price" value="<?= $row['price'] ?>" required>
+        </div>
+
+        <div class="form-group">
+        <label for="image">Image:</label>
+        <img src="../img/<?= $row['image'] ?>" class="preview-image">
+        </div>
         <input type="hidden" name="existing_image" value="<?= $row['image'] ?>">
-        <input type="file" name="image" accept=".jpg,.jpeg,.png"><br><br>
-        <button type="submit" name="update">Update Flower</button>
+        <input type="file" name="image" accept=".jpg,.jpeg,.png">
+
+        <div class="form-group">
+        <button class="submit-btn" type="submit" name="update">Update</button>
+        </div>
     </form>
+    </div>
+    </div>
+    </div>
 </body>
 </html>

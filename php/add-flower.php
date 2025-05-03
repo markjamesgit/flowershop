@@ -1,6 +1,5 @@
 <?php
 require 'connection.php';
-include('admin-nav.php');
 
 if (isset($_POST["submit"])) {
     $name = $_POST["name"];
@@ -50,23 +49,28 @@ $searchResult = mysqli_query($conn, "SELECT * FROM flower WHERE flower LIKE '%$s
     <link rel="stylesheet" href="../css/add-flower.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-    <title>FLOWER MANAGEMENT</title>
+    <title>Flower Management - Sunny Bloom</title>
 </head>
 <body>
+    <div class="main-container">
+    <?php include('admin-nav.php');?>
+
+    <div class="content-wrapper">
+
     <div class="all">
-        <!-- Tabs Section -->
-        <div class="tab-container">
-            <div class="product-tab"><a href="add-product.php">Product</a></div>
-            <div class="flower-tab"><a href="add-flower.php">Flower</a></div>
-            <div class="add-ons-tab"><a href="add-addons.php">Add-Ons</a></div>
-            <div class="pots-tab"><a href="add-pots.php">Pots</a></div>
-        </div>
+        <!-- Tab Navigation -->
+    <div class="tab-container">
+        <div class="product-tab"><a href="add-product.php">Product</a></div>
+        <div class="flower-tab"><a href="add-flower.php">Flower</a></div>
+        <div class="add-ons-tab"><a href="add-addons.php">Add-Ons</a></div>
+        <div class="pots-tab"><a href="add-pots.php">Pots</a></div>
+    </div>
 
         <!-- Flower Management Header -->
-        <h1 class="text1">FLOWER MANAGEMENT</h1>
+        <h1 class="text1">Flower Management</h1>
 
         <!-- Add Flower Form -->
-        <div class="add-flower">
+        <div class="add">
             <form action="" method="post" enctype="multipart/form-data">
                 <label for="name">Flower Name:</label>
                 <input type="text" name="name" placeholder="Flower name" required><br><br>
@@ -80,31 +84,32 @@ $searchResult = mysqli_query($conn, "SELECT * FROM flower WHERE flower LIKE '%$s
                 <label for="image">Image:</label>
                 <input type="file" name="image" accept=".jpg,.jpeg,.png" required><br><br>
 
-                <button type="submit" name="submit">Add Flower</button>
+                <button type="submit" name="submit" class="buttonProduct">Add Flower</button>
             </form>
         </div>
 
         <!-- Flower List and Search Section -->
         <div class="view">
-            <h1 class="text4">FLOWER LIST</h1>
-            <div class="search-section">
-                <form method="get">
-                    <input type="text" name="search" placeholder="Search flower..." value="<?= $searchTerm ?>">
+            <h1 class="text4">Flower List</h1>
+
+            <div class="table-controls">
+                <form method="get" class="search-form" >
+                    <input type="text" name="search" placeholder="Search flower name" value="<?= $searchTerm ?>">
                     <button type="submit" class="btnSearch">Search</button>
-                </form>
+                </form>    
             </div>
 
             <!-- Flower List Table -->
             <form method="post">
-                <table border="1" cellpadding="10">
+            <button type="submit" name="delete_selected" class="deletebtn">Delete Selected</button>
+                <table border="1" cellspacing="0" cellpadding="10" class="viewTable">
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Stocks</th>
                         <th>Price</th>
                         <th>Image</th>
-                        <th>Action</th>
-                        <th>Select</th>
+                        <th colspan="2">Actions</th>
                     </tr>
                     <?php while ($row = mysqli_fetch_assoc($searchResult)): ?>
                     <tr>
@@ -118,9 +123,10 @@ $searchResult = mysqli_query($conn, "SELECT * FROM flower WHERE flower LIKE '%$s
                     </tr>
                     <?php endwhile; ?>
                 </table>
-                <button type="submit" name="delete_selected" class="deletebtn">Delete</button>
             </form>
         </div>
+    </div>
+    </div>
     </div>
 </body>
 </html>
