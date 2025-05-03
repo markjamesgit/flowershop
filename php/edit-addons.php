@@ -58,18 +58,45 @@ if (isset($_POST['update'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-    <title>UPDATE ADD-ONS</title>
+    <link rel="stylesheet" href="../css/edit-addons.css">
+    <title>Update Add-Ons Details - Sunny Bloom</title>
 </head>
 <body>
-    <h2>Edit Add-Ons</h2>
-    <form method="post" enctype="multipart/form-data">
-        <input type="text" name="name" value="<?= $row['addons'] ?>" required><br><br>
-        <input type="text" name="stocks" value="<?= $row['stocks'] ?>" required><br><br>
-        <input type="text" name="price" value="<?= $row['price'] ?>" required><br><br>
-        <img src="../img/<?= $row['image'] ?>" height="100"><br><br>
+<div class="main-container">
+<div class="content-wrapper">
+<div class="all">
+<h1 class="title">Update Add-Ons Details</h1>
+
+    <form method="post" autocomplete="off" enctype="multipart/form-data" class="form">
+
+        <div class="form-group">
+        <label for="name">Add-On Name:</label>
+        <input type="text" name="name" value="<?= $row['addons'] ?>" required>
+        </div>
+
+        <div class="form-group">
+        <label for="stocks">Stocks:</label>
+        <input type="text" name="stocks" value="<?= $row['stocks'] ?>" required>
+        </div>
+
+        <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="text" name="price" value="<?= $row['price'] ?>" required>
+        </div>
+
+        <div class="form-group">
+        <label for="image">Image:</label>
+        <img src="../img/<?= $row['image'] ?>" class="preview-image">
+        </div>
         <input type="hidden" name="existing_image" value="<?= $row['image'] ?>">
-        <input type="file" name="image" accept=".jpg,.jpeg,.png"><br><br>
-        <button type="submit" name="update">Update Add-On</button>
+        <input type="file" name="image" accept=".jpg,.jpeg,.png">
+
+        <div class="form-group">
+        <button class="submit-btn" type="submit" name="update">Update Add-On</button>
+        </div>
     </form>
+    </div>
+    </div>
+    </div>
 </body>
 </html>

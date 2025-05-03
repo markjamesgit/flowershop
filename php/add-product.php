@@ -121,7 +121,7 @@ if (isset($_POST["submit"])) {
         <h1 class="text4">Package Deal List</h1>
 
         <div class="table-controls">
-                  <!-- Search Product -->
+        <!-- Search Product -->
         <form action="" method="post" class="search-form">
             <input type="text" name="search" id="search" placeholder="Enter product name" required>
             <button type="submit" name="search_submit" class="btnSearch">Search</button>
