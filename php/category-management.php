@@ -44,46 +44,47 @@ $result = mysqli_query($conn, "SELECT * FROM category WHERE category LIKE '%$sea
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-    <title>CATEGORY MANAGEMENT</title>
+    <title>Category Management - Sunny Bloom</title>
     <link rel="stylesheet" href="../css/category-management.css">
 </head>
 <body>
+<div class="main-container">
+
+    <div class="content-wrapper">
+
     <div class="all">
-        <div class="all-inner">
             
             <!-- Main Page Title -->
-            <h1 class="text1">CATEGORY MANAGEMENT</h1>
-
-            <!-- Add Category Section -->
-            <h1 class="label-header">Add Category</h1>
+            <h1 class="text1">Add Category Management</h1>
             <div class="add">
                 <form action="" method="post" autocomplete="off">
                     <label for="name">Category Name:</label>
                     <input type="text" name="name" id="name" required placeholder="Enter category name">
-                    <button type="submit" name="submit" class="btnSubmit">Submit</button>
+                    <button type="submit" name="submit" class="buttonProduct">Submit</button>
                 </form>
             </div>
 
             <!-- Category List Section -->
-            <h1 class="label-header">Category List</h1>
             <div class="view">
+            <h1 class="text4">Category List</h1>
 
+            <div class="table-controls">
                 <!-- Search Bar -->
                 <form action="" method="get" class="search-form">
-                    <label for="search" class="text5">Search Category:</label>
                     <input type="text" name="search" class="searchtxt" id="search" placeholder="Enter category name" required />
                     <button type="submit" class="btnSearch">Search</button>
                 </form>
-
+                </div>
                 <!-- Category Table -->
                 <form action="" method="post">
+                <button type="submit" name="delete_selected" class="deletebtn">Delete Selected</button>
                     <table border="1" cellspacing="0" cellpadding="10" class="viewTable">
                         <thead>
                             <tr class="thView">
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Update</th>
-                                <th>Select</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -105,14 +106,8 @@ $result = mysqli_query($conn, "SELECT * FROM category WHERE category LIKE '%$sea
                             <?php endwhile; ?>
                         </tbody>
                     </table>
-
-                    <!-- Delete Button -->
-                    <button type="submit" name="delete_selected" class="deletebtn">Delete Selected</button>
                 </form>
-
             </div>
-
-        </div>
     </div>
 </body>
 
