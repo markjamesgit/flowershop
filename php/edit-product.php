@@ -1,7 +1,6 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include('admin-nav.php');
 require 'connection.php';
 
 if (isset($_GET['id'])) {
@@ -74,45 +73,60 @@ if (isset($_GET['id'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-    <title>UPDATE PACKAGE DEAL</title>
+    <link rel="stylesheet" href="../css/edit-product.css"> 
+    <title>Update Package Deal - Admin Page</title>
 </head>
 <body>
-    <h1> UPDATE PACKAGE DEAL </h1>
+    <div class="main-container">
+    <?php include('admin-nav.php'); ?>
+
+    <div class="content-wrapper">
     <div class="all">
-        <form action="" method="post" name="product_form" autocomplete="off" enctype="multipart/form-data">
-            <label for="name" class="label">Package Name: </label>
-            <input type="text" class="input" name="name" id="name" required autocomplete="name" value="<?php echo $product['name']; ?>"> <br> <br>
-            <label for="image" class="label">Package Image: </label>
-            <input type="file" class="input" name="image" id="image" accept=".jpg, .jpeg, .png" autocomplete="file" value="">
-            <br><br>
-            <?php
-            // Display the existing image if it exists
-            if (!empty($product['image'])) { 
-                echo '<img class="prod-image" src="../img/' . $product['image'] . '" title="' . $product['image'] . '"><br>';
-            }
-            ?>
-            <br>
+        <h1 class="title">Update Package Deal</h1>
 
-            <label for="category" class="cate" >Category: </label>
-            <select name="category" id="category" required>
-                <?php
-                $categoryQuery = mysqli_query($conn, "SELECT DISTINCT category FROM category");
-                while ($categoryRow = mysqli_fetch_assoc($categoryQuery)) {
-                    $selected = ($categoryRow['category'] == $product['category']) ? "selected" : "";
-                    echo "<option value='" . $categoryRow['category'] . "' $selected>" . $categoryRow['category'] . "</option>";
-                }
-                ?>
-            </select>
-            <br> <br>
+        <form action="" method="post" name="product_form" autocomplete="off" enctype="multipart/form-data" class="form">
+            <div class="form-group">
+                <label for="name">Package Name</label>
+                <input type="text" name="name" id="name" required value="<?= $product['name']; ?>">
+            </div>
 
-            <label for="prices" class="label">Price: </label>
-            <input type="text" class="input" name="prices" id="prices" value="<?php echo $product['price']; ?>" required autocomplete="number"> <br> <br>
+            <div class="form-group">
+                <label for="image">Package Image</label>
+                <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png">
+                <?php if (!empty($product['image'])): ?>
+                    <img class="preview-image" src="../img/<?= $product['image']; ?>" alt="Current Image">
+                <?php endif; ?>
+            </div>
 
-            <label for="qtys" class="label">Quantity: </label>
-            <input type="text" class="input" name="qtys" id="qtys" value="<?php echo $product['qty']; ?>" required autocomplete="number"> <br> <br>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select name="category" id="category" required>
+                    <?php
+                    $categoryQuery = mysqli_query($conn, "SELECT DISTINCT category FROM category");
+                    while ($categoryRow = mysqli_fetch_assoc($categoryQuery)) {
+                        $selected = ($categoryRow['category'] == $product['category']) ? "selected" : "";
+                        echo "<option value='{$categoryRow['category']}' $selected>{$categoryRow['category']}</option>";
+                    }
+                    ?>
+                </select>
+            </div>
 
-            <button class="edit" type="submit" name="submit">UPDATE</button>
-        </form> <br>
+            <div class="form-group">
+                <label for="prices">Price</label>
+                <input type="text" name="prices" id="prices" value="<?= $product['price']; ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="qtys">Quantity</label>
+                <input type="text" name="qtys" id="qtys" value="<?= $product['qty']; ?>" required>
+            </div>
+
+            <div class="form-group">
+                <button class="submit-btn" type="submit" name="submit">Update</button>
+            </div>
+        </form>
+        </div>
+    </div>
     </div>
 </body>
 </html>
