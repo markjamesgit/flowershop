@@ -176,7 +176,8 @@ function handleImageUpload($file, $column, $existingPath) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-    <title>DESIGN SETTINGS</title>
+    <link rel="stylesheet" href="../css/customer-design-setting.css">
+    <title>Design Setting - Sunny Bloom</title>
     <style>
         body {
             background-color: <?php echo $bgColor; ?>;
@@ -185,91 +186,102 @@ function handleImageUpload($file, $column, $existingPath) {
     </style>
 </head>
 <body>
-    <h1 class="text1"> CUSTOMER DESIGN SETTING </h1>
-    <div id="setting-panel">
-        <div class="all">
-            <div class="colors">
-            <h2> COLOR SETTINGS </h2>
-            <!-- Form for updating colors -->
-            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="colorForm" enctype="multipart/form-data">
-                <label for="background_color">Background Color:</label>
-                <input type="color" id="background_color" name="background_color" value="<?php echo $bgColor; ?>" required /> <br> <br>
+<div class="main-container">
+    <div class="content-wrapper">
 
-                <label for="font_color">Font Color:</label>
-                <input type="color" id="font_color" name="font_color" value="<?php echo $fontColor; ?>" required /> <br>
+    <div class="all">
 
-                <button type="submit" name="updateColors">SAVE</button>
-                <button type="button" onclick="clearColors()">RESET</button>
-            </form>
-        </div>
+    <h1 class="settings-title">Customer Design Settings</h1>
 
-        <!-- Form for updating shop details -->
-        <div class="other">  
-        <h2> LOGO & SHOP NAME </h2>  
-            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="shopDetailsForm" enctype="multipart/form-data">
-                <label for="shop_name">Shop Name:</label>
-                <input type="text" id="shop_name" name="shop_name" value="<?php echo $shopName; ?>" required /> <br> <br>
+<div class="settings-panel">
 
-                <label for="logo_path">Logo Path:</label>
-                <input type="file" id="logo_path" name="logo_path" /> <br>
+    <!-- Color Settings -->
+    <section class="settings-section color-settings">
+        <h2 class="section-title">Color Settings</h2>
+        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="colorForm" enctype="multipart/form-data">
+            <label for="background_color">Background Color:</label>
+            <input type="color" id="background_color" name="background_color" value="<?php echo $bgColor; ?>" required />
 
-                <div class="logo-container">
-                    <img src="../img/<?php echo basename($logoPath); ?>" alt="Logo"> <br>
-                    <span> File Size: Maximum 70kb </span> <br>
-                    <span> File Extensions: .jpg, .jpeg, .png </span> 
+            <label for="font_color">Font Color:</label>
+            <input type="color" id="font_color" name="font_color" value="<?php echo $fontColor; ?>" required />
+
+            <div class="button-group">
+                <button type="submit" name="updateColors">Save</button>
+                <button type="button" class="resetBtn" onclick="clearColors()">Reset</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Logo & Shop Name -->
+    <section class="settings-section shop-settings">
+        <h2 class="section-title">Logo & Shop Name</h2>
+        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="shopDetailsForm" enctype="multipart/form-data">
+            <label for="shop_name">Shop Name:</label>
+            <input type="text" id="shop_name" name="shop_name" value="<?php echo $shopName; ?>" required />
+
+            <label for="logo_path">Logo:</label>
+            <input type="file" id="logo_path" name="logo_path" />
+
+            <div class="preview-container">
+                <img src="../img/<?php echo basename($logoPath); ?>" alt="Logo Preview">
+                <p class="note">File Size: Max 70kb | Extensions: .jpg, .jpeg, .png</p>
+            </div>
+
+            <button type="submit" name="updateShopDetails">Update Details</button>
+        </form>
+    </section>
+
+    <!-- Image Slider -->
+    <section class="settings-section slider-settings">
+        <h2 class="section-title">Image Slider</h2>
+        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="imagesForm" enctype="multipart/form-data">
+            <div class="image-upload">
+                <label for="image_one_path">Image One:</label>
+                <input type="file" id="image_one_path" name="image_one_path" />
+                <div class="preview-container">
+                    <img src="../img/<?php echo basename($imageOnePath); ?>" alt="Image One Preview">
+                    <p class="note">File Size: Max 70kb | Extensions: .jpg, .jpeg, .png</p>
                 </div>
-                <button type="submit" name="updateShopDetails">Update Details</button>
-            </form>
-        </div> <!-- other -->
-        </div> <!-- all -->
+            </div>
 
-        <!-- Form for updating images -->
-        <div class="slider">
-            <h2> IMAGE SLIDER </h2>
-            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="imagesForm" enctype="multipart/form-data">
-                <label for="image_one">Image One:</label>
-                <input type="file" id="image_one_path" name="image_one_path" /> <br> <br>
-
-                <div class="image-container1">
-                    <img src="../img/<?php echo basename($imageOnePath); ?>" alt="Image One"> <br>
-                    <span> File Size: Maximum 70kb </span> <br>
-                    <span> File Extensions: .jpg, .jpeg, .png </span>
-                </div> <br>
-
-                <label for="image_two">Image Two:</label>
-                <input type="file" id="image_two_path" name="image_two_path" /> <br> <br>
-
-                <div class="image-container2">
-                    <img src="../img/<?php echo basename($imageTwoPath); ?>" alt="Image Two"> <br>
-                    <span> File Size: Maximum 70kb </span> <br>
-                    <span> File Extensions: .jpg, .jpeg, .png </span>
-                </div> <br>
-
-                <label for="image_three">Image Three:</label>
-                <input type="file" id="image_three_path" name="image_three_path" /> <br> <br>
-
-                <div class="image-container3">
-                    <img src="../img/<?php echo basename($imageThreePath); ?>" alt="Image Three"> <br>
-                    <span> File Size: Maximum 70kb </span> <br>
-                    <span> File Extensions: .jpg, .jpeg, .png </span> 
+            <div class="image-upload">
+                <label for="image_two_path">Image Two:</label>
+                <input type="file" id="image_two_path" name="image_two_path" />
+                <div class="preview-container">
+                    <img src="../img/<?php echo basename($imageTwoPath); ?>" alt="Image Two Preview">
+                    <p class="note">File Size: Max 70kb | Extensions: .jpg, .jpeg, .png</p>
                 </div>
+            </div>
 
-                <button type="submit" name="updateImages">Update Slider</button>
-            </form>
-        </div>
-    
-        <!-- naka tab yung design neto -->
-        <div class="admin-auth">
-            <h2> ADMIN AUTHENTICATION </h2>
-            <form id="authForm">
-                <label for="admin_password">Enter Admin Password:</label>
-                <input type="password" id="admin_password" name="admin_password" required />
-                <span> Required for saving or updating any settings. </span>
-            </form>
-            <hr>
-        </div>
-    
-    </div> <!-- settings panel -->
+            <div class="image-upload">
+                <label for="image_three_path">Image Three:</label>
+                <input type="file" id="image_three_path" name="image_three_path" />
+                <div class="preview-container">
+                    <img src="../img/<?php echo basename($imageThreePath); ?>" alt="Image Three Preview">
+                    <p class="note">File Size: Max 70kb | Extensions: .jpg, .jpeg, .png</p>
+                </div>
+            </div>
+
+            <button type="submit" name="updateImages">Update Slider</button>
+        </form>
+    </section>
+
+    <!-- Admin Authentication -->
+    <section class="settings-section auth-section">
+        <h2 class="section-title">Admin Authentication</h2>
+        <form id="authForm">
+            <label for="admin_password">Enter Admin Password:</label>
+            <input type="password" id="admin_password" name="admin_password" required />
+            <p class="note">Required for saving or updating any settings.</p>
+        </form>
+    </section>
+
+</div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
 
     <script>
 
