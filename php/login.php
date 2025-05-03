@@ -2,6 +2,7 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+require "connection.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -24,7 +25,6 @@ if (isset($_POST["login"])) {
     $default_admin_email = "admin@gmail.com";
     $default_admin_password = "admin";
     // Connect to the database
-    $conn = mysqli_connect("localhost:3306", "root", "", "flowershop");
 
     //Check if there is an existing email address of admin
     $stmt_admin = mysqli_prepare($conn, "SELECT * FROM admin WHERE email = ? OR username = ?");

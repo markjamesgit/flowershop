@@ -2,8 +2,12 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require 'connection.php';
 include ('footer.php');
+require 'connection.php';
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 
 // Check if the user is logged in
 if (isset($_SESSION['user_name'])) {
@@ -25,10 +29,6 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     exit;
 }
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 //settings for customer-design-settings
 $sqlGetSettings = "SELECT * FROM design_settings WHERE id = 1";
 $resultSettings = $conn->query($sqlGetSettings);
@@ -47,39 +47,38 @@ if ($resultSettings->num_rows > 0) {
 } else {
     echo "0 results";
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../css/customer-dashboard.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-        <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-        <title>Sunny Blooms</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="customer-dashboard.css" />
+    <title>PRODUCT CATEGORY</title>
+</head>
 
-    <body>
-        <!-- Header Black -->
-        <div class="header"></div>
+<body>
 
-        <!-- Header Content -->
-        <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
+    <!-- Header Content -->
+    <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
             <div class="container-header">
                 <img class="logo" src="../img/<?php echo basename($logoPath); ?>" alt="Logo">
                 <label class="shop"><?php echo $shopName; ?></label>
             </div>
         </a>
 
-        <!-- Search Bar -->
-        <div class="content-search">
-            <input type="text" class="search-bar" />
-            <button class="search-button">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-        </div>
+    <!-- Search Bar -->
+    <div class="content-search">
+        <input type="text" class="search-bar" />
+        <button class="search-button">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </div>
 
         <!-- Cart Buttons -->
         <a href="cart.php?user=<?php echo $userName; ?>">
@@ -117,7 +116,7 @@ if ($resultSettings->num_rows > 0) {
                         echo "<span class='cart-number'>$cartCount</span>";
                     }
 
-                    mysqli_stmt_close($cartCountStatement);
+                    mysqli_stmt_close($cartCountStatement);  // Close the prepared statement
                 }
                 ?>
             </button>
@@ -134,37 +133,11 @@ if ($resultSettings->num_rows > 0) {
                     <a href="?logout=1">Logout</a>
                 </div>
             </div>
-        </nav>  
-
-        <!-- Image Slider -->
-        <div class="container-imageSlider">
-            <div class="mySlides fade">
-                <img class="imageOne" src="../img/<?php echo basename($imageOnePath); ?>" alt="Image One">
-            </div>
-
-            <div class="mySlides fade">
-                <img class="imageTwo" src="../img/<?php echo basename($imageTwoPath); ?>" alt="Image Two">
-            </div>
-
-            <div class="mySlides fade">
-                <img class="imageThree" src="../img/<?php echo basename($imageThreePath); ?>" alt="Image Three">
-            </div>
-        </div>
-
-        <div class="DOT" style="text-align: center">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-        </div>
+        </nav>
 
         <!-- Categories -->
-
         <div class="content-categories">
             <div>
-                <div class="categories-title">
-                    <p>CATEGORIES</p>
-                </div>
-
                 <div class="containers-category">
                     <?php
                     require 'connection.php';
@@ -183,9 +156,9 @@ if ($resultSettings->num_rows > 0) {
                         die("Error in SQL query: " . mysqli_error($conn));
                     }
 
-                    // Loop through the categories and display them
+                    // Loop through the categories and display only the title
                     while ($row = mysqli_fetch_assoc($result)) {
-                        // Create a link for each category that points to a different file
+                        // Create a link for each category that points to the customer dashboard
                         $categoryLink = "product-category.php?category=" . urlencode($row['category']) . "&user=" . urlencode($userName);
                         echo "<a href='$categoryLink'>";
                         echo "<div class='categories'>";
@@ -195,42 +168,85 @@ if ($resultSettings->num_rows > 0) {
                         echo "</div>";
                         echo "</a>";
                     }
-                    ?>            
+
+                    // Close the database connection
+                    mysqli_close($conn);
+                    ?>
                 </div>
             </div>
         </div>
 
+        <!-- Products -->
+        <div class="daily-discover-title">
+            <label> FILTER BY</label>
+            <a href="product-category.php?category=<?php echo urlencode($_GET['category']); ?>&filter=all&user=<?php echo $userName; ?>"><button name="all">ALL</button></a>
+            <a href="product-category.php?category=<?php echo urlencode($_GET['category']); ?>&filter=latest&user=<?php echo $userName; ?>"><button name="latest">LATEST</button></a>
+            <a href="product-category.php?category=<?php echo urlencode($_GET['category']); ?>&filter=topsale&user=<?php echo $userName; ?>"><button name="topsale">TOP SALES</button></a>
+        </div>
+
         <!-- Daily discover content -->
         <div class="daily-discover-content" id="product">
-            <!-- Title -->
-            <div class="daily-discover-title">
-                <h3> PACKAGE BUNDLE </h3>
-            </div>
-
             <!-- Items container -->
             <div class="daily-discover-container">
                 <!-- Grid items -->
                 <div class="grid-items">
                     <?php
-                    // Database connection
-                    $conn = mysqli_connect("localhost:3306", "root", "", "flowershop");
+                    require 'connection.php';
 
                     // Check connection
                     if (!$conn) {
                         die("Connection failed: " . mysqli_connect_error());
                     }
 
-                    // Pagination settings
-                    $itemsPerPage = 18;
-                    $page = isset($_GET['page']) ? $_GET['page'] : 1;
-                    $offset = ($page - 1) * $itemsPerPage;
+                    // Default value for itemsPerPage
+                    $itemsPerPage = 6;
 
-                    // Fetch products with pagination
-                    $query = "SELECT * FROM product ORDER BY RAND() LIMIT $offset, $itemsPerPage";
+                    // Fetch filterType if it's set
+                    $filterType = isset($_GET['filter']) ? $_GET['filter'] : 'all';
+
+                    // Fetch products from the database based on the filter type
+                    switch ($filterType) {
+                        case 'all':
+                            // Show all products from the selected category with pagination
+                            $category = isset($_GET['category']) ? urldecode($_GET['category']) : '';
+                            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                            $offset = ($page - 1) * $itemsPerPage;
+                            $query = "SELECT * FROM product WHERE category = '$category' LIMIT $offset, $itemsPerPage";
+                            break;
+
+                        case 'latest':
+                            // Show the latest 6 products from the selected category without pagination
+                            $category = isset($_GET['category']) ? urldecode($_GET['category']) : '';
+                            $query = "SELECT * FROM product WHERE category = '$category' ORDER BY id DESC LIMIT 6";
+                            break;
+
+                        case 'topsale':
+                            // Show top sales based on total_amount without pagination and specific category
+                            $category = isset($_GET['category']) ? urldecode($_GET['category']) : '';
+                            $query = "SELECT p.* 
+                                        FROM product p
+                                        JOIN (
+                                            SELECT product_id, SUM(quantity) AS total_sales
+                                            FROM orders o
+                                            JOIN product p ON o.product_id = p.id
+                                            WHERE p.category = '$category'
+                                            GROUP BY product_id
+                                            ORDER BY total_sales DESC
+                                            LIMIT 6
+                                      ) o ON p.id = o.product_id";
+                                break;
+
+                        default:
+                            // Default case for handling invalid filter types
+                            $category = '';
+                            $query = '';
+                            break;
+                    }
+
                     $result = mysqli_query($conn, $query);
 
                     if (!$result) {
-                        die("Error in SQL query: " . mysqli_error($conn));
+                    die("Error in SQL query: " . mysqli_error($conn));
                     }
 
                     // Display products
@@ -251,64 +267,33 @@ if ($resultSettings->num_rows > 0) {
                         echo "</a>";
                     }
 
-                    // Close the main result set
-                    mysqli_free_result($result);
                     ?>
                 </div>
             </div>
-            <?php
-                // Pagination links
-                echo "<br> <div class='page'>";
-                $totalProductsQuery = "SELECT COUNT(*) AS total FROM product";
-                $totalResult = mysqli_query($conn, $totalProductsQuery);
+                <?php
+                    // Pagination links for "ALL" filter
+                    if ($filterType == 'all') {
+                        echo "<br> <div class='page'>";
+                        $totalProductsQuery = "SELECT COUNT(*) AS total FROM product WHERE category = '$category'";
+                        $totalResult = mysqli_query($conn, $totalProductsQuery);
+                    
+                        if (!$totalResult) {
+                            die("Error in SQL query: " . mysqli_error($conn));
+                        }
+                    
+                        $totalProducts = mysqli_fetch_assoc($totalResult)['total'];
+                        $totalPages = ceil($totalProducts / $itemsPerPage);
+                    
+                        for ($i = 1; $i <= $totalPages; $i++) {
+                            echo "<a href='?filter=$filterType&category=$category&page=$i&user=$userName' class='pagination-link'>$i</a>";
+                        }
+                    
+                        echo "</div>";
+                    }
 
-                if (!$totalResult) {
-                    die("Error in SQL query: " . mysqli_error($conn));
-                }
-
-                $totalProducts = mysqli_fetch_assoc($totalResult)['total'];
-                $totalPages = ceil($totalProducts / $itemsPerPage);
-
-                for ($i = 1; $i <= $totalPages; $i++) {
-                    echo "<a href='?page=$i' class='pagination-link'>" . $i . "</a>";
-                }
-
-                echo "</div>";
-
-                // Close the database connection
-                mysqli_close($conn);
-            ?>
+                    // Close the database connection
+                    mysqli_close($conn);
+                ?>
         </div>
-
-        <script>
-            // Image Slider
-            let slideIndex = 0;
-            showSlides();
-
-            function showSlides() {
-            let i;
-            let slides = document.getElementsByClassName("mySlides");
-            let dots = document.getElementsByClassName("dot");
-
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-
-            slideIndex++;
-
-            if (slideIndex > slides.length) {
-                slideIndex = 1; // Reset slideIndex to 1 for continuous loop
-            }
-
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
-
-            slides[slideIndex - 1].style.display = "block";
-            dots[slideIndex - 1].className += " active";
-            setTimeout(showSlides, 2000);
-            }
-
-        </script>
-    </body>
+</body>
 </html>
