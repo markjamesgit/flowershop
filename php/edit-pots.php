@@ -60,29 +60,47 @@ if (isset($_POST['update'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-    <title>UPDATE POTS</title>
+    <link rel="stylesheet" href="../css/edit-pots.css">
+    <title>Update Pots Details - Sunny Bloom</title>
 </head>
 <body>
-    <h2>Edit Pots</h2>
-    <form action="" method="post" enctype="multipart/form-data">
+<div class="main-container">
+    <div class="content-wrapper">
+    <div class="all">
+    <h1 class="title">Update Pots Details</h1>
+    <form action="" method="post" enctype="multipart/form-data" class="form">
+
+    <div class="form-group">
         <label>Name:</label>
-        <input type="text" name="name" value="<?php echo $row['pots']; ?>" required><br><br>
+        <input type="text" name="name" value="<?php echo $row['pots']; ?>" required>
+        </div>
 
+        <div class="form-group">
         <label>Stocks:</label>
-        <input type="text" name="stocks" value="<?php echo $row['stocks']; ?>" required><br><br>
+        <input type="text" name="stocks" value="<?php echo $row['stocks']; ?>" required>
+        </div>
 
+        <div class="form-group">
         <label>Price:</label>
-        <input type="text" name="price" value="<?php echo $row['price']; ?>" required><br><br>
+        <input type="text" name="price" value="<?php echo $row['price']; ?>" required>
+        </div>
 
-        <label>Current Image:</label><br>
-        <img src="../img/<?php echo $row['image']; ?>" height="100"><br><br>
+        <div class="form-group">
+        <label>Current Image:</label>
+        <img src="../img/<?php echo $row['image']; ?>" class="preview-image">
+        </div>
 
         <input type="hidden" name="existing_image" value="<?php echo $row['image']; ?>">
 
         <label>Change Image (optional):</label>
-        <input type="file" name="image" accept=".jpg,.jpeg,.png"><br><br>
+        <input type="file" name="image" accept=".jpg,.jpeg,.png">
 
-        <button type="submit" name="update">Update</button>
+        <div class="form-group">
+        <button class="submit-btn" type="submit" name="update">Update</button>
+        </div>
     </form>
+    </div>
+    </div>
+</div>
 </body>
 </html>
