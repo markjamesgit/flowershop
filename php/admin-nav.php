@@ -51,30 +51,59 @@ if (isset($_POST['logout'])) {
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&effect=neon|outline|emboss|shadow-multiple">
-    <title>ADMIN PAGE</title>
+    <title>Admin Page - Sunny Bloom</title>
 </head>
 
 <body>
-    <div class="sidebar">
-        <div class="content">
-            <a href="admin-account.php?newUsername=<?php echo urlencode($newAdminName); ?>">
-                <button class="admin-btn">
-                    <img src="<?php echo $profile_picture; ?>" alt="">
-                    <label> <?php echo $newAdminName; ?> </label>
-                </button>
-            </a>
-            <div class="btn">
-                <a href="admin-dashboard.php"><button class="dashboard"> <i class="fa-solid fa-house-chimney" style="color: #ffffff;"></i> <span> DASHBOARD </span> </button></a>
-                <a href="add-product.php"> <button class="product"> <i class="fa-solid fa-box-open" style="color: #ffffff;"></i> <span> PRODUCT </span> </button> </a>
-                <a href="category-management.php"> <button class="category"> <i class="fa-solid fa-list" style="color: #ffffff;"></i> <span> CATEGORY </span> </button> </a>
-                <a href="product-inventory.php"> <button class="inventory"> <i class="fa-solid fa-clipboard-list" style="color: #ffffff;"></i> <span> INVENTORY </span></button> </a>
-                <a href="orders.php"> <button class="orders"> <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i> <span> ORDERS </span></button> </a>
-                <a href="sales.php"> <button class="reports"> <i class="fa-solid fa-chart-simple" style="color: #ffffff;"></i> <span> SALES </span> </button> </a>
-                <a href="unlock-user.php"><button> <i class="fa-solid fa-user-group" style="color: #ffffff;"></i> <span> CUSTOMER</span></button></a>
-                <a href="customer-design-setting.php"> <button><i class="fa-solid fa-gears" style="color: #ffffff;"></i> <span> DESIGN SETTING </span></button></a>
-                <a href="customer-landing-page.php"><button class="logout"><i class="fa-solid fa-right-from-bracket" style="color: #ffffff;"></i> <span> LOG OUT</span></button></a>
-            </div>
-        </div>
-    </div>
+<div class="sidebar">
+  <div class="sidebar-content">
+    <!-- Admin Profile Button -->
+    <a href="admin-account.php?newUsername=<?php echo urlencode($newAdminName); ?>" class="admin-profile">
+      <img src="<?php echo $profile_picture; ?>" alt="Admin Profile">
+      <span><?php echo $newAdminName; ?></span>
+    </a>
+
+    <!-- Navigation Buttons -->
+    <nav class="nav-links">
+      <a href="admin-dashboard.php" class="nav-btn">
+        <i class="fa-solid fa-house-chimney"></i>
+        <span>DASHBOARD</span>
+      </a>
+      <a href="add-product.php" class="nav-btn">
+        <i class="fa-solid fa-box-open"></i>
+        <span>PRODUCT</span>
+      </a>
+      <a href="category-management.php" class="nav-btn">
+        <i class="fa-solid fa-list"></i>
+        <span>CATEGORY</span>
+      </a>
+      <a href="product-inventory.php" class="nav-btn">
+        <i class="fa-solid fa-clipboard-list"></i>
+        <span>INVENTORY</span>
+      </a>
+      <a href="orders.php" class="nav-btn">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>ORDERS</span>
+      </a>
+      <a href="sales.php" class="nav-btn">
+        <i class="fa-solid fa-chart-simple"></i>
+        <span>SALES</span>
+      </a>
+      <a href="unlock-user.php" class="nav-btn">
+        <i class="fa-solid fa-user-group"></i>
+        <span>CUSTOMER</span>
+      </a>
+      <a href="customer-design-setting.php" class="nav-btn">
+        <i class="fa-solid fa-gears"></i>
+        <span>DESIGN SETTING</span>
+      </a>
+      <a href="customer-landing-page.php" class="nav-btn logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>LOG OUT</span>
+      </a>
+    </nav>
+  </div>
+</div>
+
 </body>
 </html>
