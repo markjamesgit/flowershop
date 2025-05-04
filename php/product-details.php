@@ -195,7 +195,7 @@ mysqli_close($conn);
     <div class="details">
         <h1><?php echo isset($product['name']) ? $product['name'] : ''; ?></h1>
         <p class="peso">₱ <span id="priceRange"><?php echo isset($product['price']) ? $product['price'] : ''; ?></span></p>
-        <p class="qty">Qty: <span id="productQty"><?php echo isset($product['qty']) ? $product['qty'] : ''; ?></span></p>
+        <p class="qty">Qty: <span id="productQty"><?php echo isset($product['available_stocks']) ? $product['available_stocks'] : ''; ?></span></p>
         <button class="add" onclick="addToCart(<?php echo $productId; ?>, '<?php echo $product['name']; ?>', '<?php echo $userName; ?>')">Add to Cart</button>
     </div>
     </div>
