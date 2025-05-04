@@ -161,160 +161,93 @@
     display: block;
   }
 
-  /* Cart Section Container */
-.cart-container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 40px auto;
-    background-color: #fff8f0;
-    border-radius: 12px;
-    padding: 20px;
+  .confirmation-container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 14px;
+    border: 2px dashed #ffd6e8;
   }
   
-  /* Header Row */
-  .row-fields {
-    display: grid;
-    grid-template-columns: 50px 1.5fr 1fr 1fr 1fr 1fr;
-    font-weight: bold;
-    padding: 15px 10px;
-    background-color: #ffe6f0;
-    border-radius: 10px;
+  .confirmation-container h1 {
     color: #d14d72;
-    margin-bottom: 20px;
-    font-size: 1rem;
-  }
-  
-  /* Individual Cart Item */
-  .items {
-    display: grid;
-    grid-template-columns: 50px 1.5fr 1fr 1fr 1fr 1fr;
-    align-items: center;
-    padding: 15px 10px;
-    background-color: #fff;
+    text-align: center;
+    font-size: 2rem;
     margin-bottom: 15px;
-    border-radius: 10px;
-    transition: background-color 0.2s ease;
+    font-weight: 700;
   }
   
-  .items:hover {
-    background-color: #fff0f5;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Checkbox */
-  .box {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-  }
-  
-  /* Product Name */
-  .prod-name {
-    font-size: 1.1rem;
-    color: #333;
-    font-weight: 500;
-  }
-  
-  /* Prices */
-  .tPrice {
-    font-weight: 500;
+  .confirmation-container p {
+    font-size: 1.05rem;
+    margin: 10px 0;
     color: #444;
+    line-height: 1.5;
   }
   
-  .items p {
-    margin: 0;
-  }
-  
-  /* Product Image */
-  .img-prod {
-    border-radius: 8px;
-    object-fit: cover;
-    width: 80px;
-    height: 80px;
-    margin: auto;
-  }
-  
-  /* Quantity Update Form */
-  .forms {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .quantity-txt {
-    width: 60px;
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-  }
-  
-  .forms button {
-    padding: 6px 10px;
-    background-color: #ff85a1;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    color: white;
-    transition: background-color 0.3s ease;
-  }
-  
-  .forms button:hover {
-    background-color: #e76590;
-  }
-  
-  /* Totals and Actions */
-  .total-container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 30px auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #ffe6f0;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: bold;
+  .confirmation-container h2 {
     color: #d14d72;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border-bottom: 2px solid #f8c9da;
+    padding-bottom: 6px;
   }
   
-  .total-container form {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
+  .order-items {
+    background-color: #fff4f8;
+    border: 1px solid #ffdcec;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
   }
   
-  .total-container button {
-    padding: 10px 20px;
-    background-color: #ff85a1;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  .order-item {
+    border-bottom: 1px solid #ffe4ef;
+    padding: 12px 0;
   }
   
-  .total-container button:hover {
-    background-color: #e76590;
+  .order-item:last-child {
+    border-bottom: none;
   }
   
-  @media (max-width: 768px) {
-    .row-fields,
-    .items {
-      grid-template-columns: 1fr;
-      text-align: center;
+  .order-item p {
+    margin: 6px 0;
+    font-size: 0.97rem;
+    color: #555;
+  }
+  
+  .order-item p span.label {
+    font-weight: 600;
+    color: #c23b6c;
+  }
+  
+  .order-item p span.value {
+    font-weight: 500;
+    color: #222;
+  }
+  
+  .confirmation-container p span.label {
+    font-weight: 600;
+    color: #c23b6c;
+  }
+  
+  .confirmation-container p span.value {
+    font-weight: 500;
+    color: #222;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .confirmation-container {
+      padding: 20px;
     }
   
-    .forms {
-      justify-content: center;
+    .confirmation-container h1 {
+      font-size: 1.5rem;
     }
   
-    .total-container {
-      flex-direction: column;
-      gap: 15px;
-      text-align: center;
+    .order-item p {
+      font-size: 0.9rem;
     }
   }
