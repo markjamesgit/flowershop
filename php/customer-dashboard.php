@@ -72,6 +72,14 @@ if ($row = $verifyResult->fetch_assoc()) {
   <link rel="stylesheet" href="../css/customer-dashboard.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   <link rel="icon" type="image/png" href="../assets/logo/logo2.png" />
+  <style>
+    *{
+      color: <?php echo $fontColor; ?>;
+    }
+    body {
+      background-color: <?php echo $bgColor; ?>;
+    }
+  </style>
 </head>
 
 <body>

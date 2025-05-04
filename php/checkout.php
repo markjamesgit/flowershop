@@ -131,7 +131,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="../css/checkout.css" />
-    <title>Checkout - Sunny Bloom</title>
+    <title>Checkout</title>
+    <style>
+        *{
+        color: <?php echo $fontColor; ?>;
+        }
+        body {
+        background-color: <?php echo $bgColor; ?>;
+        }
+    </style>
 </head>
 <body>
 <header class="header">
