@@ -2,7 +2,6 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include('footer.php');
 require 'connection.php';
 
 // Check if the user is logged in
@@ -56,10 +55,12 @@ $orderDetails = $_SESSION['order_details'];
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Confirmation</title>
-    <link rel="stylesheet" type="text/css" href="css/order-confirmation.css">
+    <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
+    <title>Order Confirmation - Sunny Bloom</title>
+    <link rel="stylesheet" type="text/css" href="../css/order-confirmation.css">
 </head>
 <body>
     <header class="header">
@@ -120,7 +121,7 @@ $orderDetails = $_SESSION['order_details'];
 
     <div class="confirmation-container">
         <h1>Order Confirmation</h1>
-        <p>Thank you for your order!</p>
+        <p >Thank you for your order!</p>
         <p>Name: <?= htmlspecialchars($orderDetails['name']) ?></p>
         <p>Phone: <?= htmlspecialchars($orderDetails['phone']) ?></p>
         <p>Address: <?= htmlspecialchars($orderDetails['address']) ?></p>
@@ -158,3 +159,6 @@ $orderDetails = $_SESSION['order_details'];
     </div>
 </body>
 </html>
+<?php
+include 'footer.php';
+?>
