@@ -2,7 +2,6 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include ('footer.php');
 require 'connection.php';
 
 // Check connection
@@ -70,28 +69,29 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    <link rel="stylesheet" href="product-details.css" />
+    <link rel="stylesheet" href="../css/product-details.css" />
     <title> PRODUCT DETAILS </title>
 </head>
 <body>
+<header class="header">
     <!-- Header Content -->
-    <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
-        <div class="container-header">
+    <a href="customer-dashboard.php?user=<?php echo $userName; ?>" class="container-header">
             <img class="logo" src="../img/<?php echo basename($logoPath); ?>" alt="Logo">
             <label class="shop"><?php echo $shopName; ?></label>
-        </div>
     </a>
 
     <!-- Search Bar -->
     <div class="content-search">
-        <input type="text" class="search-bar" />
+        <input type="text" class="search-bar" placeholder="Search products..."/>
         <button class="search-button">
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
     </div>
 
+      <!-- Right Side: Cart and Profile Settings -->
+  <div class="header-right">
     <!-- Cart Buttons -->
-    <a href="cart.php?user=<?php echo $userName; ?>">
+    <a href="cart.php?user=<?php echo $userName; ?>" class="cart-link">
             <button class="cart-button">
                 <i class="fas fa-shopping-cart"></i>
                 <?php
@@ -145,11 +145,13 @@ mysqli_close($conn);
             </div>
         </div>
     </nav>
+    </div>
+    </header>
 
-    <!-- Categories -->
-    <div class="content-categories">
-            <div>
-                <div class="containers-category">
+      <!-- Categories Section -->
+  <section class="content-categories">
+    <div class="categories-title"><p>CATEGORIES</p></div>
+    <div class="containers-category">
                     <?php
                     require 'connection.php';
 
@@ -171,7 +173,7 @@ mysqli_close($conn);
                     while ($row = mysqli_fetch_assoc($result)) {
                         // Create a link for each category that points to the customer dashboard
                         $categoryLink = "product-category.php?category=" . urlencode($row['category']) . "&user=" . urlencode($userName);
-                        echo "<a href='$categoryLink'>";
+                        echo "<a class='category-link' href='$categoryLink'>";
                         echo "<div class='categories'>";
                         echo "<div class='category-title'>";
                         echo "<span>{$row['category']}</span>";
@@ -184,18 +186,19 @@ mysqli_close($conn);
                     mysqli_close($conn);
                     ?>
                 </div>
-            </div>
-        </div>
+        </section>
 
     <!-- Display product details -->
     <div class="all">
+    <img src="../img/<?php echo isset($product['image']) ? $product['image'] : ''; ?>" alt="<?php echo isset($product['name']) ? $product['name'] : ''; ?>" />
+
+    <div class="details">
         <h1><?php echo isset($product['name']) ? $product['name'] : ''; ?></h1>
-        <img src="../img/<?php echo isset($product['image']) ? $product['image'] : ''; ?>" alt="<?php echo isset($product['name']) ? $product['name'] : ''; ?>" />
         <p class="peso">₱ <span id="priceRange"><?php echo isset($product['price']) ? $product['price'] : ''; ?></span></p>
         <p class="qty">Qty: <span id="productQty"><?php echo isset($product['qty']) ? $product['qty'] : ''; ?></span></p>
-
-        <!-- Updated button onclick event -->
         <button class="add" onclick="addToCart(<?php echo $productId; ?>, '<?php echo $product['name']; ?>', '<?php echo $userName; ?>')">Add to Cart</button>
+    </div>
+    </div>
 
         <script>
             function addToCart(productId, productName, userName) {
@@ -208,6 +211,8 @@ mysqli_close($conn);
                     '&user=' + encodeURIComponent(userName);
             }
         </script>
-    </div>
 </body>
 </html>
+<?php
+include ('footer.php');
+?>
