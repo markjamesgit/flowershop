@@ -44,15 +44,15 @@ if (isset($_POST["register"])) {
             // Enable SMTP authentication
             $mail->SMTPAuth = true;
             // SMTP username
-            $mail->Username = 'jpdpramos12@gmail.com'; // email that will be host
+            $mail->Username = 'sunnybloom0812@gmail.com'; // email that will be host
             // SMTP password
-            $mail->Password = 'sgif zanr szww sipn'; // app name password
+            $mail->Password = 'uxco snbd mcba wvhc'; // app name password
             // Enable TLS encryption;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
             $mail->Port = 587;
             // Sender
-            $mail->setFrom('jpdpramos12@gmail.com', 'SunnyBloom');
+            $mail->setFrom('sunnybloom0812@gmail.com', 'SunnyBloom');
             // Add a recipient
             $mail->addAddress($email, $name);
             // Set email format to HTML
