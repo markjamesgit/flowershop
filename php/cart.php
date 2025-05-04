@@ -3,7 +3,6 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require 'connection.php';
-include ('footer.php');
 
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
@@ -116,46 +115,65 @@ if ($resultSettings->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    <link rel="stylesheet" href="customer-dashboard.css" />
-    <title> CART </title>
+    <link rel="stylesheet" href="../css/cart.css" />
+    <title>Add to Cart - Sunny Bloom</title>
 </head>
 <body>
-    <!-- Header Content -->
-    <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
-        <div class="container-header">
-            <img class="logo" src="../img/<?php echo basename($logoPath); ?>" alt="Logo">
-            <label class="shop"><?php echo $shopName; ?></label>
-        </div>
+<header class="header">
+  <a href="customer-dashboard.php?user=<?= htmlspecialchars($userName) ?>" class="container-header">
+    <img class="logo" src="../img/<?= htmlspecialchars(basename($logoPath)) ?>" alt="Sunny Blooms Logo" />
+    <label class="shop"><?= htmlspecialchars($shopName) ?></label>
+  </a>
+
+  <!-- Search Bar -->
+  <div class="content-search">
+    <input type="text" class="search-bar" placeholder="Search products..." />
+    <button class="search-button">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </div>
+
+  <!-- Right Side: Cart and Profile Settings -->
+  <div class="header-right">
+    <!-- Cart Button -->
+    <a href="cart.php?user=<?= urlencode($userName) ?>" class="cart-link">
+      <button class="cart-button">
+        <i class="fas fa-shopping-cart"></i>
+        <?php
+          $userQuery = "SELECT id FROM users WHERE name = ?";
+          $stmt = mysqli_prepare($conn, $userQuery);
+          mysqli_stmt_bind_param($stmt, "s", $userName);
+          mysqli_stmt_execute($stmt);
+          $userResult = mysqli_stmt_get_result($stmt);
+          $userRow = mysqli_fetch_assoc($userResult);
+          $user_id = $userRow['id'] ?? 0;
+
+          $cartQuery = "SELECT COUNT(*) AS count FROM cart WHERE user_id = ?";
+          $cartStmt = mysqli_prepare($conn, $cartQuery);
+          mysqli_stmt_bind_param($cartStmt, "i", $user_id);
+          mysqli_stmt_execute($cartStmt);
+          $cartResult = mysqli_stmt_get_result($cartStmt);
+          $cartCount = mysqli_fetch_assoc($cartResult)['count'] ?? 0;
+          echo "<span class='cart-number'>$cartCount</span>";
+          mysqli_stmt_close($cartStmt);
+        ?>
+      </button>
     </a>
 
-    <!-- Search Bar -->
-    <div class="content-search">
-        <input type="text" class="search-bar" />
-        <button class="search-button">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-    </div>
-
-    <!-- Cart and Like Buttons -->
-    <a href="cart.php?user=<?php echo $userName; ?>">
-        <button class="cart-button">
-            <i class="fas fa-shopping-cart"></i>
-            <span class="cart-number"><?php echo $cartCount; ?></span>
-        </button>
-    </a>
-
-    <!-- Navigation Links with Dropdown -->
+    <!-- User Dropdown -->
     <nav class="nav-right">
-        <div class="dropdown">
-            <button class="dropbtn">Welcome, <?php echo $userName; ?> &#9662;</button>
-            <div class="dropdown-content">
-                <a href="user-profile-settings.php">Profile Settings</a>
-                <a href="users-change-password.php">Password</a>
-                <a href="purchases.php">My Purchases</a>
-                <a href="?logout=1">Logout</a>
-            </div>
+      <div class="dropdown">
+        <button class="dropbtn">Welcome, <?= htmlspecialchars($userName) ?> &#9662;</button>
+        <div class="dropdown-content">
+          <a href="user-profile-settings.php">Profile Settings</a>
+          <a href="users-change-password.php">Password</a>
+          <a href="purchases.php">My Purchases</a>
+          <a href="?logout=1">Logout</a>
         </div>
-    </nav> <br>
+      </div>
+    </nav>
+  </div>
+</header>
 
     <!-- Display cart -->
     <?php
@@ -302,3 +320,6 @@ if ($resultSettings->num_rows > 0) {
     </script>
 </body>
 </html>
+<?php
+include 'footer.php';
+?>
