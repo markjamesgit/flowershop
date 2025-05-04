@@ -1,7 +1,7 @@
-<?php include('admin-nav.php');?>
 <?php 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+include('admin-nav.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,14 +17,14 @@ ini_set('display_errors', 1);
     <div class="all-containers">    
     <div class="dashboard-container">
         <?php
-            $dbConnectionOrders = mysqli_connect("localhost:3306", "root", "", "finalProject");
+            $dbConnectionOrders = mysqli_connect("localhost:3306", "root", "", "flowershop");
 
             if (!$dbConnectionOrders) {
                 die("Connection failed: " . mysqli_connect_error());
             }
 
             // Fetch total sales
-            $selectTotalSalesQuery = "SELECT SUM(total_amount) AS total_sales FROM finalProject.orders";
+            $selectTotalSalesQuery = "SELECT SUM(total_amount) AS total_sales FROM flowershop.orders";
             $totalSalesResult = mysqli_query($dbConnectionOrders, $selectTotalSalesQuery);
             $totalSalesData = mysqli_fetch_assoc($totalSalesResult);
             $totalSales = isset($totalSalesData['total_sales']) ? $totalSalesData['total_sales'] : 0;
@@ -36,7 +36,7 @@ ini_set('display_errors', 1);
 
         <?php
             // Fetch total items sold
-            $selectTotalItemsSoldQuery = "SELECT COUNT(id) AS total_items_sold FROM finalProject.orders";
+            $selectTotalItemsSoldQuery = "SELECT COUNT(id) AS total_items_sold FROM flowershop.orders";
             $totalItemsSoldResult = mysqli_query($dbConnectionOrders, $selectTotalItemsSoldQuery);
             $totalItemsSoldData = mysqli_fetch_assoc($totalItemsSoldResult);
             $totalItemsSold = isset($totalItemsSoldData['total_items_sold']) ? $totalItemsSoldData['total_items_sold'] : 0;
@@ -48,7 +48,7 @@ ini_set('display_errors', 1);
 
         <?php
             // Fetch total orders
-            $selectTotalOrdersQuery = "SELECT COUNT(id) AS total_orders FROM finalProject.orders";
+            $selectTotalOrdersQuery = "SELECT COUNT(id) AS total_orders FROM flowershop.orders";
             $totalOrdersResult = mysqli_query($dbConnectionOrders, $selectTotalOrdersQuery);
             $totalOrdersData = mysqli_fetch_assoc($totalOrdersResult);
             $totalOrders = isset($totalOrdersData['total_orders']) ? $totalOrdersData['total_orders'] : 0;
@@ -60,13 +60,13 @@ ini_set('display_errors', 1);
 
         <?php
             // Fetch total users
-            $dbConnectionUsers = mysqli_connect("localhost:3306", "root", "", "finalProject");
+            $dbConnectionUsers = mysqli_connect("localhost:3306", "root", "", "flowershop");
 
             if (!$dbConnectionUsers) {
                 die("Connection failed: " . mysqli_connect_error());
             }
 
-            $selectTotalUsersQuery = "SELECT COUNT(id) AS total_users FROM finalProject.users";
+            $selectTotalUsersQuery = "SELECT COUNT(id) AS total_users FROM flowershop.users";
             $totalUsersResult = mysqli_query($dbConnectionUsers, $selectTotalUsersQuery);
             $totalUsersData = mysqli_fetch_assoc($totalUsersResult);
             $totalUsers = isset($totalUsersData['total_users']) ? $totalUsersData['total_users'] : 0;
@@ -78,14 +78,16 @@ ini_set('display_errors', 1);
     </div>
         <?php
             // Fetch best selling items
-            $selectBestSellingItemsQuery = "SELECT p.name, p.image, SUM(o.quantity) AS total_quantity_sold
-                                            FROM finalProject.orders o
-                                            JOIN finalProject.product p ON o.product_id = p.id
-                                            GROUP BY o.product_id
-                                            HAVING total_quantity_sold >= 3
-                                            ORDER BY total_quantity_sold
-                                            ";
+            $selectBestSellingItemsQuery = "
+                SELECT p.name, p.image, SUM(oi.quantity) AS total_quantity_sold
+                FROM flowershop.order_items oi
+                JOIN flowershop.product p ON oi.product_name = p.name
+                GROUP BY p.id
+                HAVING total_quantity_sold >= 3
+                ORDER BY total_quantity_sold DESC
+                ";
             $bestSellingItemsResult = mysqli_query($dbConnectionOrders, $selectBestSellingItemsQuery);
+
         ?>
         <div class="container-items">
             <div class="selling-item">
@@ -94,7 +96,7 @@ ini_set('display_errors', 1);
                 echo'<div class="rows">';
                 while ($row = mysqli_fetch_assoc($bestSellingItemsResult)) {
                     echo '<div class="items">';
-                    echo "<img src='img/{$row['image']}' alt='{$row['name']}' style='max-width: 100px; max-height: 100px;'>";
+                    echo "<img src='../img/{$row['image']}' alt='{$row['name']}' style='max-width: 100px; max-height: 100px;'>";
                     echo "<div>{$row['name']}</div>";
                     echo "<div>{$row['total_quantity_sold']} sold</div>";
                     echo '</div>';
@@ -105,13 +107,14 @@ ini_set('display_errors', 1);
 
         <?php
             // Fetch slow selling items
-            $selectSlowSellingItemsQuery = "SELECT p.name, p.image, SUM(o.quantity) AS total_quantity_sold
-                                            FROM finalProject.orders o
-                                            JOIN finalProject.product p ON o.product_id = p.id
-                                            GROUP BY o.product_id
-                                            HAVING total_quantity_sold <= 2
-                                            ORDER BY total_quantity_sold
-                                            ";
+            $selectSlowSellingItemsQuery = "
+                SELECT p.name, p.image, SUM(oi.quantity) AS total_quantity_sold
+                FROM flowershop.order_items oi
+                JOIN flowershop.product p ON oi.product_name = p.name
+                GROUP BY p.id
+                HAVING total_quantity_sold <= 2
+                ORDER BY total_quantity_sold ASC
+                ";
             $slowSellingItemsResult = mysqli_query($dbConnectionOrders, $selectSlowSellingItemsQuery);
         ?>
         <div class="selling-item">
@@ -120,7 +123,7 @@ ini_set('display_errors', 1);
                 echo'<div class="rows">';
                 while ($row = mysqli_fetch_assoc($slowSellingItemsResult)) {
                     echo '<div class="items">';
-                    echo "<img src='img/{$row['image']}' alt='{$row['name']}' style='max-width: 100px; max-height: 100px;'>";
+                    echo "<img src='../img/{$row['image']}' alt='{$row['name']}' style='max-width: 100px; max-height: 100px;'>";
                     echo "<div>{$row['name']}</div>";
                     echo "<div>{$row['total_quantity_sold']} sold</div>";
                     echo '</div>';
