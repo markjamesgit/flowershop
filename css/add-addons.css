@@ -184,6 +184,7 @@ body {
     border-radius: 5px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .editbtn {

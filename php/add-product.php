@@ -126,14 +126,14 @@ if (isset($_POST["submit"])) {
             <input type="text" name="search" id="search" placeholder="Enter product name" required>
             <button type="submit" name="search_submit" class="btnSearch">Search</button>
         </form>
+        </div>
 
+        <!-- Product Table -->
+         
         <!-- Delete Form -->
         <form action="delete-multiple.php" method="post" id="deleteForm">
                     <button type="submit" class="deletebtn" onclick="deleteProducts();">Delete Selected</button>
                 </form>
-        </div>
-
-        <!-- Product Table -->
         <table border="1" cellspacing="0" cellpadding="10" class="viewTable">
             <tr class="thView">
                 <th>ID</th>
