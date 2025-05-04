@@ -41,9 +41,10 @@ if ($conn) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
+    <link rel="stylesheet" href="../css/admin-account.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&effect=neon|outline|emboss|shadow-multiple">
-    <title>ADMIN SETTINGS</title>
+    <title>Admin Account Settings - Sunny Bloom</title>
 </head>
 <body>
     <?php
@@ -125,33 +126,40 @@ if ($conn) {
     }
     ?>
     
+    <div class="main-container">
+
+    <div class="content-wrapper">
+
+    <div class="all">
+
     <div class="tab-container">
-        <div class="tab active-tab" onclick="showTab('account')">Account Settings</div>
-        <div class="tab" onclick="showTab('password')">Password Settings</div>
+        <div class="tab active-tab product-tab" onclick="showTab('account')">Account Settings</div>
+        <div class="tab flower-tab" onclick="showTab('password')">Password Settings</div>
     </div>
 
     <div id="account-tab">
-        <div class="account-form">
+        <div class="add">
+        <h1 class="text1">Account Settings</h1>
             <form method="POST" enctype="multipart/form-data">
-                <label class="tflabel"> FULL NAME</label> <br>
-                <input type="text" id="newFullname" name="newFullname" placeholder="Full Name" value="<?= isset($existingFullname) ? htmlspecialchars($existingFullname) : ''; ?>" required /><br><br>
+                <label class="tflabel"> Full name</label> 
+                <input type="text" id="newFullname" name="newFullname" placeholder="Full Name" value="<?= isset($existingFullname) ? htmlspecialchars($existingFullname) : ''; ?>" required />
                 
-                <label class="tflabel"> USERNAME</label> <br>
-                <input type="text" id="newUsername" name="newUsername" placeholder="Username" value="<?= isset($existingUsername) ? htmlspecialchars($existingUsername) : ''; ?>" required /><br><br>
+                <label class="tflabel"> Username</label> 
+                <input type="text" id="newUsername" name="newUsername" placeholder="Username" value="<?= isset($existingUsername) ? htmlspecialchars($existingUsername) : ''; ?>" required />
                 
-                <label class="tflabel"> ADDRESS</label> <br>
-                <input type="text" id="newAddress" name="newAddress" placeholder="Address" value="<?= isset($existingAddress) ? htmlspecialchars($existingAddress) : ''; ?>" required /><br><br>
+                <label class="tflabel"> Address</label> 
+                <input type="text" id="newAddress" name="newAddress" placeholder="Address" value="<?= isset($existingAddress) ? htmlspecialchars($existingAddress) : ''; ?>" required />
                 
-                <label class="tflabel"> PHONE NUMBER</label> <br>
-                <input type="text" id="newPhonenumber" name="newPhonenumber" placeholder="Phone Number" value="<?= isset($existingPhonenumber) ? htmlspecialchars($existingPhonenumber) : ''; ?>" required /><br><br>
+                <label class="tflabel"> Phone Number</label>
+                <input type="text" id="newPhonenumber" name="newPhonenumber" placeholder="Phone Number" value="<?= isset($existingPhonenumber) ? htmlspecialchars($existingPhonenumber) : ''; ?>" required />
 
                 <div class="imageProd">
-                    <img src="<?= htmlspecialchars($existingImage); ?>" id="imagePreview" alt="Image Preview">
-                    <span class="profile"> PROFILE PICTURE </span>
+                    <img src="<?= htmlspecialchars($existingImage); ?>" class="profile-image" id="imagePreview" alt="Image Preview">
+                    <span class="profile"> Profile Picture </span>
                 </div>
 
-                <input type="file" id="newImg" name="newImg" onchange="previewImage(this);"><br><br>
-                <input class="save" type="submit" name="changeInfo" value="Save"><br><br>
+                <input type="file" class=".profile-image" id="newImg" name="newImg" onchange="previewImage(this);">
+                <input class="save buttonProduct" type="submit" name="changeInfo" value="Save">
             </form>
         </div>
     </div>    
@@ -159,7 +167,9 @@ if ($conn) {
     <div id="password-tab" style="display: none;">
         <?php include 'admin-password-settings.php'; ?>
     </div>
-
+</div>
+</div>
+</div>
     <script>
 
         function showTab(tabName) {
