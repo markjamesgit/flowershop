@@ -3,7 +3,7 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include('footer.php');
-
+require 'connection.php';
 
 // Check if the user is logged in
 if (isset($_SESSION['user_name'])) {
@@ -40,9 +40,6 @@ if ($resultSettings->num_rows > 0) {
         $fontColor = $row["font_color"];
         $shopName = $row["shop_name"];
         $logoPath = $row["logo_path"];
-        $imageOnePath = $row["image_one_path"];
-        $imageTwoPath = $row["image_two_path"];
-        $imageThreePath = $row["image_three_path"];
     }
 } else {
     echo "0 results";
@@ -154,9 +151,7 @@ $orderDetails = $_SESSION['order_details'];
                 echo '<p>Unit Price: ₱' . htmlspecialchars($row['price']) . '</p>';
                 echo '<p>Total Price: ₱' . htmlspecialchars($row['total_price']) . '</p>';
                 echo '</div>';
-        }
-
-            
+            }
             ?>
         </div>
         <p>We will process your order soon. If you have any questions, please contact our customer service.</p>

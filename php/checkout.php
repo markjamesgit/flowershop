@@ -40,9 +40,6 @@ if ($resultSettings->num_rows > 0) {
         $fontColor = $row["font_color"];
         $shopName = $row["shop_name"];
         $logoPath = $row["logo_path"];
-        $imageOnePath = $row["image_one_path"];
-        $imageTwoPath = $row["image_two_path"];
-        $imageThreePath = $row["image_three_path"];
     }
 } else {
     echo "0 results";
@@ -87,10 +84,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['order_details']['product_images'][$itemId] = $row['product_image'];
     }
 
-    $insertOrder = $conn->prepare("INSERT INTO orders (user_name, name, phone, address, payment_method, total_amount) VALUES (?, ?, ?, ?, ?, ?)");
-    $insertOrder->bind_param("sssssd", $userName, $name, $phone, $address, $paymentMethod, $totalAmount);
+    $customLetterPath = $_SESSION['custom_letter_path'] ?? null;
+
+    $insertOrder = $conn->prepare("INSERT INTO orders (user_name, name, phone, address, payment_method, total_amount, custom_letter) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $insertOrder->bind_param("sssssds", $userName, $name, $phone, $address, $paymentMethod, $totalAmount, $customLetterPath);
     $insertOrder->execute();
     $orderId = $conn->insert_id;
+
+    unset($_SESSION['custom_letter_path']);
+    unset($_SESSION['custom_letter_html']);
 
     foreach ($selectedItems as $itemId) {
         $stmt = $conn->prepare("SELECT product_name, quantity, price, total_price FROM cart WHERE id = ?");

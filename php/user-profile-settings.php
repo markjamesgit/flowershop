@@ -136,6 +136,37 @@ if ($resultSettings->num_rows > 0) {
   <h1>ACCOUNT SETTINGS</h1>
   <p>Manage and protect your account</p>
 
+  <?php
+  $emailCheckQuery = "SELECT email, email_verified_at FROM users WHERE name = ?";
+  $emailStmt = $conn->prepare($emailCheckQuery);
+  $emailStmt->bind_param("s", $userName);
+  $emailStmt->execute();
+  $emailResult = $emailStmt->get_result();
+  $userData = $emailResult->fetch_assoc();
+
+  $isVerified = !empty($userData['email_verified_at']);
+  $email = $userData['email'];
+  ?>
+
+  <div class="verification-box" style="padding: 15px; margin: 20px 0; text-align: center;">
+    <?php if (!$isVerified): ?>
+      <div style="background: #ffe9e9; padding: 15px; border: 1px solid #ff5c5c; border-radius: 8px;">
+        <p style="color: #cc0000; font-weight: bold;">Your account is not verified. Please check your email: <strong><?= htmlspecialchars($email) ?></strong></p>
+        <form action="resend-verification.php" method="post" style="margin-top: 10px;">
+          <input type="hidden" name="email" value="<?= htmlspecialchars($email) ?>">
+          <button type="submit" style="background: #cc0000; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Resend Verification Email</button>
+        </form>
+      </div>
+    <?php else: ?>
+      <div style="display: inline-flex; align-items: center; gap: 10px; color: green; font-weight: bold;">
+        <div style="width: 24px; height: 24px; background-color: green; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px;">
+          ✓
+        </div>
+        Email Verified
+      </div>
+    <?php endif; ?>
+  </div>
+
   <form action="update-profile.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
     <!-- Profile Picture -->
     <div class="form-group">
