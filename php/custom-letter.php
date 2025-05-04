@@ -1,25 +1,37 @@
 <?php
-require_once('tcpdf/tcpdf.php'); // adjust path if needed
+session_start();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+require_once('tcpdf/tcpdf.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $letterContent = $_POST['letter_content'] ?? '';
 
-    // Create new PDF document
-    $pdf = new TCPDF();
-    $pdf->SetCreator(PDF_CREATOR);
-    $pdf->SetAuthor('Sunny Blooms');
-    $pdf->SetTitle('Digital Letter');
-    $pdf->SetMargins(20, 20, 20);
-    $pdf->SetAutoPageBreak(TRUE, 20);
-    $pdf->AddPage();
-    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-    $pdf->SetFont('helvetica', '', 12);
+    // Save raw HTML to session
+    $_SESSION['custom_letter_html'] = $letterContent;
 
-    // Write HTML content
+    // Generate PDF
+    $pdf = new TCPDF();
+    $pdf->SetFont('dejavusans', '', 12);
+    $pdf->AddPage();
     $pdf->writeHTML($letterContent, true, false, true, false, '');
 
-    // Output PDF
-    $pdf->Output('digital_letter.pdf', 'D'); // D = Download
+    // Ensure letters folder exists
+    if (!file_exists('letters')) {
+        mkdir('letters', 0777, true);
+    }
+
+    // Save PDF file
+    $relativePath = 'letters/letter_' . time() . '_' . rand(1000, 9999) . '.pdf';
+    $absolutePath = __DIR__ . '/../letters/' . basename($relativePath); // full path
+
+    $pdf->Output($absolutePath, 'F');
+
+    // Save relative path for database use
+    $_SESSION['custom_letter_path'] = $relativePath;
+
+    // Redirect to checkout
+    header("Location: checkout.php");
     exit;
 }
 ?>
@@ -36,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <form method="post" action="custom-letter.php">
     <textarea name="letter_content" id="letter_content"></textarea><br><br>
-    <button type="submit">Download as PDF</button>
+    <button type="submit">Save Letter & Go Back</button>
   </form>
 
   <hr>

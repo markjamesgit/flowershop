@@ -46,6 +46,18 @@ if ($resultSettings->num_rows > 0) {
 } else {
     echo "0 results";
 }
+
+// Get verification status
+$isVerified = false;
+$verifyQuery = "SELECT email_verified_at FROM users WHERE name = ?";
+$verifyStmt = $conn->prepare($verifyQuery);
+$verifyStmt->bind_param("s", $userName);
+$verifyStmt->execute();
+$verifyResult = $verifyStmt->get_result();
+if ($row = $verifyResult->fetch_assoc()) {
+    $isVerified = !is_null($row['email_verified_at']);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -148,12 +160,62 @@ if ($resultSettings->num_rows > 0) {
           $categoryName = htmlspecialchars($row['category']);
           $categoryLink = "product-category.php?category=" . urlencode($categoryName) . "&user=" . urlencode($userName);
       ?>
-        <a class="category-link" href="<?= $categoryLink ?>">
+        <a class="category-link" 
+   href="<?= $isVerified ? $categoryLink : 'user-profile-settings.php' ?>" 
+   <?= $isVerified ? '' : 'onclick="alert(\'Please verify your email first.\'); return false;"' ?>>
           <div class="categories">
             <div class="category-title"><span><?= $categoryName ?></span></div>
           </div>
         </a>
       <?php endwhile; ?>
+    </div>
+  </section>
+
+  <!-- Best Selling Items Section -->
+  <section class="daily-discover-content">
+    <div class="daily-discover-title"><h3>BEST SELLING ITEMS</h3></div>
+    <div class="daily-discover-container">
+      <div class="grid-items">
+        <?php
+          $bestSellerQuery = "
+            SELECT p.id, p.name, p.image, p.price, SUM(oi.quantity) as total_sold
+            FROM order_items oi
+            JOIN product p ON oi.product_name = p.name
+            GROUP BY p.id
+            ORDER BY total_sold DESC
+            LIMIT 6
+          ";
+          $bestSellerResult = mysqli_query($conn, $bestSellerQuery);
+
+          // Check email verification
+          $verifyCheckQuery = "SELECT email_verified_at FROM users WHERE name = ?";
+          $verifyStmt = mysqli_prepare($conn, $verifyCheckQuery);
+          mysqli_stmt_bind_param($verifyStmt, "s", $userName);
+          mysqli_stmt_execute($verifyStmt);
+          $verifyResult = mysqli_stmt_get_result($verifyStmt);
+          $isVerified = false;
+          if ($verifyRow = mysqli_fetch_assoc($verifyResult)) {
+            $isVerified = !is_null($verifyRow['email_verified_at']);
+          }
+
+          while ($row = mysqli_fetch_assoc($bestSellerResult)):
+            $productName = htmlspecialchars($row['name']);
+            $productPrice = number_format($row['price'], 2);
+            $productImage = htmlspecialchars($row['image']);
+            $productLink = "product-details.php?id=" . $row['id'];
+        ?>
+          <a class="product-link"
+            href="<?= $isVerified ? $productLink : 'javascript:void(0)' ?>"
+            <?= !$isVerified ? "onclick=\"alert('Please verify your email first.'); window.location.href='user-profile-settings.php'; return false;\"" : "" ?>>
+            <div class="items">
+              <img src="../img/<?= $productImage ?>" alt="<?= $productName ?>" />
+              <div class="discover-description"><span><?= $productName ?></span></div>
+              <div class="discover-price"><p>₱<?= $productPrice ?></p></div>
+              <div class="shopnow-button"><p>SHOP NOW</p></div>
+            </div>
+          </a>
+        <?php endwhile; ?>
+      </div>
     </div>
   </section>
 
@@ -176,7 +238,9 @@ if ($resultSettings->num_rows > 0) {
             $productPrice = number_format($product['price'], 2);
             $productImage = htmlspecialchars($product['image']);
         ?>
-          <a class="product-link" href="product-details.php?id=<?= $product['id'] ?>">
+          <a class="product-link" 
+   href="<?= $isVerified ? 'product-details.php?id=' . $product['id'] : 'user-profile-settings.php' ?>" 
+   <?= $isVerified ? '' : 'onclick="alert(\'Please verify your email first.\'); return false;"' ?>>
             <div class="items">
               <img src="../img/<?= $productImage ?>" alt="<?= $productName ?>" />
               <div class="discover-description"><span><?= $productName ?></span></div>

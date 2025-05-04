@@ -94,12 +94,6 @@ if (isset($_POST["login"])) {
         exit;
     }
 
-    // Check to verify your email
-    if ($user->email_verified_at == null && strtolower($email) !== 'admin@gmail.com') {
-        echo "<script>alert('Please verify your email <a href=\"email-verification.php?email=" . $email . "\">from here</a>'); window.history.back();</script>";
-        exit;
-    }
-
     // Regular user is logged in, redirect to customer landing page
     $_SESSION['user_type'] = 'customer';
     $_SESSION['user_name'] = $user->name;
