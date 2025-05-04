@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     unset($_SESSION['custom_letter_html']);
 
     foreach ($selectedItems as $itemId) {
-        $stmt = $conn->prepare("SELECT product_name, quantity, price, total_price FROM cart WHERE id = ?");
+        $stmt = $conn->prepare("SELECT product_name, quantity, price FROM cart WHERE id = ?");
         $stmt->bind_param("i", $itemId);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -199,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <?php
             $totalPrice = 0;
             foreach ($selectedItems as $itemId) {
-                $stmt = $conn->prepare("SELECT product_name, quantity, price, total_price, product_image FROM cart WHERE id = ?");
+                $stmt = $conn->prepare("SELECT product_name, quantity, price, product_image FROM cart WHERE id = ?");
                 $stmt->bind_param("i", $itemId);
                 $stmt->execute();
                 $result = $stmt->get_result();
