@@ -61,7 +61,7 @@ $result = mysqli_query($conn, "SELECT * FROM addons WHERE addons LIKE '%$searchT
     <div class="all">
         <!-- Tab Navigation -->
     <div class="tab-container">
-        <div class="product-tab"><a href="add-product.php">Product</a></div>
+        <div class="product-tab"><a href="add-product.php">Package</a></div>
         <div class="flower-tab"><a href="add-flower.php">Flower</a></div>
         <div class="add-ons-tab"><a href="add-addons.php">Add-Ons</a></div>
         <div class="pots-tab"><a href="add-pots.php">Pots</a></div>

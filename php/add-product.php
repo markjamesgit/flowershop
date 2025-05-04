@@ -59,7 +59,7 @@ if (isset($_POST["submit"])) {
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Package Deal - Admin Page</title>
+    <title>Add Product - Admin Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="../css/add-product.css">
@@ -73,7 +73,7 @@ if (isset($_POST["submit"])) {
     <div class="all">
     <!-- Tab Navigation -->
     <div class="tab-container">
-        <div class="product-tab"><a href="add-product.php">Product</a></div>
+        <div class="product-tab"><a href="add-product.php">Package</a></div>
         <div class="flower-tab"><a href="add-flower.php">Flower</a></div>
         <div class="add-ons-tab"><a href="add-addons.php">Add-Ons</a></div>
         <div class="pots-tab"><a href="add-pots.php">Pots</a></div>
