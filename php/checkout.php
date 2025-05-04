@@ -3,7 +3,6 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require 'connection.php';
-include('footer.php');
 
 // Check if the user is logged in
 if (isset($_SESSION['user_name'])) {
@@ -131,8 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    <link rel="stylesheet" href="checkout.css" />
-    <title>CHECKOUT</title>
+    <link rel="stylesheet" href="../css/checkout.css" />
+    <title>Checkout - Sunny Bloom</title>
 </head>
 <body>
 <header class="header">
@@ -272,3 +271,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 </body>
 </html>
+<?php
+include 'footer.php';
+?>
