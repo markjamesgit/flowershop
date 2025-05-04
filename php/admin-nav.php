@@ -85,7 +85,7 @@ if (isset($_POST['logout'])) {
         <i class="fa-solid fa-cart-shopping"></i>
         <span>ORDERS</span>
       </a>
-      <a href="sales.php" class="nav-btn">
+      <a href="pos.php" class="nav-btn">
         <i class="fa-solid fa-chart-simple"></i>
         <span>POS</span>
       </a>
