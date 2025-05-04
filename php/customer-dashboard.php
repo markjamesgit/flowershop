@@ -182,6 +182,7 @@ if ($row = $verifyResult->fetch_assoc()) {
             FROM order_items oi
             JOIN product p ON oi.product_name = p.name
             GROUP BY p.id
+            HAVING total_sold > 3
             ORDER BY total_sold DESC
             LIMIT 6
           ";
