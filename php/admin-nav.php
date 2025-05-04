@@ -87,7 +87,7 @@ if (isset($_POST['logout'])) {
       </a>
       <a href="sales.php" class="nav-btn">
         <i class="fa-solid fa-chart-simple"></i>
-        <span>SALES</span>
+        <span>POS</span>
       </a>
       <a href="unlock-user.php" class="nav-btn">
         <i class="fa-solid fa-user-group"></i>
