@@ -38,23 +38,29 @@ $result = mysqli_query($conn, $query);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PRODUCT INVENTORY</title>
-    <link rel="stylesheet" type="text/css" href="css/product-inventory.css">
+    <title>Product Inventory - Sunny Bloom</title>
+    <link rel="stylesheet" type="text/css" href="../css/product-inventory.css">
     <link rel="icon" type="image/png" href="img/logo.png"/>
 </head>
 <body>
-    <h1 class="text1">PRODUCT INVENTORY</h1>
-    <button class="report-btn" onclick="window.location.href='inventory-report.php'">Generate Report</button>
 
+<div class="main-container">
+
+    <div class="content-wrapper">
     <div class="all">
-        <form method="GET">
-            <input class="search-bar" type="text" name="searchProductName" placeholder="Search product name..." value="<?= htmlspecialchars($search) ?>" />
-            <button class="search-button" type="submit">
-                <i class="fa-solid fa-magnifying-glass" style="color: #502779;"></i>
+
+    <h1 class="text1">Product Inventory</h1>
+
+    <div class="table-controls">
+        <form method="GET" class="search-form">
+            <input type="text" name="searchProductName" placeholder="Search product name" value="<?= htmlspecialchars($search) ?>" />
+            <button class="btnSearch" type="submit">
+                Search
             </button>
         </form>
-
-        <table border='1' cellpadding='15' cellspacing='0'>
+        <button class="report-btn" onclick="window.location.href='inventory-report.php'">Generate Report</button>
+    </div>
+        <table border="1" cellspacing="0" cellpadding="10" class="viewTable">
             <tr>
                 <th>Product ID</th>
                 <th>Name</th>
@@ -92,16 +98,17 @@ $result = mysqli_query($conn, $query);
                 <td>
                     <form method="POST" style="display:flex;">
                         <input type="hidden" name="product_id" value="<?= $row['id'] ?>">
-                        <select name="status">
+                        <select name="status" class="select-status">
                             <option value="Available" <?= $row['status'] == 'Available' ? 'selected' : '' ?>>Available</option>
                             <option value="Out of Stock" <?= $row['status'] == 'Out of Stock' ? 'selected' : '' ?>>Out of Stock</option>
                             <option value="Phase Out" <?= $row['status'] == 'Phase Out' ? 'selected' : '' ?>>Phase Out</option>
                         </select>
                 </td>
-                <td><button type="submit">Save</button></form></td>
+                <td><button class="blockbtn" type="submit">Save</button></form></td>
             </tr>
             <?php endwhile; ?>
         </table>
+    </div>
     </div>
 </body>
 </html>

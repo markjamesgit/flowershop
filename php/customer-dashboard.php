@@ -66,7 +66,7 @@ if ($row = $verifyResult->fetch_assoc()) {
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sunny Bloom</title>
+  <title>Customer Dashboard - Sunny Bloom</title>
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="../css/customer-dashboard.css" />

@@ -71,7 +71,7 @@ if (isset($_POST['logout'])) {
       </a>
       <a href="add-product.php" class="nav-btn">
         <i class="fa-solid fa-box-open"></i>
-        <span>PRODUCT</span>
+        <span>ADD PRODUCT</span>
       </a>
       <a href="category-management.php" class="nav-btn">
         <i class="fa-solid fa-list"></i>

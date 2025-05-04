@@ -10,15 +10,19 @@ include('admin-nav.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORDERS</title>
+    <title>Orders - Sunny Bloom</title>
     <link rel="icon" type="image/png" href="img/logo.png"/>
-    <link rel="stylesheet" type="text/css" href="css/orders.css">
+    <link rel="stylesheet" href="../css/orders.css">
     <style>
     </style>
 </head>
 <body>
-    <h1 class="text1"> PURCHASE AND PAYMENT SUMMARY </h1>
+
+<div class="main-container">
+
+    <div class="content-wrapper">
     <div class="all">
+        <h1 class="text1">Orders History</h1>
 
         <!-- Report Form -->
         <form method="GET" action="orders-report.php" class="date-report">
@@ -31,7 +35,7 @@ include('admin-nav.php');
             <input class="search-button" type="submit" name="search-btn" id="search-btn" value="Report">
         </form>
         <!-- Display Orders Table -->
-        <table border="1" cellpadding="8" cellspacing="0">
+        <table border="1" cellspacing="0" cellpadding="10" class="viewTable">
             <tr>
                 <th>ID</th>
                 <th>User Name</th>
@@ -79,9 +83,10 @@ include('admin-nav.php');
             ?>
         </table>
 
+        <h1 class="text1">Order Items</h1>
         <!-- Display Order Items Table -->
-        <table border="1" cellpadding="8" cellspacing="0">
-            <caption>Product Details</caption>
+        <table border="1" cellspacing="0" cellpadding="10" class="viewTable">
+           
             <tr>
                 <th>ID</th>
                 <th>Order ID</th>
@@ -116,6 +121,8 @@ include('admin-nav.php');
             mysqli_close($conn);
             ?>
         </table>
+    </div>
+    </div>
     </div>
 </body>
 </html>

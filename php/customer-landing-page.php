@@ -32,7 +32,7 @@ if ($resultSettings->num_rows > 0) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="../css/customer-landing-page.css">
-    <title>Sunny Blooms</title>
+    <title>Sunny Bloom</title>
 </head>
 <body>
     <h1>Customer Landing Page</h1>
