@@ -70,7 +70,7 @@ mysqli_close($conn);
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="../css/product-details.css" />
-    <title> PRODUCT DETAILS </title>
+    <title>Product Details - Sunny Bloom</title>
 </head>
 <body>
 <header class="header">

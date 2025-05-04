@@ -2,7 +2,6 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include ('footer.php');
 require 'connection.php';
 
 if (!$conn) {
@@ -55,87 +54,71 @@ if ($resultSettings->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    <link rel="stylesheet" href="customer-dashboard.css" />
-    <title>PRODUCT CATEGORY</title>
+    <link rel="stylesheet" href="../css/product-category.css" />
+    <title>Product Cateogry - Sunny Bloom</title>
 </head>
 
 <body>
+<header class="header">
+  <a href="customer-dashboard.php?user=<?= htmlspecialchars($userName) ?>" class="container-header">
+    <img class="logo" src="../img/<?= htmlspecialchars(basename($logoPath)) ?>" alt="Sunny Blooms Logo" />
+    <label class="shop"><?= htmlspecialchars($shopName) ?></label>
+  </a>
 
-    <!-- Header Content -->
-    <a href="customer-dashboard.php?user=<?php echo $userName; ?>">
-            <div class="container-header">
-                <img class="logo" src="../img/<?php echo basename($logoPath); ?>" alt="Logo">
-                <label class="shop"><?php echo $shopName; ?></label>
-            </div>
-        </a>
+  <!-- Search Bar -->
+  <div class="content-search">
+    <input type="text" class="search-bar" placeholder="Search products..." />
+    <button class="search-button">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </div>
 
-    <!-- Search Bar -->
-    <div class="content-search">
-        <input type="text" class="search-bar" />
-        <button class="search-button">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-    </div>
+  <!-- Right Side: Cart and Profile Settings -->
+  <div class="header-right">
+    <!-- Cart Button -->
+    <a href="cart.php?user=<?= urlencode($userName) ?>" class="cart-link">
+      <button class="cart-button">
+        <i class="fas fa-shopping-cart"></i>
+        <?php
+          $userQuery = "SELECT id FROM users WHERE name = ?";
+          $stmt = mysqli_prepare($conn, $userQuery);
+          mysqli_stmt_bind_param($stmt, "s", $userName);
+          mysqli_stmt_execute($stmt);
+          $userResult = mysqli_stmt_get_result($stmt);
+          $userRow = mysqli_fetch_assoc($userResult);
+          $user_id = $userRow['id'] ?? 0;
 
-        <!-- Cart Buttons -->
-        <a href="cart.php?user=<?php echo $userName; ?>">
-            <button class="cart-button">
-                <i class="fas fa-shopping-cart"></i>
-                <?php
-                
-                $userQuery = "SELECT id FROM users WHERE name = ?";
-                $userStatement = mysqli_prepare($conn, $userQuery);
-                mysqli_stmt_bind_param($userStatement, "s", $userName);
-                mysqli_stmt_execute($userStatement);
-                $userResult = mysqli_stmt_get_result($userStatement);
-                        
-                if (!$userResult) {
-                    die("Error in SQL query: " . mysqli_error($conn));
-                }
-                
-                $userRow = mysqli_fetch_assoc($userResult);
-                $user_id = isset($userRow['id']) ? $userRow['id'] : 0;
+          $cartQuery = "SELECT COUNT(*) AS count FROM cart WHERE user_id = ?";
+          $cartStmt = mysqli_prepare($conn, $cartQuery);
+          mysqli_stmt_bind_param($cartStmt, "i", $user_id);
+          mysqli_stmt_execute($cartStmt);
+          $cartResult = mysqli_stmt_get_result($cartStmt);
+          $cartCount = mysqli_fetch_assoc($cartResult)['count'] ?? 0;
+          echo "<span class='cart-number'>$cartCount</span>";
+          mysqli_stmt_close($cartStmt);
+        ?>
+      </button>
+    </a>
 
-                // Fetch the cart count for the current user
-                $cartCountQuery = "SELECT COUNT(*) AS count FROM cart WHERE user_id = ?";
-                $cartCountStatement = mysqli_prepare($conn, $cartCountQuery);
+    <!-- User Dropdown -->
+    <nav class="nav-right">
+      <div class="dropdown">
+        <button class="dropbtn">Welcome, <?= htmlspecialchars($userName) ?> &#9662;</button>
+        <div class="dropdown-content">
+          <a href="user-profile-settings.php">Profile Settings</a>
+          <a href="users-change-password.php">Password</a>
+          <a href="purchases.php">My Purchases</a>
+          <a href="?logout=1">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
 
-                if ($cartCountStatement) {
-                    mysqli_stmt_bind_param($cartCountStatement, "i", $user_id);
-                    mysqli_stmt_execute($cartCountStatement);
-                    $cartCountResult = mysqli_stmt_get_result($cartCountStatement);
-
-                    if ($cartCountResult) {
-                        $cartCountRow = mysqli_fetch_assoc($cartCountResult);
-                        $cartCount = isset($cartCountRow['count']) ? $cartCountRow['count'] : "0";
-
-                        // Display the cart number
-                        echo "<span class='cart-number'>$cartCount</span>";
-                    }
-
-                    mysqli_stmt_close($cartCountStatement);  // Close the prepared statement
-                }
-                ?>
-            </button>
-        </a>
-
-        <!-- Navigation Links with Dropdown -->
-        <nav class="nav-right">
-            <div class="dropdown">
-                <button class="dropbtn">Welcome, <?php echo $userName; ?> &#9662;</button>
-                <div class="dropdown-content">
-                    <a href="user-profile-settings.php">Profile Settings</a>
-                    <a href="users-change-password.php">Password</a>
-                    <a href="purchases.php">My Purchases</a>
-                    <a href="?logout=1">Logout</a>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Categories -->
-        <div class="content-categories">
-            <div>
-                <div class="containers-category">
+      <!-- Categories Section -->
+      <section class="content-categories">
+    <div class="categories-title"><p>CATEGORIES</p></div>
+    <div class="containers-category">
                     <?php
                     require 'connection.php';
 
@@ -157,7 +140,7 @@ if ($resultSettings->num_rows > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
                         // Create a link for each category that points to the customer dashboard
                         $categoryLink = "product-category.php?category=" . urlencode($row['category']) . "&user=" . urlencode($userName);
-                        echo "<a href='$categoryLink'>";
+                        echo "<a class='category-link' href='$categoryLink'>";
                         echo "<div class='categories'>";
                         echo "<div class='category-title'>";
                         echo "<span>{$row['category']}</span>";
@@ -170,127 +153,109 @@ if ($resultSettings->num_rows > 0) {
                     mysqli_close($conn);
                     ?>
                 </div>
-            </div>
-        </div>
-
-        <!-- Products -->
-        <div class="daily-discover-title">
-            <label> FILTER BY</label>
-            <a href="product-category.php?category=<?php echo urlencode($_GET['category']); ?>&filter=all&user=<?php echo $userName; ?>"><button name="all">ALL</button></a>
-            <a href="product-category.php?category=<?php echo urlencode($_GET['category']); ?>&filter=latest&user=<?php echo $userName; ?>"><button name="latest">LATEST</button></a>
-            <a href="product-category.php?category=<?php echo urlencode($_GET['category']); ?>&filter=topsale&user=<?php echo $userName; ?>"><button name="topsale">TOP SALES</button></a>
-        </div>
-
+        </section>
+   
         <!-- Daily discover content -->
-        <div class="daily-discover-content" id="product">
-            <!-- Items container -->
-            <div class="daily-discover-container">
-                <!-- Grid items -->
-                <div class="grid-items">
-                    <?php
-                    require 'connection.php';
+<section class="daily-discover-content" id="product">
+  <div class="daily-discover-title">
+    <label>FILTER BY</label>
+    <a href="product-category.php?category=<?= urlencode($_GET['category']) ?>&filter=all&user=<?= $userName ?>">
+      <button name="all">ALL</button>
+    </a>
+    <a href="product-category.php?category=<?= urlencode($_GET['category']) ?>&filter=latest&user=<?= $userName ?>">
+      <button name="latest">LATEST</button>
+    </a>
+    <a href="product-category.php?category=<?= urlencode($_GET['category']) ?>&filter=topsale&user=<?= $userName ?>">
+      <button name="topsale">TOP SALES</button>
+    </a>
+  </div>
 
-                    // Check connection
-                    if (!$conn) {
-                        die("Connection failed: " . mysqli_connect_error());
-                    }
+  <div class="daily-discover-container">
+    <div class="grid-items">
+      <?php
+        require 'connection.php';
 
-                    // Default value for itemsPerPage
-                    $itemsPerPage = 6;
+        if (!$conn) {
+          die("Connection failed: " . mysqli_connect_error());
+        }
 
-                    // Fetch filterType if it's set
-                    $filterType = isset($_GET['filter']) ? $_GET['filter'] : 'all';
+        $itemsPerPage = 6;
+        $filterType = $_GET['filter'] ?? 'all';
+        $category = isset($_GET['category']) ? urldecode($_GET['category']) : '';
+        $page = $_GET['page'] ?? 1;
+        $offset = ($page - 1) * $itemsPerPage;
 
-                    // Fetch products from the database based on the filter type
-                    switch ($filterType) {
-                        case 'all':
-                            // Show all products from the selected category with pagination
-                            $category = isset($_GET['category']) ? urldecode($_GET['category']) : '';
-                            $page = isset($_GET['page']) ? $_GET['page'] : 1;
-                            $offset = ($page - 1) * $itemsPerPage;
-                            $query = "SELECT * FROM product WHERE category = '$category' LIMIT $offset, $itemsPerPage";
-                            break;
+        switch ($filterType) {
+          case 'all':
+            $query = "SELECT * FROM product WHERE category = '$category' LIMIT $offset, $itemsPerPage";
+            break;
+          case 'latest':
+            $query = "SELECT * FROM product WHERE category = '$category' ORDER BY id DESC LIMIT 6";
+            break;
+          case 'topsale':
+            $query = "SELECT p.* 
+                      FROM product p
+                      JOIN (
+                          SELECT product_id, SUM(quantity) AS total_sales
+                          FROM orders o
+                          JOIN product p ON o.product_id = p.id
+                          WHERE p.category = '$category'
+                          GROUP BY product_id
+                          ORDER BY total_sales DESC
+                          LIMIT 6
+                      ) o ON p.id = o.product_id";
+            break;
+          default:
+            $query = "";
+            break;
+        }
 
-                        case 'latest':
-                            // Show the latest 6 products from the selected category without pagination
-                            $category = isset($_GET['category']) ? urldecode($_GET['category']) : '';
-                            $query = "SELECT * FROM product WHERE category = '$category' ORDER BY id DESC LIMIT 6";
-                            break;
+        $result = mysqli_query($conn, $query);
+        if (!$result) die("SQL Error: " . mysqli_error($conn));
 
-                        case 'topsale':
-                            // Show top sales based on total_amount without pagination and specific category
-                            $category = isset($_GET['category']) ? urldecode($_GET['category']) : '';
-                            $query = "SELECT p.* 
-                                        FROM product p
-                                        JOIN (
-                                            SELECT product_id, SUM(quantity) AS total_sales
-                                            FROM orders o
-                                            JOIN product p ON o.product_id = p.id
-                                            WHERE p.category = '$category'
-                                            GROUP BY product_id
-                                            ORDER BY total_sales DESC
-                                            LIMIT 6
-                                      ) o ON p.id = o.product_id";
-                                break;
+        while ($product = mysqli_fetch_assoc($result)):
+          $productName = htmlspecialchars($product['name']);
+          $productPrice = number_format($product['price'], 2);
+          $productImage = htmlspecialchars($product['image']);
+      ?>
+        <a class="product-link" href="product-details.php?id=<?= $product['id'] ?>">
+          <div class="items">
+            <img src="../img/<?= $productImage ?>" alt="<?= $productName ?>" />
+            <div class="discover-description"><span><?= $productName ?></span></div>
+            <div class="discover-price"><p>₱<?= $productPrice ?></p></div>
+            <div class="shopnow-button"><p>SHOP NOW</p></div>
+          </div>
+        </a>
+      <?php endwhile; ?>
+      <?php mysqli_free_result($result); ?>
+    </div>
+  </div>
 
-                        default:
-                            // Default case for handling invalid filter types
-                            $category = '';
-                            $query = '';
-                            break;
-                    }
+  <?php if ($filterType == 'all'): ?>
+    <!-- Pagination -->
+    <div class="page">
+      <?php
+        $totalQuery = "SELECT COUNT(*) AS total FROM product WHERE category = '$category'";
+        $totalResult = mysqli_query($conn, $totalQuery);
+        $totalProducts = mysqli_fetch_assoc($totalResult)['total'];
+        $totalPages = ceil($totalProducts / $itemsPerPage);
 
-                    $result = mysqli_query($conn, $query);
+        for ($i = 1; $i <= $totalPages; $i++):
+          $activeClass = ($i == $page) ? 'active-page' : '';
+      ?>
+        <a href="?filter=<?= $filterType ?>&category=<?= urlencode($category) ?>&page=<?= $i ?>&user=<?= $userName ?>" 
+           class="pagination-link <?= $activeClass ?>"><?= $i ?></a>
+      <?php endfor; ?>
+      <?php mysqli_free_result($totalResult); ?>
+    </div>
+  <?php endif; ?>
 
-                    if (!$result) {
-                    die("Error in SQL query: " . mysqli_error($conn));
-                    }
+  <?php mysqli_close($conn); ?>
+</section>
 
-                    // Display products
-                    while ($product = mysqli_fetch_assoc($result)) {
-                        echo "<a href='product-details.php?id={$product['id']}'>";
-                        echo "<div class='items'>";
-                        echo "<img src='../img/{$product['image']}' alt='{$product['name']}' height='195' width='200' />";
-                        echo "<div class='discover-description'>";
-                        echo "<span>{$product['name']}</span>";
-                        echo "</div>";
-                        echo "<div class='discover-price'>";
-                        echo "<p>₱{$product['price']}</p>";
-                        echo "</div>";
-                        echo "<div class='shopnow-button'>";
-                        echo "<p>SHOP NOW</p>";
-                        echo "</div>";
-                        echo "</div>";
-                        echo "</a>";
-                    }
 
-                    ?>
-                </div>
-            </div>
-                <?php
-                    // Pagination links for "ALL" filter
-                    if ($filterType == 'all') {
-                        echo "<br> <div class='page'>";
-                        $totalProductsQuery = "SELECT COUNT(*) AS total FROM product WHERE category = '$category'";
-                        $totalResult = mysqli_query($conn, $totalProductsQuery);
-                    
-                        if (!$totalResult) {
-                            die("Error in SQL query: " . mysqli_error($conn));
-                        }
-                    
-                        $totalProducts = mysqli_fetch_assoc($totalResult)['total'];
-                        $totalPages = ceil($totalProducts / $itemsPerPage);
-                    
-                        for ($i = 1; $i <= $totalPages; $i++) {
-                            echo "<a href='?filter=$filterType&category=$category&page=$i&user=$userName' class='pagination-link'>$i</a>";
-                        }
-                    
-                        echo "</div>";
-                    }
-
-                    // Close the database connection
-                    mysqli_close($conn);
-                ?>
-        </div>
 </body>
 </html>
+<?php
+include ('footer.php');
+?>
