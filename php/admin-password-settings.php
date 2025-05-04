@@ -19,6 +19,7 @@ include('admin-nav.php');
 <div class="main-container">
 
 <div class="all">
+    
 <div class="add">
 <h1 class="text1">Password Settings</h1>
     <form method="post">
