@@ -29,6 +29,7 @@ if ($settingsResult && mysqli_num_rows($settingsResult) > 0) {
   <title>My Purchases - Sunny Bloom</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   <link rel="icon" type="image/png" href="../assets/logo/logo2.png" />
+  <link rel="stylesheet" href="../css/purchases.css">
 </head>
 
 <body>
@@ -125,7 +126,6 @@ if ($result && mysqli_num_rows($result) > 0) {
 mysqli_stmt_close($stmt);
 mysqli_close($conn);
 ?>
-
-<?php include('footer.php'); ?>
 </body>
 </html>
+<?php include('footer.php'); ?>
