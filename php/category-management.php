@@ -44,7 +44,7 @@ $result = mysqli_query($conn, "SELECT * FROM category WHERE category LIKE '%$sea
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
-    <title>Category Management - Sunny Bloom</title>
+    <title>Category Management</title>
     <link rel="stylesheet" href="../css/category-management.css">
 </head>
 <body>

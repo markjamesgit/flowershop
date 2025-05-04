@@ -45,7 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="../css/custom-letter.css" />
-    <title>Custom Letter - Sunny Bloom</title>
+    <title>Custom Letter</title>
+    <style>
+        *{
+        color: <?php echo $fontColor; ?>;
+        }
+        body {
+        background-color: <?php echo $bgColor; ?>;
+        }
+    </style>
   <script src="https://cdn.ckeditor.com/4.21.0/standard-all/ckeditor.js"></script>
 </head>
 <body>

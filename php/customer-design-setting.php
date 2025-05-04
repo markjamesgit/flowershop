@@ -14,7 +14,7 @@ $resultCheck = $conn->query($sqlCheck);
 
 if ($resultCheck->num_rows == 0) {
     $sqlInsert = "INSERT INTO design_settings (background_color, font_color, shop_name, logo_path, image_one_path, image_two_path, image_three_path)
-    VALUES ('#ffffff', '#000000', 'My Shop', 'default_logo.png', 'default_image1.png', 'default_image2.png', 'default_image3.png')";
+    VALUES ('#fff8f0', '#333', 'My Shop', 'default_logo.png', 'default_image1.png', 'default_image2.png', 'default_image3.png')";
 
     if ($conn->query($sqlInsert) === TRUE) {
         echo "Default record added successfully";
@@ -88,8 +88,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } elseif (isset($_POST["clearColors"])) {
         // Clear All Colors
-        $bgColor = '#ffffff';
-        $fontColor = '#000000';
+        $bgColor = '#FFF8F0';
+        $fontColor = '#333';
 
         $sqlClearColors = "UPDATE design_settings SET
             background_color='$bgColor',
@@ -311,8 +311,8 @@ function handleImageUpload($file, $column, $existingPath) {
 
         function clearColors() {
             // Set default values for background and font colors
-            document.getElementById('background_color').value = '#f5f5f5';
-            document.getElementById('font_color').value = '#000000';
+            document.getElementById('background_color').value = '#fff8f0';
+            document.getElementById('font_color').value = '#333';
         }
     </script>
 </body>

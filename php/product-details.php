@@ -70,7 +70,15 @@ mysqli_close($conn);
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="../css/product-details.css" />
-    <title>Product Details - Sunny Bloom</title>
+    <title>Product Details</title>
+    <style>
+        *{
+        color: <?php echo $fontColor; ?>;
+        }
+        body {
+        background-color: <?php echo $bgColor; ?>;
+        }
+    </style>
 </head>
 <body>
 <header class="header">
