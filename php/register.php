@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
@@ -23,7 +25,6 @@ if (isset($_POST["register"])) {
     $fname = $_POST['first_name'];
     $mname = $_POST['middle_name'];
     $lname = $_POST['last_name'];
-    $image = $_POST['image_path'];
 
     // Check if the email is unique (not already in the database)
     $conn = mysqli_connect("localhost:3306", "root", "", "flowershop");
@@ -46,7 +47,7 @@ if (isset($_POST["register"])) {
             // SMTP username
             $mail->Username = 'sunnybloom0812@gmail.com'; // email that will be host
             // SMTP password
-            $mail->Password = 'uxco snbd mcba wvhc'; // app name password
+            $mail->Password = 'uxcosnbdmcbawvhc'; // app name password
             // Enable TLS encryption;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
