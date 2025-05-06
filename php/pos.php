@@ -17,13 +17,7 @@ $products = mysqli_query($conn, "SELECT * FROM product WHERE status = 'Available
   <link rel="icon" type="image/png" href="../assets/logo/logo2.png"/>
   <title>POS System</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <style>
-    .products, .cart { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-    .product, .cart-item { border: 1px solid #ccc; padding: 10px; width: 180px; text-align: center; }
-    .product img { width: 100px; height: 100px; object-fit: cover; }
-    input.qty-input, input[type="number"] { width: 60px; text-align: center; }
-    .cart-summary { margin-top: 20px; }
-  </style>
+  <link rel="stylesheet" href="../css/pos.css">
 </head>
 <body>
 
