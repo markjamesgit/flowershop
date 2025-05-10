@@ -1,12 +1,13 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'path_to_phpmailer/src/Exception.php';
-require 'path_to_phpmailer/src/PHPMailer.php';
-require 'path_to_phpmailer/src/SMTP.php';
+require '../php/PHPMailer/src/Exception.php';
+require '../php/PHPMailer/src/PHPMailer.php';
+require '../php/PHPMailer/src/SMTP.php';
 
 // Function to check if an email already exists in the database
 function isEmailUnique($conn, $email) {
