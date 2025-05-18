@@ -86,7 +86,7 @@ if ($settingsResult && mysqli_num_rows($settingsResult) > 0) {
 
 <?php
 $purchasesQuery = "
-  SELECT o.id AS order_id, o.payment_method, oi.product_name, oi.product_image, oi.quantity, oi.price, oi.total_price, o.order_date
+  SELECT o.id AS order_id, o.payment_method, oi.product_name, oi.product_image, oi.quantity, oi.price, oi.total_price, o.order_date, o.custom_letter
   FROM orders o
   JOIN order_items oi ON o.id = oi.order_id
   WHERE o.user_name = ?
@@ -109,6 +109,7 @@ if ($result && mysqli_num_rows($result) > 0) {
             <th>Payment</th>
             <th>Status</th>
             <th>Shipping Status</th>
+            <th>Custom Letter</th>
             <th>Order Date</th>
           </tr>";
 
@@ -122,6 +123,12 @@ if ($result && mysqli_num_rows($result) > 0) {
         echo "<td>" . htmlspecialchars($item['payment_method']) . "</td>";
         echo "<td><span style='color: green;'>Approved</span></td>";
         echo "<td><span style='color: orange;'>To Ship</span></td>";
+        if (!empty($item['custom_letter'])) {
+            $filePath = htmlspecialchars($item['custom_letter']);
+            echo "<td><a href='../$filePath' target='_blank'>View Letter</a></td>";
+        } else {
+            echo "<td>No Letter</td>";
+        }
         echo "<td>" . $item['order_date'] . "</td>";
         echo "</tr>";
     }
