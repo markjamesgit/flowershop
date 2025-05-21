@@ -175,101 +175,60 @@ if ($resultSettings->num_rows > 0) {
     <?php endif; ?>
   </div>
 
-  <form action="update-profile.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-    <!-- Profile Picture -->
-    <div class="form-group">
-      <div id="profilePicturePreviewContainer"></div>
-      <img
-        id="profileImage"
-        class="profile-image"
-        src="<?php echo isset($_SESSION['image_path']) ? $_SESSION['image_path'] . '?' . time() : ''; ?>"
-        alt="Profile Picture"
-      >
-      <label for="profile_picture">Profile Picture</label>
-      <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
-    </div>
+      <form action="update-profile.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()" class="profile-form">
 
-    <!-- Username -->
+  <!-- Left Side: Inputs -->
+  <div class="profile-form-left">
+
     <div class="form-group">
       <label for="new_username">Username:</label>
-      <input
-        type="text"
-        id="new_username"
-        name="new_username"
-        value="<?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>"
-        required
-      />
+      <input type="text" id="new_username" name="new_username" value="<?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>" required />
     </div>
 
-    <!-- First Name -->
     <div class="form-group">
       <label for="first_name">First Name:</label>
-      <input
-        type="text"
-        id="first_name"
-        name="first_name"
-        placeholder="Enter your first name"
-        value="<?php echo isset($_SESSION['first_name']) ? htmlspecialchars($_SESSION['first_name']) : ''; ?>"
-        required
-      />
+      <input type="text" id="first_name" name="first_name" placeholder="Enter your first name" value="<?php echo isset($_SESSION['first_name']) ? htmlspecialchars($_SESSION['first_name']) : ''; ?>" required />
     </div>
 
-    <!-- Middle Name -->
     <div class="form-group">
       <label for="middle_name">Middle Name:</label>
-      <input
-        type="text"
-        id="middle_name"
-        name="middle_name"
-        placeholder="Enter your middle name"
-        value="<?php echo isset($_SESSION['middle_name']) ? htmlspecialchars($_SESSION['middle_name']) : ''; ?>"
-        required
-      />
+      <input type="text" id="middle_name" name="middle_name" placeholder="Enter your middle name" value="<?php echo isset($_SESSION['middle_name']) ? htmlspecialchars($_SESSION['middle_name']) : ''; ?>" required />
     </div>
 
-    <!-- Last Name -->
     <div class="form-group">
       <label for="last_name">Last Name:</label>
-      <input
-        type="text"
-        id="last_name"
-        name="last_name"
-        placeholder="Enter your last name"
-        value="<?php echo isset($_SESSION['last_name']) ? htmlspecialchars($_SESSION['last_name']) : ''; ?>"
-        required
-      />
+      <input type="text" id="last_name" name="last_name" placeholder="Enter your last name" value="<?php echo isset($_SESSION['last_name']) ? htmlspecialchars($_SESSION['last_name']) : ''; ?>" required />
     </div>
 
-    <!-- Address -->
     <div class="form-group">
       <label for="address">Address:</label>
-      <input
-        type="text"
-        id="address"
-        name="address"
-        placeholder="Enter your address"
-        value="<?php echo isset($_SESSION['address']) ? htmlspecialchars($_SESSION['address']) : ''; ?>"
-        required
-      />
+      <input type="text" id="address" name="address" placeholder="Enter your address" value="<?php echo isset($_SESSION['address']) ? htmlspecialchars($_SESSION['address']) : ''; ?>" required />
     </div>
 
-    <!-- Contact Number -->
     <div class="form-group">
       <label for="contact_number">Contact Number:</label>
-      <input
-        type="text"
-        id="contact_number"
-        name="contact_number"
-        pattern="[0-9]{11}"
-        placeholder="Enter your contact number"
-        value="<?php echo $_SESSION['contact_number']; ?>"
-        required
-      />
+      <input type="text" id="contact_number" name="contact_number" pattern="[0-9]{11}" placeholder="Enter your contact number" value="<?php echo $_SESSION['contact_number']; ?>" required />
     </div>
 
-    <!-- Submit Button -->
     <button type="submit" class="save-btn">Save Changes</button>
-  </form>
+
+  </div>
+
+  <!-- Right Side: Profile Picture -->
+  <div class="profile-form-right">
+    <div id="profilePicturePreviewContainer"></div>
+    <img
+      id="profileImage"
+      class="profile-image"
+      src="<?php echo isset($_SESSION['image_path']) ? $_SESSION['image_path'] . '?' . time() : ''; ?>"
+      alt="Profile Picture"
+    >
+    <label for="profile_picture">Profile Picture</label>
+    <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+  </div>
+
+</form>
+
 </div>
 
 <script>
