@@ -1,9 +1,14 @@
 <?php
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
   
-    require './PHPMailer/src/PHPMailer.php';
-    require './PHPMailer/src/SMTP.php';
+    require '../php/PHPMailer/src/Exception.php';
+    require '../php/PHPMailer/src/PHPMailer.php';
+    require '../php/PHPMailer/src/SMTP.php';
 
     if (isset($_POST["next"])) {
         $email = $_POST["email"];
@@ -39,7 +44,7 @@
                 // SMTP username
                 $mail->Username = 'sunnybloom0812@gmail.com';
                 // SMTP password
-                $mail->Password = 'uxco snbd mcba wvhc';
+                $mail->Password = 'uxcosnbdmcbawvhc';
                 // Enable TLS encryption;
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
                 // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
@@ -71,7 +76,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password - Sunny Bloom</title>
+    <title>Forgot Password</title>
     <link rel="icon" type="image/png" href="../assets/logo/logo2.png" />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/forgotpassword.css">

@@ -89,14 +89,6 @@ if ($resultSettings->num_rows > 0) {
     <label class="shop"><?= htmlspecialchars($shopName) ?></label>
   </a>
 
-  <!-- Search Bar -->
-  <div class="content-search">
-    <input type="text" class="search-bar" placeholder="Search products..." />
-    <button class="search-button">
-      <i class="fa-solid fa-magnifying-glass"></i>
-    </button>
-  </div>
-
   <!-- Right Side: Cart and Profile Settings -->
   <div class="header-right">
     <!-- Cart Button -->

@@ -4,21 +4,44 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require 'connection.php';
 
-if (!isset($_SESSION['user_name'])) {
+// Check if the user is logged in
+if (isset($_SESSION['user_name'])) {
+    $userName = $_SESSION['user_name'];
+} else {
+    // Redirect to the login page or handle accordingly
     header("Location: http://localhost/flowershop/php/customer-landing-page.php");
     exit;
 }
 
-$userName = $_SESSION['user_name'];
+// If you want to log out, you can add a condition to check for a logout action
+if (isset($_GET['logout']) && $_GET['logout'] == 1) {
+    // Clear all session variables
+    session_unset();
+    // Destroy the session
+    session_destroy();
+    // Redirect to the login page or handle accordingly
+    header("Location: http://localhost/flowershop/php/customer-landing-page.php");
+    exit;
+}
 
-// Design settings
-$sqlSettings = "SELECT * FROM design_settings WHERE id = 1";
-$settingsResult = mysqli_query($conn, $sqlSettings);
-$shopName = $logoPath = '';
-if ($settingsResult && mysqli_num_rows($settingsResult) > 0) {
-    $settings = mysqli_fetch_assoc($settingsResult);
-    $shopName = $settings["shop_name"];
-    $logoPath = $settings["logo_path"];
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+//settings for customer-design-settings
+$sqlGetSettings = "SELECT * FROM design_settings WHERE id = 1";
+$resultSettings = $conn->query($sqlGetSettings);
+
+if ($resultSettings->num_rows > 0) {
+    // Output data ng bawat row
+    while ($row = $resultSettings->fetch_assoc()) {
+        $bgColor = $row["background_color"];
+        $fontColor = $row["font_color"];
+        $shopName = $row["shop_name"];
+        $logoPath = $row["logo_path"];
+    }
+} else {
+    echo "0 results";
 }
 ?>
 
@@ -47,11 +70,23 @@ if ($settingsResult && mysqli_num_rows($settingsResult) > 0) {
     <label class="shop"><?= htmlspecialchars($shopName) ?></label>
   </a>
 
+  <!-- Search Bar -->
+  <div class="content-search">
+    <input type="text" class="search-bar" placeholder="Search products..." />
+    <button class="search-button">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </div>
+
+  <!-- Right Side: Cart and Profile Settings -->
   <div class="header-right">
+    <!-- Cart Button -->
     <a href="cart.php?user=<?= urlencode($userName) ?>" class="cart-link">
-      <button class="cart-button"><i class="fas fa-shopping-cart"></i>
+      <button class="cart-button">
+        <i class="fas fa-shopping-cart"></i>
         <?php
-          $stmt = mysqli_prepare($conn, "SELECT id FROM users WHERE name = ?");
+          $userQuery = "SELECT id FROM users WHERE name = ?";
+          $stmt = mysqli_prepare($conn, $userQuery);
           mysqli_stmt_bind_param($stmt, "s", $userName);
           mysqli_stmt_execute($stmt);
           $userResult = mysqli_stmt_get_result($stmt);
@@ -65,9 +100,12 @@ if ($settingsResult && mysqli_num_rows($settingsResult) > 0) {
           $cartResult = mysqli_stmt_get_result($cartStmt);
           $cartCount = mysqli_fetch_assoc($cartResult)['count'] ?? 0;
           echo "<span class='cart-number'>$cartCount</span>";
+          mysqli_stmt_close($cartStmt);
         ?>
       </button>
     </a>
+
+    <!-- User Dropdown -->
     <nav class="nav-right">
       <div class="dropdown">
         <button class="dropbtn">Welcome, <?= htmlspecialchars($userName) ?> &#9662;</button>
