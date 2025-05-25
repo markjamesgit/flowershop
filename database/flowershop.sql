@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 18, 2025 at 03:43 PM
+-- Generation Time: May 25, 2025 at 07:02 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -90,19 +90,16 @@ CREATE TABLE `cart` (
   `quantity` int(11) DEFAULT NULL,
   `price` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `total_price` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cart`
 --
 
-INSERT INTO `cart` (`id`, `user_id`, `product_id`, `product_name`, `product_image`, `quantity`, `price`, `created_at`, `updated_at`) VALUES
-(320, 72, 204, 'Sweet Treats 3', '67fd1ed677aa2.jpg', 1, '399', '2025-05-04 02:38:57', '2025-05-04 02:38:57'),
-(328, 71, 170, 'Bundle 4', '67fcad3587e84.jpg', 1, '1499', '2025-05-04 06:31:30', '2025-05-04 06:31:30'),
-(329, 71, 190, 'Luxury 1', '67fd16378214b.jpg', 1, '500', '2025-05-04 07:49:18', '2025-05-04 07:49:18'),
-(330, 71, 171, 'Bundle 5', '67fcae1bc551e.jpg', 2, '299', '2025-05-04 08:03:11', '2025-05-04 08:33:28'),
-(332, 71, 198, 'Funeral Package 3', '67fd1726cdaee.jpg', 1, '1499', '2025-05-04 08:24:12', '2025-05-04 08:24:12');
+INSERT INTO `cart` (`id`, `user_id`, `product_id`, `product_name`, `product_image`, `quantity`, `price`, `created_at`, `updated_at`, `total_price`) VALUES
+(320, 72, 204, 'Sweet Treats 3', '67fd1ed677aa2.jpg', 10, '399', '2025-05-04 02:38:57', '2025-05-25 16:15:52', 3990);
 
 -- --------------------------------------------------------
 
@@ -126,7 +123,10 @@ INSERT INTO `category` (`id`, `category`, `product_count`) VALUES
 (66, 'Funeral Flowers', 6),
 (67, 'Bundle', 0),
 (68, 'Sweet Treats', 6),
-(69, 'Enternal Flowers', 0);
+(69, 'Enternal Flowers', 0),
+(70, 'Flowers', 6),
+(71, 'Pots', 6),
+(72, 'Add-Ons', 5);
 
 -- --------------------------------------------------------
 
@@ -226,7 +226,10 @@ INSERT INTO `orders` (`id`, `user_name`, `name`, `phone`, `address`, `payment_me
 (81, 'test2', 'Testing 2', '09123456789', 'Testing St', 'BDO', 799.00, '2025-05-18 13:28:44', 'approved\r\n', NULL),
 (82, 'test2', 'Test', '09123456897', 'Testing St.', 'COD', 429.00, '2025-05-18 13:29:25', 'approved\r\n', NULL),
 (83, 'test2', 'Test 2', '09987654123', 'Testing St.', 'GCash', 149.00, '2025-05-18 13:33:08', 'approved\r\n', NULL),
-(84, 'test2', 'Test 2', '0914567823', 'Testing St.', 'COD', 2299.00, '2025-05-18 13:33:59', 'approved\r\n', 'letters/letter_1747575223_8212.pdf');
+(84, 'test2', 'Test 2', '0914567823', 'Testing St.', 'COD', 2299.00, '2025-05-18 13:33:59', 'approved\r\n', 'letters/letter_1747575223_8212.pdf'),
+(85, 'test', 'Test', '09123456789', 'Testing St.', 'COD', 1499.00, '2025-05-25 16:55:57', 'approved\r\n', NULL),
+(86, 'test', 'Test', '09123456786', 'Testing St.', 'GCash', 299.00, '2025-05-25 16:56:34', 'approved\r\n', NULL),
+(87, 'test', 'Test', '091236547789', 'Testing St.', 'BDO', 1999.00, '2025-05-25 16:57:31', 'approved\r\n', NULL);
 
 -- --------------------------------------------------------
 
@@ -259,7 +262,11 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_name`, `quantity`, `price`
 (82, 81, 'Luxury 5', 1, 799.00, 799.00, '67fd16b24ce05.jpg'),
 (83, 82, 'Bundle 1', 1, 429.00, 429.00, '67fa88e379393.jpg'),
 (84, 83, 'Dried Flower 6', 1, 149.00, 149.00, '67fcbd36d0772.jpg'),
-(85, 84, 'Enternal Flower 4', 1, 2299.00, 2299.00, '67fcbdc9eb9a9.jpg');
+(85, 84, 'Enternal Flower 4', 1, 2299.00, 2299.00, '67fcbdc9eb9a9.jpg'),
+(86, 85, 'Bundle 4', 1, 1499.00, 1499.00, '67fcad3587e84.jpg'),
+(87, 86, 'Bundle 5', 4, 299.00, 299.00, '67fcae1bc551e.jpg'),
+(88, 87, 'Luxury 1', 6, 500.00, 500.00, '67fd16378214b.jpg'),
+(89, 87, 'Funeral Package 3', 7, 1499.00, 1499.00, '67fd1726cdaee.jpg');
 
 -- --------------------------------------------------------
 
@@ -399,7 +406,24 @@ INSERT INTO `product` (`id`, `name`, `image`, `category`, `qty`, `price`, `categ
 (205, 'Sweet Treats 4', '67fd1eee75d18.jpg', 'Sweet Treats', 10, '699', 68, 'Available', 1, 9),
 (206, 'Sweet Treats 5', '1746343233_sweettreats5.jpg', 'Sweet Treats', 10, '299', 68, 'Available', 0, 10),
 (207, 'Sweet Treats 6', '1746343245_sweettreats6.jpg', 'Sweet Treats', 10, '2299', 68, 'Available', 0, 10),
-(209, 'Test', '68176316552eb.jpg', 'Luxury Gifts', 10, '100', 64, 'Available', 0, 10);
+(209, 'Teddy Bear', '68176316552eb.jpg', 'Add-Ons', 10, '250', 64, 'Available', 0, 10),
+(210, 'Ballon', '68332f24e38d3.jpg', 'Add-Ons', 10, '150', 72, 'Available', 0, 0),
+(211, 'Bracelet', '68332f56c32a6.jpg', 'Add-Ons', 10, '300', 72, 'Available', 0, 0),
+(212, 'Butterflly ', '6833306c20d51.jpg', 'Add-Ons', 10, '29', 72, 'Available', 0, 0),
+(213, 'Pringles', '68333fca16928.jpg', 'Add-Ons', 10, '250', 72, 'Available', 0, 0),
+(214, 'Pocky', '68333fe55198f.jpg', 'Add-Ons', 10, '99', 72, 'Available', 0, 0),
+(215, 'Blue Roses', '68334004bc3e4.jpg', 'Flowers', 10, '99', 70, 'Available', 0, 0),
+(216, 'Corn Flower', '683340133732f.jpg', 'Flowers', 10, '120', 70, 'Available', 0, 0),
+(217, 'Cosmos', '6833402148bf9.jpg', 'Flowers', 10, '25', 70, 'Available', 0, 0),
+(218, 'Dahlia', '6833402f1de5f.jpg', 'Flowers', 10, '75', 70, 'Available', 0, 0),
+(219, 'Daisy', '6833403aac1c6.jpg', 'Flowers', 10, '15', 70, 'Available', 0, 0),
+(220, 'Iris', '6833404df1818.jpeg', 'Flowers', 10, '89', 70, 'Available', 0, 0),
+(221, 'Pot 1', '6833407963a22.jpg', 'Pots', 10, '120', 71, 'Available', 0, 0),
+(222, 'Pot 2', '6833408f2bd09.jpg', 'Pots', 10, '150', 71, 'Available', 0, 0),
+(223, 'Pot 3', '683340a71201e.jpg', 'Pots', 10, '60', 71, 'Available', 0, 0),
+(224, 'Pot 4', '683340c90c1ed.jpg', 'Pots', 10, '80', 71, 'Available', 0, 0),
+(225, 'Pot 5', '683340e2b25c3.jpeg', 'Pots', 10, '99', 71, 'Available', 0, 0),
+(226, 'Pot 6', '683340f288626.jpg', 'Pots', 10, '78', 71, 'Available', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -432,11 +456,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `verification_code`, `email_verified_at`, `reset_token`, `reset_token_expiration`, `last_attempt`, `blocked`, `attempts`, `contact_number`, `address`, `image_path`, `first_name`, `middle_name`, `last_name`) VALUES
-(66, 'test1', 'test1@gmail.com', '$2y$10$S.laHtAxLK7dg5DTPThpYegilagYNO.o/qKiHNsR6pAcRLz.VfhvG', 189424, NULL, NULL, NULL, '2025-04-19 05:07:26', 1, 3, '09551041534', 'kalye Katorse', NULL, 'Habib', 'M', 'A AHASAN'),
-(71, 'test', 'test@gmail.com', '$2y$10$QLYlpKbvTymOu.F2ZBBl1uBDtSoLqnrn/2yLUVtU3l7jvCg4IkSBa', 937574, '2025-04-29 17:03:07.000000', NULL, NULL, '2025-04-29 09:02:56', 0, 0, '09123456789', 'Testing St.', '../img/6816d98cebd07.jpg', 'Testing', 'T', 'Ground'),
+(66, 'test1', 'test1@gmail.com', '$2y$10$S.laHtAxLK7dg5DTPThpYegilagYNO.o/qKiHNsR6pAcRLz.VfhvG', 189424, NULL, NULL, NULL, '2025-04-19 05:07:26', 1, 3, '09551041534', 'kalye Katorse', '../img/68333aea7b5c5.jpg', 'Habib', 'M', 'A AHASAN'),
+(71, 'test', 'test@gmail.com', '$2y$10$QLYlpKbvTymOu.F2ZBBl1uBDtSoLqnrn/2yLUVtU3l7jvCg4IkSBa', 328527, '2025-04-29 17:03:07.000000', '09950b1a90b5723aceb3f053c6e78443', '2025-05-25 19:20:14', '2025-04-29 09:02:56', 0, 0, '09123456789', 'Testing St.', '../img/68333aa2b2776.jpeg', 'Testing', 'T', 'Ground'),
 (72, 'test2', 'test2@gmail.com', '$2y$10$vZ6xItlid01QytOeCLYqk.cTBYitAChvIRNhWA/tvDl9MdV/aPe9e', 310948, '2025-05-04 11:06:51.000000', NULL, NULL, '2025-05-04 02:32:34', 0, 0, '09123456789', 'Testing St.', '../img/6816d95da9ba1.jpg', 'Test 2', '2', 'Testing'),
-(73, 'test3', 'test3@gmail.com', '$2y$10$iHR7glEOIJI.JkCTeAtmp.eThrAbKYpbJd08nn94luCMSA/JZU1R.', 354211, NULL, NULL, NULL, '2025-05-04 03:11:13', 0, 0, '09123456789', 'Testing St.', '', 'Testing 3', '3', 'Testing'),
-(74, 'itsmy', 'ybiza2018@gmail.com', '$2y$10$4fywoMtfRZtJYrCSLfPVBeMFBXgBOog9g0KEopmV.kcVloPdOz/TW', 331651, NULL, NULL, NULL, '2025-05-06 11:50:35', 0, 0, '09496563656', 'kalye Katorse', '', 'Habib', 'M', 'A AHASAN');
+(73, 'test3', 'test3@gmail.com', '$2y$10$iHR7glEOIJI.JkCTeAtmp.eThrAbKYpbJd08nn94luCMSA/JZU1R.', 354211, NULL, NULL, NULL, '2025-05-04 03:11:13', 0, 1, '09123456789', 'Testing St.', '../img/68333f05c2fc1.jpg', 'Testing 3', '3', 'Testing');
 
 --
 -- Indexes for dumped tables
@@ -539,7 +562,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `design_settings`
@@ -557,13 +580,13 @@ ALTER TABLE `flower`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `pos_orders`
@@ -587,7 +610,7 @@ ALTER TABLE `pots`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=227;
 
 --
 -- AUTO_INCREMENT for table `users`
