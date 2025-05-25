@@ -156,6 +156,19 @@ if ($row = $verifyResult->fetch_assoc()) {
     </div>
   </section>
 
+  <!-- Welcome Section -->
+  <section class="content-welcome">
+    <div style="background-color: #ffe6f0; color: #e45e90;" class="welcome-title">
+      <h1>Welcome to Sunny Bloom, <?= htmlspecialchars($userName) ?>!</h1>
+      <p>Discover our best-selling items.</p>
+    </div>
+    <div style="background-color: #ffd5ec; color: #e45e90;" class="welcome-description">
+      <p>Where flowers bloom, </p>
+      <p>so does hope—and here,</p>
+      <p>every petal tells a story waiting to be shared.</p>
+    </div>
+  </section>      
+
   <!-- Categories Section -->
   <section class="content-categories">
     <div class="categories-title"><p>CATEGORIES</p></div>
